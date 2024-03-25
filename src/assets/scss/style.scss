@@ -1,0 +1,24 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+@import 'feather-icon/feather-icon';
+
+@import 'theme/variables';
+@import 'theme/admin_style';
+@import 'theme/rtl';
+@import 'theme/chartist.scss';
+@import 'theme/datatable';
+@import 'theme/theme-dark.scss';
+@import 'icons/icoicon/icons';
+// Flag contents
+@import 'flag-icon/flag-icon-base';
+@import 'flag-icon/flag-icon-more';
+@import 'flag-icon/flag-icon-list';
+@import 'icons/themify/themify-icons';
+@import '~dropzone/dist/min/dropzone.min.css';
+@import "/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel.scss";
+@import "/node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default.scss";
+// @import "~@ag-grid-community/core/dist/styles/ag-grid.css";
+// @import "~@ag-grid-community/core/dist/styles/ag-theme-balham.css";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+// @import "primeflex/themes/primeone-dark.css";

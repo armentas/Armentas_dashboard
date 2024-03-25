@@ -1,0 +1,132 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <p-toast position="bottom-right"></p-toast>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card tab2-card">
+                <div class="card-header">
+                    <h5> Add User</h5>
+                </div>
+                <div class="card-body tab2-card">
+                    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                        <li [ngbNavItem]="1">
+                            <a ngbNavLink>Account</a>
+                            <ng-template ngbNavContent>
+                                <form [formGroup]="accountForm" (ngSubmit)="saveUser(accountForm)"
+                                    class="needs-validation user-add" novalida>
+                                    <h4>Account Details</h4>
+                                    <div class="form-group row">
+                                        <div class="col-xl-3 col-md-4"><label for="validationCustom0"><span>*</span>
+                                                First Name</label></div>
+                                        <div class="col-xl-8 col-md-7"><input formControlName="name"
+                                                class="form-control" id="validationCustom0" type="text" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                                Last Name</label></div>
+                                        <div class="col-xl-8 col-md-7"><input formControlName="lastname"
+                                                class="form-control" id="validationCustom1" type="text" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-xl-3 col-md-4"><label for="validationCustom2"><span>*</span>
+                                                Email</label></div>
+                                        <div class="col-xl-8 col-md-7"><input formControlName="email"
+                                                class="form-control" id="validationCustom2" type="text" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-xl-3 col-md-4"><label for="validationCustom3"><span>*</span>
+                                                Password</label>
+                                        </div>
+                                        <div class="col-xl-8 col-md-7"><input formControlName="password"
+                                                class="form-control" id="validationCustom3" type="password" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-xl-3 col-md-4"><label for="validationCustom4"><span>*</span>
+                                                Confirm Password</label></div>
+                                        <div class="col-xl-8 col-md-7"><input formControlName="confirmPwd"
+                                                class="form-control" id="validationCustom4" type="password" required="">
+                                        </div>
+                                    </div>
+                                    <p-divider></p-divider>
+                                    <div class="attribute-blocks">
+                                        <h5 class="f-w-600 mb-3">Product & Collection Related permission </h5>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-3 col-sm-4">
+                                                <label>Add Product or Collection</label>
+                                            </div>
+                                            <div class="col-xl-9 col-sm-8">
+                                                <div
+                                                    class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                    <label class="d-block" for="allowAdd">
+                                                        <input class="radio_animated" id="allowAdd" type="radio"
+                                                            formControlName="permissionAdd" value="allow">
+                                                        Allow
+                                                    </label>
+                                                    <label class="d-block" for="denyAdd">
+                                                        <input class="radio_animated" id="denyAdd" type="radio"
+                                                            formControlName="permissionAdd" value="deny">
+                                                        Deny
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-3 col-sm-4">
+                                                <label>Update Product or Collection</label>
+                                            </div>
+                                            <div class="col-xl-9 col-sm-8">
+                                                <div
+                                                    class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                    <label class="d-block" for="allowUpdate">
+                                                        <input class="radio_animated" id="allowUpdate" type="radio"
+                                                            formControlName="permissionUpdate" value="allow">
+                                                        Allow
+                                                    </label>
+                                                    <label class="d-block" for="denyUpdate">
+                                                        <input class="radio_animated" id="denyUpdate" type="radio"
+                                                            formControlName="permissionUpdate" value="deny">
+                                                        Deny
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-3 col-sm-4">
+                                                <label>Delete Product or Collection</label>
+                                            </div>
+                                            <div class="col-xl-9 col-sm-8">
+                                                <div
+                                                    class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                    <label class="d-block" for="allowDelete">
+                                                        <input class="radio_animated" id="allowDelete" type="radio"
+                                                            formControlName="permissionDelete" value="allow">
+                                                        Allow
+                                                    </label>
+                                                    <label class="d-block" for="denyDelete">
+                                                        <input class="radio_animated" id="denyDelete" type="radio"
+                                                            formControlName="permissionDelete" value="deny">
+                                                        Deny
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->

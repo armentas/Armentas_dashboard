@@ -1,0 +1,166 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h5>User Details</h5>
+        </div>
+        <div class="card-body">
+            <div id="batchDelete" class="category-table">
+                <div class="table-responsive">
+                    <!-- <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col" >Actions</th>
+                                <th scope="col" sortable="avatar" (sort)="onSort($event)">Avtar</th>
+                                <th scope="col" sortable="fName" (sort)="onSort($event)">First Name</th>
+                                <th scope="col" sortable="lName" (sort)="onSort($event)">Last Name</th>
+                                <th scope="col" sortable="email" (sort)="onSort($event)">Email</th>
+                                
+                                <th scope="col" sortable="role" (sort)="onSort($event)">Permission</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of (tableItem$ | async) ">
+                                <td>
+                                    <a href="javascript:void(0)"><i class='fa fa-edit f-12'></i></a>&nbsp;
+                                    <a href="javascript:void(0)" *ngIf="item.rol !== 'super'" (click)="showConfirm(item.id)" ><i class="fa fa-trash-o"></i></a>
+                                </td>
+                                <td scope="row">
+                                    <img [src]="item.img_profile" class="imgTable" style="width: 20px"
+                                    onerror="this.onerror=null; this.src='../assets/images/user.png';">
+                                </td>
+                                <td>
+                                    {{item.name}}
+                                </td>
+                                <td>{{item.lastname}}</td>
+                                <td>{{item.email}}</td>
+                               
+                                <td>{{item.permission}}</td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                    <div class="d-flex justify-content-center p-2">
+                        <ngb-pagination
+                          [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+                        </ngb-pagination>
+                    </div> -->
+                    <p-table #dt [value]="users" [(selection)]="selectedUsers" dataKey="name"
+                        [tableStyle]="{'min-width': '50rem'}" [globalFilterFields]="['name', 'email', 'permission']">
+                        <ng-template pTemplate="caption">
+                            <div class="table-header d-flex justify-content-between">
+                                <span class="p-input-icon-left">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text"
+                                        (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                        placeholder="Global Search" />
+                                </span>
+
+                                <button class="btn btn-primary" [routerLink]="'/users/create-user'">Create User</button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 4rem">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                </th>
+                                <th>Actions</th>
+                                <th>Avatar</th>
+                                <th>Firstname</th>
+                                <th>Lastname</th>
+                                <th>Email</th>
+                                <th>Permissions</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-user>
+                            <tr>
+                                <td>
+                                    <p-tableCheckbox [value]="user"></p-tableCheckbox>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" (click)="open(content, user.id)"><i
+                                            class='fa fa-edit f-12'></i></a>&nbsp;
+                                    <a href="javascript:void(0)" *ngIf="user.rol !== 'super'"
+                                        (click)="showConfirm(user.id)"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        <img [src]="user.img_profile" class="imgTable" style="width: 20px"
+                                            onerror="this.onerror=null; this.src='../assets/images/user.png';">
+                                    </div>
+                                </td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.lastname}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.permission}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">Edit user</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="needs-validation">
+                <div class="form">
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label class="mb-1" for="username" >Name :</label>
+                            <input class="form-control" id="username" type="text" [(ngModel)]="userData.name"
+                                [ngModelOptions]="{standalone: true}">
+                        </div>
+                        <div class="col-6 form-group">
+                            <label class="mb-1" for="userlastname">Lastname :</label>
+                            <input class="form-control" id="userlastname" type="text" [(ngModel)]="userData.lastname"
+                                [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="useremail" class="mb-1">Email :</label>
+                        <input class="form-control" id="useremail" type="text" [(ngModel)]="userData.email"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="usernewpass" class="mb-1">New password :</label>
+                        <input class="form-control" id="usernewpass" type="password" [(ngModel)]="userData.newpassword"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="saveData()">Save</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                (click)="modal.dismiss('Cross click')">Close</button>
+        </div>
+    </ng-template>
+    <p-toast position="bottom-right"></p-toast>
+    <p-toast position="bottom-center" key="confirm" (onClose)="onReject()" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div class="flex flex-column" style="flex: 1">
+                <div class="text-center">
+                    <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+                    <h4 class="text-dark-emphasis">{{message.summary}}</h4>
+                    <p class="text-light-emphasis">{{message.detail}}</p>
+                </div>
+                <div class="p-fluid d-flex gap-3">
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onConfirm()" label="Yes"
+                            class="p-button-success rounded"></button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onReject()" label="No"
+                            class="p-button-secondary rounded"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+</div>
+<!-- Container-fluid Ends-->
