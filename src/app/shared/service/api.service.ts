@@ -8,79 +8,63 @@ import { environment } from 'src/environments/environment';
 })
 export class ApiService {
 
-  baseUrl = "environment.apiUrl";
+  baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
-  getAllCollections(): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/collections/getAllCollections`));
-  }
-
-  getCollection(id: number): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/collections/getCollection/${id}`));
-  }
-
-  addCollection(data: any): Promise<any> {
-    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/collections/addCollection`, data));
-  }
-
-  updateCollection(id: number, data: any): Promise<any> {
-    return lastValueFrom(this.http.put<any>(`${this.baseUrl}/collections/updateCollection/${id}`, data));
-  }
-
-  deleteCollection(id: number): Promise<any> {
-    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/collections/deleteCollection/${id}`));
-  }
-
-  getAllMyProducts(id: number): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/collections/getAllMyProducts/${id}`));
-  }
-
   //-------------------- Product section -----------------------------------------
-
-  getAllDiscounts(): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/discounts/getAllDiscounts`));
-  }
 
   addProduct(data: any): Promise<any> {
     return lastValueFrom(this.http.post<any>(`${this.baseUrl}/products/addProduct`, data));
   }
-
-
-  getAllProductsByVariants(): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/variants/getAllProductbyVariants`));
-  }
-
+  
   getProduct(id: number): Promise<any> {
     return lastValueFrom(this.http.get<any>(`${this.baseUrl}/products/getProduct/${id}`));
+  }
+
+  getAllProducts(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/products/getAllProducts`));
   }
 
   updateProduct(id: number, data: any): Promise<any> {
     return lastValueFrom(this.http.put<any>(`${this.baseUrl}/products/updateProduct/${id}`, data));
   }
 
-  //-------------------- Variant section -----------------------------------------
-
-  addVariant(data: any): Promise<any> {
-    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/variants/addVariant`, data));
+  deleteProduct(id: number): Promise<any> {
+    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/products/deleteProduct/${id}`));
   }
 
-  deleteVariant(id: number): Promise<any> {
-    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/variants/deleteVariant/${id}`));
+  getFullProduct(id: number): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/products/getFullProduct/${id}`));
   }
 
-  getImagesByVariantId(id: number): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/variants/getImagesByVariantId/${id}`));
+  getAllFullProduct(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/products/getAllFullProduct`));
   }
 
   //-------------------- Image section -----------------------------------------
 
-  addImage(data: any): Promise<any> {
-    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/images/addImage`, data));
+  addImageUrl(id_product: number, data: any): Promise<any> {
+    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/images/addImageUrl/${id_product}`, data));
+  }
+
+  addImageFile(id_product: number, file: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/images/addImageFile/${id_product}`, formData));
+  }
+
+  getAllImageByProductId(id: number): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/images/getImageByProductId/${id}`));
   }
 
   updateImage(id: number, data: any): Promise<any> {
     return lastValueFrom(this.http.put<any>(`${this.baseUrl}/images/updateImage/${id}`, data));
+  }
+
+  deleteImage(id: number): Promise<any> {
+    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/images/deleteImage/${id}`));
   }
 
    //-------------------- Relationship Variant-Image section -----------------------------------------

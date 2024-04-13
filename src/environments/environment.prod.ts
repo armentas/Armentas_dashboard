@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://pistonsfuelpowerbackend-production.up.railway.app/api/dashboard'
+  apiUrl: 'http://armentasshopbk-production.up.railway.app/api/dashboard'
 };

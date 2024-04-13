@@ -1,0 +1,34 @@
+[
+    {
+        "id": 149,
+        "title": "kiwi",
+        "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.",
+        "type": "pinata",
+        "brand": "fruits",
+        "collection": ["on sale"],
+        "category": "vegetables",
+        "price": 95,
+        "sale": true,
+        "discount": "10",
+        "stock": 30,
+        "new": false,
+        "tags": [
+            "fruits"
+        ],
+        "variants": [{
+            "variant_id": 14901,
+            "id": 149,
+            "sku": "fruits4",
+            "image_id": 14911
+        }],
+        "images": [{
+            "image_id": 14911,
+            "id": 149,
+            "alt": "fruits",
+            "src": "https://www.dropbox.com/scl/fi/0379zl0l32vbw6etm3tr1/IMG_9371.png?rlkey=5gabigfeghr2n7aalco1goj5s&dl=1",
+            "variant_id": [
+                14901
+            ]
+        }]
+    }
+]

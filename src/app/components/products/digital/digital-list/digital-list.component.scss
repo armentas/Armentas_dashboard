@@ -1,5 +1,8 @@
+@import '../../../../../assets/scss/theme/variables';
+
 .onsaleProd {
     background-color: green;
+    color: #e8e8e8;
     padding: 5px;
     border-radius: 5px;
   }
@@ -12,7 +15,7 @@
   }
 
   .imagesProducts{
-    border: 1px solid #4b4b4b;
+    border: 1px solid $border-light;
     border-radius: 5px;
   }
 
@@ -22,4 +25,28 @@
 
   .thumblainImage2{
     width: 60px;
+  }
+
+  .instock{
+    background-color: rgb(187, 240, 187);
+    color: green;
+    font-weight: 700;
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+  .lowstock{
+    background-color: rgb(254, 221, 199);
+    color: #ae510f;
+    font-weight: 700;
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+  .outstock{
+    background-color: rgb(245, 192, 192);
+    color: red;
+    font-weight: 700;
+    padding: 5px;
+    border-radius: 5px;
   }

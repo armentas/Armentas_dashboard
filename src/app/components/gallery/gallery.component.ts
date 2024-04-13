@@ -42,7 +42,7 @@ export class GalleryComponent {
   async ngOnInit() {
     await this.loadImages();
     // this.images = this.imagesList;
-    await this.loadProducts();
+    // await this.loadProducts();
     // this.products = this.productList;
     console.log(this.images);
     console.log(this.products);
@@ -55,25 +55,25 @@ export class GalleryComponent {
   }
 
 
-  async loadProducts() {
-    const products = await this.apiService.getAllProductsByVariants();
+  // async loadProducts() {
+  //   const products = await this.apiService.getAllProductsByVariants();
   
-    // Utilizar un mapa para almacenar objetos únicos por productId
-    const uniqueProductsMap = products.data.reduce((map, elem) => {
-      const productId = elem.productId;
+  //   // Utilizar un mapa para almacenar objetos únicos por productId
+  //   const uniqueProductsMap = products.data.reduce((map, elem) => {
+  //     const productId = elem.productId;
   
-      // Si aún no existe un objeto para este productId, agrégalo al mapa
-      if (!map.has(productId)) {
-        map.set(productId, { productId, title: elem.title, collection: elem.collection, imagesUrl: elem.imagesUrl.split(',') });
-      }
+  //     // Si aún no existe un objeto para este productId, agrégalo al mapa
+  //     if (!map.has(productId)) {
+  //       map.set(productId, { productId, title: elem.title, collection: elem.collection, imagesUrl: elem.imagesUrl.split(',') });
+  //     }
   
-      return map;
-    }, new Map<string, { productId: string, title: string, collection: string, imagesUrl: string[] }>());
+  //     return map;
+  //   }, new Map<string, { productId: string, title: string, collection: string, imagesUrl: string[] }>());
   
-    // Extraer los valores del mapa para obtener un arreglo de objetos únicos
-    this.products = Array.from(uniqueProductsMap.values());
+  //   // Extraer los valores del mapa para obtener un arreglo de objetos únicos
+  //   this.products = Array.from(uniqueProductsMap.values());
 
-  }
+  // }
 
   async getAllImages() {
     return await this.apiService.getAllImagesGallery();

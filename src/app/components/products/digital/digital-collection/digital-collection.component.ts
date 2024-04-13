@@ -41,8 +41,8 @@ export class DigitalCollectionComponent implements OnInit {
   }
 
   async loadCollections() {
-    const collections = await this.getAllCollections();
-    this.collections = collections.data;        
+    // const collections = await this.getAllCollections();
+    // this.collections = collections.data;        
   }
 
   // async loadCollections() {
@@ -70,14 +70,14 @@ export class DigitalCollectionComponent implements OnInit {
   // }
 
   async getAllCollections() {
-    return await this.apiService.getAllCollections();
+    // return await this.apiService.getAllCollections();
   }
 
   async loadProductsForCollections() {
     const promises = this.collectionsList.map(async (collection) => {
       try {
-        const result = await this.apiService.getAllMyProducts(collection.id);
-        collection.products = result.data[0].count;
+        // const result = await this.apiService.getAllMyProducts(collection.id);
+        // collection.products = result.data[0].count;
       } catch (error) {
         // Manejar el error de la llamada
         console.error(`Error para la colección ${collection.id}: ${error.message}`);
@@ -117,11 +117,11 @@ export class DigitalCollectionComponent implements OnInit {
       this.modelTitle = "Update Collection"; 
       this.collectionSelected = id
       try {
-        const result = await this.apiService.getCollection(id);
+        // const result = await this.apiService.getCollection(id);
 
-        this.collectionData.name = result.data[0].name;
-        this.collectionData.description = result.data[0].description;
-        this.collectionData.img_url = result.data[0].img_url;
+        // this.collectionData.name = result.data[0].name;
+        // this.collectionData.description = result.data[0].description;
+        // this.collectionData.img_url = result.data[0].img_url;
         
       } catch (error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
@@ -163,22 +163,22 @@ export class DigitalCollectionComponent implements OnInit {
       }
 
       try {
-        const result = await this.apiService.addCollection(this.collectionData);
-        if (result.data.insertId !== 0) {
-          this.messageService.add({ severity: 'success', summary: 'Colleccion guardada', detail: `Se registro una nueva Coleccion con ID: ${result.data.insertId}` });
-          this.itemSaved = true;
-        }
+        // const result = await this.apiService.addCollection(this.collectionData);
+        // if (result.data.insertId !== 0) {
+        //   this.messageService.add({ severity: 'success', summary: 'Colleccion guardada', detail: `Se registro una nueva Coleccion con ID: ${result.data.insertId}` });
+        //   this.itemSaved = true;
+        // }
       } catch (error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
       }
     } else {
       try {
-        this.collectionData.img_url = this.collectionData.img_url.replace(/dl=0/g, 'dl=1');
-        const result = await this.apiService.updateCollection(this.collectionSelected, this.collectionData);        
-        if (result.data.affectedRows !== 0) {
-          this.messageService.add({ severity: 'success', summary: 'Colleccion editada', detail: `Se actualizo la Coleccion con ID: ${this.collectionSelected}` });
-          this.itemSaved = true;
-        }
+        // this.collectionData.img_url = this.collectionData.img_url.replace(/dl=0/g, 'dl=1');
+        // const result = await this.apiService.updateCollection(this.collectionSelected, this.collectionData);        
+        // if (result.data.affectedRows !== 0) {
+        //   this.messageService.add({ severity: 'success', summary: 'Colleccion editada', detail: `Se actualizo la Coleccion con ID: ${this.collectionSelected}` });
+        //   this.itemSaved = true;
+        // }
       } catch (error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
       }
@@ -201,18 +201,18 @@ export class DigitalCollectionComponent implements OnInit {
 
   async onConfirm() {
     try {
-      const result = await this.apiService.deleteCollection(this.collectionSelected);
-      console.log(result);
+      // const result = await this.apiService.deleteCollection(this.collectionSelected);
+      // console.log(result);
 
-      if (result.data.affectedRows !== 0) {
-        this.messageService.add({ severity: 'success', summary: 'Coleccion eliminada', detail: `Se elimino la colecion correctamente` });
-        this.messageService.clear('confirm');
-        this.visible = false;
+      // if (result.data.affectedRows !== 0) {
+      //   this.messageService.add({ severity: 'success', summary: 'Coleccion eliminada', detail: `Se elimino la colecion correctamente` });
+      //   this.messageService.clear('confirm');
+      //   this.visible = false;
 
-        setTimeout(() => {
-          this.reload();
-        }, 1000);
-      }
+      //   setTimeout(() => {
+      //     this.reload();
+      //   }, 1000);
+      // }
     } catch (error) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
     }

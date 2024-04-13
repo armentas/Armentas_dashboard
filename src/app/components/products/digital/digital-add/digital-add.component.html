@@ -14,12 +14,12 @@
                 </div>
             </section>
         </ng-template>
-        </p-toast>
+    </p-toast>
     <div class="row product-adding">
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>General</h5>
+                    <h5>Product Info</h5>
                 </div>
                 <div class="card-body">
                     <div class="digital-add needs-validation">
@@ -38,45 +38,45 @@
                                 <label for="productType" class="col-form-label pt-0"><span>*</span> Type</label>
                                 <select class="custom-select form-select" id="productType" required=""
                                     [(ngModel)]="selectedProductType">
-                                    <option value="">--Select--</option>
+                                    <option value="" disabled>--Select--</option>
                                     <ng-container *ngFor="let type of types">
                                         <option [value]="type.code" *ngIf="type.active">{{ type.name }}</option>
                                     </ng-container>
                                 </select>
                             </div>
                             <div class="col-6 form-group">
-                                <label for="productCollection" class="col-form-label pt-0"><span>*</span>
-                                    Collection</label>
-                                <select class="custom-select form-select" id="productCollection" required=""
-                                    [(ngModel)]="selectedProductCollection">
-                                    <option value="0">--Select--</option>
-                                    <option *ngFor="let collection of collections" [value]="collection.id">{{ collection.name }}</option>
+                                <label class="col-form-label pt-0"><span>*</span> Category</label>
+                                <select class="custom-select form-select" required=""
+                                    [(ngModel)]="selectedProductCategory">
+                                    <option value="" disabled>--Select--</option>
+                                    <ng-container *ngFor="let category of categories">
+                                        <option [value]="category.code" *ngIf="category.active">{{ category.name }}
+                                        </option>
+                                    </ng-container>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6 col-md-4 form-group">
+                            <div class="col-4 col-md-4 form-group">
                                 <label for="productPrice" class="col-form-label"><span>*</span> Product Price</label>
                                 <input class="form-control" placeholder="$ 0.00" id="productPrice"
                                     [(ngModel)]="productData.price" type="number" required="">
                             </div>
-                            <div class="col-6 col-md-4 form-group">
-                                <label class="col-form-label" for="productDiscount"> Discounts</label>
-                                <select class="custom-select form-select" id="productDiscount" required=""
-                                    [(ngModel)]="selectedProductDiscount">
-                                    <option *ngFor="let discount of discounts" [value]="discount.id">{{ discount.percent }} %</option>
-                                </select>
+                            <div class="col-4 col-md-4 form-group">
+                                <label for="productStock" class="col-form-label"><span>*</span> Stock</label>
+                                <input class="form-control" placeholder="100" id="productStock"
+                                    [(ngModel)]="productData.stock" type="number" required="">
                             </div>
-                            <div class="col-12 col-md-4 form-group">
+                            <div class="col-4 col-md-4 form-group">
                                 <label class="col-form-label">On Sale</label>
                                 <div
                                     class="m-checkbox-inline mb-0 custom-radio-ml d-flex align-items-center radio-animated">
-                                    <div class="form-group d-flex gap-2 mb-2">
+                                    <div class="form-group d-flex gap-2 mb-1 mt-2">
                                         <input class="radio_animated" id="enable" type="radio" name="onSale"
                                             [(ngModel)]="onSale" value="true">
                                         <label class="d-block" for="enable">Enable</label>
                                     </div>
-                                    <div class="form-group d-flex gap-2 mb-2">
+                                    <div class="form-group d-flex gap-2 mb-1 mt-2">
                                         <input class="radio_animated" id="disble" type="radio" name="onSale"
                                             [(ngModel)]="onSale" value="false">
                                         <label class="d-block" for="disble">Disable</label>
@@ -84,19 +84,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-form-label"><span>*</span> Category</label>
-                            <select class="custom-select form-select" required="" [(ngModel)]="selectedProductCategory">
-                                <option value="">--Select--</option>
-                                <ng-container *ngFor="let category of categories">
-                                    <option [value]="category.code" *ngIf="category.active">{{ category.name }}</option>
-                                </ng-container>
-                            </select>
-                        </div>
+
                         <div class="form-group">
                             <label for="validationCustomtitle" class="col-form-label pt-0"><span>*</span> Tags</label>
                             <div class="card p-fluid">
                                 <p-chips [(ngModel)]="tags" placeholder="Add tags..."></p-chips>
+                                <span class="text-muted mt-2 ms-2"><p>Use tags to generate search elements</p></span>
                             </div>
                         </div>
 
@@ -107,70 +100,26 @@
         <div class="col-xl-6">
             <div class="card h-auto">
                 <div class="card-header">
-                    <h5>Add Variants</h5>
+                    <h5>Add Images</h5>
                 </div>
                 <div class="card-body">
                     <div class="digital-add needs-validation">
                         <div class="row mb-0">
-                            <div class="col-6 d-flex flex-column align-items-start form-group">
-                                <label class="col-form-label"><span>*</span> Product Size</label>
-                                <div class="m-checkbox-inline mb-0 custom-radio-ml radio-animated">
-                                    <div class="d-flex flex-wrap gap-3 justify-content-start">
-                                        <div class="sizeSelector" *ngFor="let size of sizes">
-                                            <div class="form-group d-flex gap-1 align-items-baseline mb-2">
-                                                <input class="checkbox_animated" id="{{size.code}}" type="checkbox"
-                                                    name="{{size.code}}" [checked]="selectedSizes.includes(size.name)"
-                                                    (change)="toggleSizeSelection(size.name)">
-                                                <label class="d-block" style="min-width: 30px;"
-                                                    for="{{size.code}}">{{size.name}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-start mt-3">
-                                        <div class="form-group d-flex gap-1 align-items-baseline mb-2">
-                                            <input class="checkbox_animated" id="sizeAll" type="checkbox" name="sizeAll"
-                                                [checked]="selectAllSizes"
-                                                (change)="toggleAllSizes(); updateIndividualSizes()">
-                                            <label class="d-block" style="min-width: 30px;" for="sizeAll">All
-                                                sizes</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 d-flex flex-column align-items-start form-group">
-                                <label class="col-form-label"><span>*</span> Product Color</label>
-                                <div class="m-checkbox-inline mb-0 custom-checkbox-ml checkbox-animated">
-                                    <div class="d-flex flex-wrap gap-3 justify-content-start">
-                                        <div class="colorSelector" *ngFor="let color of colors">
-                                            <span class="d-block" (click)="selectColor(color)"
-                                                [ngClass]="{'inactive': !color.active, 'selected': selectedColor?.name === color?.name}"
-                                                [style.border]="color.active ? '1px solid rgba($dark-gray, 0.25)' : '1px dashed rgba($dark-gray, 0.25)'">
-                                                <i class="fa-solid fa-circle" [style.color]="color.exa"></i>
-                                                {{color.name}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-12 form-group mb-0">
                                 <label class="col-form-label mb-2">Add Images</label>
                                 <div class="">
                                     <div class="digital-add needs-validation">
                                         <ul class="nav nav-tabs">
                                             <li class="nav-item">
-                                                <a class="nav-link" (click)="switchTab('tabURL')"
-                                                    [class.active]="tabURL">URL</a>
-                                            </li>
-                                            <li class="nav-item">
                                                 <a class="nav-link" (click)="switchTab('tabFile')"
                                                     [class.active]="tabFile" aria-current="page">File</a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" (click)="switchTab('tabURL')"
+                                                    [class.active]="tabURL">URL</a>
+                                            </li>
                                         </ul>
                                         <div class="p-4 d-flex gap-2 align-items-baseline" *ngIf="tabFile">
-                                            <div class="" style="min-width: 20px;">
-                                                <i class="fa-solid fa-circle-plus fa-lg" style="color: #ffffff;"
-                                                    *ngIf="list.length < 4" (click)="AddItem()"></i>
-                                            </div>
                                             <div class="d-flex flex-column flex-fill">
                                                 <div *ngFor="let item of list; let i = index"
                                                     class="d-flex gap-2 align-items-baseline">
@@ -179,43 +128,28 @@
                                                             id="inputGroupFile0{{item}}"
                                                             (change)="onFileChange($event, item)">
                                                     </div>
-                                                    <div class="" style="min-width: 20px;">
-                                                        <i class="fa-solid fa-circle-minus fa-lg"
-                                                            style="color: #ffffff;" *ngIf="list.length > 1"
-                                                            (click)="RestItem(i)"></i>
-                                                    </div>
-                                                    <!-- <div class="thumbnails" *ngIf="previewImage[item]">
-                                                        <img [src]="previewImage[item]" width="100%" alt="Preview">
-                                                    </div> -->
-                                                    <div class="thumbnails" *ngIf="previewImages[item -1]?.img_url">
-                                                        <img [src]="previewImages[item -1]?.img_url" width="100%" alt="Preview">
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="p-4 d-flex gap-2 align-items-baseline" *ngIf="tabURL">
-                                            <div class="" style="min-width: 20px;">
-                                                <i class="fa-solid fa-circle-plus fa-lg" style="color: #ffffff;"
-                                                    *ngIf="list.length < 4" (click)="AddItem()"></i>
-                                            </div>
                                             <div class="d-flex flex-column flex-fill">
                                                 <div *ngFor="let item of list; let i = index"
                                                     class="d-flex gap-2 align-items-baseline">
                                                     <div class="input-group mb-3 ">
                                                         <input type="text" class="form-control" id="inputText0{{item}}"
-                                                            (blur)="onTextChange($event, item)">
+                                                            [(ngModel)]="urlImage">
                                                     </div>
-                                                    <div class="" style="min-width: 20px;">
-                                                        <i class="fa-solid fa-circle-minus fa-lg"
-                                                            style="color: #ffffff;" *ngIf="list.length > 1"
-                                                            (click)="RestItem(i)"></i>
-                                                    </div>
-                                                    <!-- <div class="thumbnails" *ngIf="previewImage[item]">
-                                                        <img [src]="previewImage[item]" width="100%" alt="Preview">
-                                                    </div> -->
-                                                    <div class="thumbnails" *ngIf="previewImages[item -1]?.img_url">
-                                                        <img [src]="previewImages[item -1]?.img_url" width="100%" alt="Preview">
-                                                    </div>
+                                                    <button class="btn btn-primary" (click)="previewImage()"><i class="pi pi-cloud-upload"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p>Thumbnails</p>
+                                            <div class="d-flex gap-2 align-items-center justify-content-start">
+                                                <div class="thumbnails" *ngFor="let images of previewImages; let i = index">
+                                                    <span class="thumbnails-trash" (click)="deleteThumbnails(i)"><i class="fa fa-trash-o"></i></span>
+                                                    <img [src]="images?.img_url" width="100%"
+                                                        alt="Preview">
                                                 </div>
                                             </div>
                                         </div>
@@ -228,7 +162,7 @@
             </div>
             <div class="form-group mb-4">
                 <div class="product-buttons text-end mt-3">
-                    <button type="button" class="btn btn-primary" (click)="onSubmit()">Add</button>
+                    <button type="button" class="btn btn-primary" (click)="onSubmit2()">Add</button>
                     <button type="button" class="btn btn-light">Discard</button>
                 </div>
             </div>

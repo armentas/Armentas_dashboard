@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'http://localhost:3000/api/dashboard'
-  // apiUrl: 'https://pistonsfuelpowerbackend-production.up.railway.app/api/dashboard'
+  apiUrl: 'http://localhost:3010/api/dashboard'
+  // apiUrl: 'http://armentasshopbk-production.up.railway.app/api/dashboard'
 };
 
 /*

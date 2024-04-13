@@ -19,6 +19,8 @@ import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
+import { DividerModule } from 'primeng/divider';
+import { InputSwitchModule } from 'primeng/inputswitch';
 // search module
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -40,6 +42,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ToastModule,
     ProgressBarModule,
     ButtonModule,
+    InputSwitchModule,
+    DividerModule,
     TableModule
   ],
   exports: [],

@@ -8,94 +8,12 @@
                 <div class="card-body">
                     <div id="batchDelete" class="product-table ">
                         <div class="table-responsive">
-                            <!-- <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col" sortable="img" (sort)="onSort($event)">Image</th>
-                                <th scope="col" sortable="title" (sort)="onSort($event)">Product Title</th>
-                                <th scope="col" sortable="entry_type" (sort)="onSort($event)">Empty Type</th>
-                                <th scope="col" sortable="entry_type" (sort)="onSort($event)">Empty Type</th>
-                                <th scope="col" sortable="quantity" (sort)="onSort($event)">Quantity</th>
-                                <th scope="col" sortable="action" (sort)="onSort($event)">Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let catgory of tableItem$ | async ">
-                                <th scope="row">{{ catgory.id }}</th>
-                                <td class="imgCell">
-                                    <img [src]="catgory.img" class="imgTable" style="width: 20px">
-                                    <img [src]="catgory.img" class="imgTable" style="width: 20px">
-                                </td>
-                                <td>{{ catgory.title }}</td>
-                                <td>{{ catgory.entry_type }}</td>
-                                <td>{{ catgory.entry_type }}</td>
-                                <td>{{ catgory.quantity}}</td>
-                                <td>
-                                    <a href="javascript:void(0)"><i class='fa fa-edit f-12'></i></a>&nbsp;
-                                    <a href="javascript:void(0)"><i class="fa fa-trash-o"></i></a> 
-                                </td>
-                                </tr>
-                                </tbody>
-                            </table> -->
-                            <!-- <table class="table table-striped table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col" sortable="sku" (sort)="onSort($event)">SKU</th>
-                                        <th scope="col" sortable="title" (sort)="onSort($event)">Title</th>
-                                        <th scope="col" sortable="description" (sort)="onSort($event)">Description</th>
-                                        <th scope="col" sortable="collection" (sort)="onSort($event)">Collection</th>
-                                        <th scope="col" sortable="type" (sort)="onSort($event)">Type</th>
-                                        <th scope="col" sortable="size" (sort)="onSort($event)">Size</th>
-                                        <th scope="col" sortable="color" (sort)="onSort($event)">Color</th>
-                                        <th scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let producto of (tableItem$ | async); let i = index">
-                                        <th scope="row">{{ i+1 }}</th>
-                                        <td>
-                                            <div class="d-flex gap-1">
-                                            <div class="frame" *ngFor="let url of producto.imagesUrl">
-                                                <img [src]="url" class="imgTable" style="width: 100%"
-                                                    onerror="this.onerror=null; this.src='../assets/images/dashboard/product/1.jpg';">
-                                            </div>
-                                        </div>
-                                        </td>
-                                        <td>{{ producto.sku }}</td>
-                                        <td>{{ producto.title }}</td>
-                                        <td>{{ producto.description }}</td>
-                                        <td>{{ producto.collection }}</td>
-                                        <td>{{ producto.type }}</td>
-                                        <td>{{ producto.size }}</td>
-                                        <td>{{ producto.color }}</td>
-                                        <td>
-                                            <a href="javascript:void(0)"><i class='fa fa-edit f-12' ></i></a>&nbsp;
-                                            <a href="javascript:void(0)"><i class="fa fa-trash-o" (click)="showConfirm(producto.variantId)"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="d-flex justify-content-between p-2">
-                                <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page"
-                                    [pageSize]="service.pageSize">
-                                </ngb-pagination>
-                                <select class="form-select" style="width: auto" name="pageSize"
-                                    [(ngModel)]="service.pageSize">
-                                    <option [value]="10" [selected]="true" [ngValue]="2">2 items per page</option>
-                                    <option [ngValue]="4">4 items per page</option>
-                                    <option [ngValue]="6">6 items per page</option>
-                                </select>
-                            </div> -->
                             <p-table #dt [value]="products" [(selection)]="selectedProducts" dataKey="sku"
-                                [paginator]="true" [rows]="10" [tableStyle]="{'min-width': '50rem'}"
-                                [scrollable]="true" scrollHeight="700px"
-                                [showCurrentPageReport]="true"
+                                [paginator]="true" [rows]="10" [tableStyle]="{'min-width': '50rem'}" [scrollable]="true"
+                                scrollHeight="700px" [showCurrentPageReport]="true"
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                 (onPage)="pageChange($event)" [rowsPerPageOptions]="[15, 25, 50]"
-                                [globalFilterFields]="['title', 'sku', 'collection', 'color', 'type']">
+                                [globalFilterFields]="['title', 'sku', 'category', 'type']">
                                 <ng-template pTemplate="caption">
                                     <div class="table-header d-flex justify-content-between">
                                         <span class="p-input-icon-left">
@@ -120,13 +38,10 @@
                                         <th pSortableColumn="title">Title<p-sortIcon field="title"></p-sortIcon></th>
                                         <th pSortableColumn="description" style="min-width:200px">Description<p-sortIcon
                                                 field="description"></p-sortIcon></th>
+                                        <th pSortableColumn="type">Type<p-sortIcon field="type"></p-sortIcon></th>
+                                        <th pSortableColumn="stock">Stock<p-sortIcon field="stock"></p-sortIcon></th>
                                         <th pSortableColumn="sale">Status<p-sortIcon field="sku"></p-sortIcon></th>
-                                        <th pSortableColumn="collections" style="width:200px">Collections<p-sortIcon
-                                                field="collections"></p-sortIcon></th>
-                                        <th>Type</th>
-                                        <th pSortableColumn="size" style="width:100px">Size<p-sortIcon
-                                                field="size"></p-sortIcon></th>
-                                        <th>Color</th>
+                                        <th>Price</th>
                                         <th>Actions</th>
                                     </tr>
                                 </ng-template>
@@ -137,36 +52,39 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1">
-                                                <div class="frame" *ngFor="let url of product.imagesUrl">
-                                                    <img [src]="url" class="imgTable" style="width: 100%"
-                                                        onerror="this.onerror=null; this.src='../assets/images/dashboard/product/1.jpg';" 
-                                                        (click)="openModelImage(changeImage, product.variantId, product.productId)">
+                                                <div class="frame" *ngFor="let image of product.images">
+                                                    <img [src]="image.img_url" class="imgTable" style="width: 100%"
+                                                        onerror="this.onerror=null; this.src='../assets/images/dashboard/product/1.jpg';">
                                                 </div>
                                             </div>
                                         </td>
                                         <td>{{product.sku}}</td>
                                         <td>{{product.title}}</td>
                                         <td>{{product.description}}</td>
+                                        <td>{{product.type}}</td>
+                                        <td><div
+                                            [ngClass]="{'instock': product.stock >= 70 , 'lowstock': product.stock > 0 && product.stock < 70, 'outstock': product.stock == 0}">
+                                            {{ product.stock }}
+                                        </div></td>
                                         <td>
                                             <div
-                                                [ngClass]="{'onsaleProd': product.sale === 1, 'disabledProd': product.sale === 0}">
-                                                {{ product.sale === 1 ? 'On Sale' : 'Disabled' }}
+                                                [ngClass]="{'onsaleProd': product.sale === true, 'disabledProd': product.sale === false}">
+                                                {{ product.sale ? 'On Sale' : 'Disabled' }}
                                             </div>
                                         </td>
-                                        <td>{{product.collection}}</td>
-                                        <td>{{product.type}}</td>
-                                        <td>{{product.size}}</td>
-                                        <td>{{product.color}}</td>
+                                        <td>$ {{product.price}}</td>
                                         <td><a href="javascript:void(0)" class="action-button"><i
                                                     class='fa fa-edit f-12'
-                                                    (click)="open(content, product.productId)"></i></a>&nbsp;
+                                                    (click)="open(content, product.id)"></i></a>&nbsp;
                                             <a href="javascript:void(0)" class="action-button"><i class="fa fa-trash-o"
-                                                    (click)="showConfirm(product.variantId)"></i></a>
+                                                    (click)="showConfirm(product.id)"></i></a>
                                         </td>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="paginatorright">
-                                    <p-button type="button" styleClass="p-button-secondary rounded" [disabled]="selectedProducts.length == 0" (click)="showConfirmAllDelete(selectedProducts)">Delete all selected</p-button>
+                                    <p-button type="button" styleClass="p-button-secondary rounded"
+                                        [disabled]="selectedProducts.length == 0"
+                                        (click)="showConfirmAllDelete(selectedProducts)">Delete all selected</p-button>
                                 </ng-template>
                             </p-table>
                         </div>
@@ -177,7 +95,7 @@
     </div>
     <ng-template #content let-modal>
         <div class="modal-header">
-            <h5 class="modal-title f-w-600" id="exampleModalLabel">Edit user</h5>
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">Edit product</h5>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">X</span>
             </button>
@@ -185,92 +103,97 @@
         <div class="modal-body">
             <form class="needs-validation">
                 <div class="form">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="" for="title">Title:</label>
-                            <input class="form-control" id="title" type="text" [(ngModel)]="productData.title"
-                                [ngModelOptions]="{standalone: true}">
-                        </div>
-                        <div class="form-group">
-                            <label class="mb-1" for="description">Description:</label>
-                            <textarea rows="4" class="form-control" id="description" type="text"
-                                [(ngModel)]="productData.description" [ngModelOptions]="{standalone: true}"></textarea>
+                    <div class="d-flex flex-column gap-2 px-4">
+                        <div class="row">
+                            <div class="form-group mb-3">
+                                <label class="" for="title">Title:</label>
+                                <input class="form-control" id="title" type="text" [(ngModel)]="productData.title"
+                                    [ngModelOptions]="{standalone: true}">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="mb-1" for="description">Description:</label>
+                                <textarea rows="3" class="form-control" id="description" type="text"
+                                    [(ngModel)]="productData.description"
+                                    [ngModelOptions]="{standalone: true}"></textarea>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-4 form-group">
+                            <div class="col-6 pt-0 form-group mb-2">
                                 <label class="" for="type"> Type:</label>
-                                <select class="custom-select form-select" id="type" required=""
+                                <select class="custom-select form-select" id="type" (change)="updateSKU('type')" required=""
                                     [(ngModel)]="productData.type" [ngModelOptions]="{standalone: true}">
-                                    <option value="">--Select--</option>
+                                    <option value="" disabled>--Select--</option>
                                     <ng-container *ngFor="let type of types">
                                         <option [value]="type.name" [disabled]="!type.active">{{ type.name }}
                                         </option>
                                     </ng-container>
                                 </select>
                             </div>
-                            <div class="col-4 form-group">
-                                <label class="" for="collection"> Collection:</label>
-                                <select class="custom-select form-select" id="collection" required=""
-                                    [(ngModel)]="productData.collections_id" [ngModelOptions]="{standalone: true}">
-                                    <option value="">--Select--</option>
-                                    <ng-container *ngFor="let collection of collections">
-                                        <option [value]="collection.id">{{ collection.name }}
-                                        </option>
-                                    </ng-container>
-                                </select>
-                            </div>
-                            <div class="col-4 form-group">
+                            <div class="col-6 pt-0 form-group mb-2">
                                 <label class="" for="category"> Category:</label>
-                                <select class="custom-select form-select" id="category" required=""
+                                <select class="custom-select form-select" id="category" (change)="updateSKU('category')" required=""
                                     [(ngModel)]="productData.category" [ngModelOptions]="{standalone: true}">
-                                    <option value="">--Select--</option>
+                                    <option value="" disabled>--Select--</option>
                                     <ng-container *ngFor="let category of categories">
-                                        <option [value]="category.code" [disabled]="!category.active">{{ category.name
+                                        <option [value]="category.name" [disabled]="!category.active">{{ category.name
                                             }}
                                         </option>
                                     </ng-container>
                                 </select>
                             </div>
-                            <div class="col-4 form-group">
+                            <div class="col-6 form-group mb-2">
                                 <label for="price" class="">Price:</label>
                                 <input class="form-control" id="price" type="number" [(ngModel)]="productData.price"
                                     [ngModelOptions]="{standalone: true}">
                             </div>
-                            <div class="col-4 form-group">
-                                <label class="" for="discount"> Discount:</label>
-                                <select class="custom-select form-select" id="discount" required=""
-                                    [(ngModel)]="productData.discounts_id" [ngModelOptions]="{standalone: true}">
-                                    <option value="">--Select--</option>
-                                    <ng-container *ngFor="let discount of discounts">
-                                        <option [value]="discount.code" [disabled]="!discount.active">{{ discount.name
-                                            }}
-                                        </option>
-                                    </ng-container>
-                                </select>
+                            <div class="col-6 form-group mb-2">
+                                <label for="stock" class="">Stock:</label>
+                                <input class="form-control" id="stock" type="number" [(ngModel)]="productData.stock"
+                                    [ngModelOptions]="{standalone: true}">
                             </div>
-                            <div class="col-4 form-group">
+                            <div class="col-6 form-group mb-2">
+                                <label for="price" class="">SKU:</label>
+                                <input class="form-control" id="price" type="text" disabled="true" readonly [(ngModel)]="productData.sku"
+                                    [ngModelOptions]="{standalone: true}">
+                            </div>
+                            <div class="col-6 form-group mb-2">
                                 <label class="mb-2">On Sale:</label>
-                                <div
-                                    class="m-checkbox-inline mb-0 custom-radio-ml d-flex align-items-center radio-animated">
-                                    <div class="d-flex gap-2 mb-2">
-                                        <input class="radio_animated" id="enable" type="radio" name="onSale"
-                                            [(ngModel)]="onSale" value="true" [checked]="productData.sale === 1">
-                                        <label class="d-block" for="enable">Enable</label>
-                                    </div>
-                                    <div class="d-flex gap-2 mb-2">
-                                        <input class="radio_animated" id="disable" type="radio" name="onSale"
-                                            [(ngModel)]="onSale" value="false" [checked]="productData.sale === 0">
-                                        <label class="d-block" for="disable">Disable</label>
-                                    </div>
-                                </div>
+                                <p-inputSwitch [(ngModel)]="checked" [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pt-0 form-group p-fluid mb-2">
+                        <label class="mb-2">Tags:</label>
+                        <p-chips [(ngModel)]="tags" [ngModelOptions]="{standalone: true}" placeholder="Add tags..."></p-chips>
+                    </div>
+                </div>
+            </form>
+            <p-divider align="left" type="solid">
+                <b>Images</b>
+                </p-divider>
+            <div class="px-4 mb-3 d-flex gap-2 align-items-center">
+                <div class="d-flex gap-2 align-items-center">
+                    <input type="file" class="form-control" id="inputAddImage" #fileInput>
+                    <button class="btn btn-primary" (click)="addImage(productSelected, fileInput)"><i class="pi pi-upload"></i></button>
+                </div>
+            </div>
+            <div class="px-4">
+                <div class="px-4 imagesProducts p-3 d-flex flex-column gap-3">
+                    <div class="d-flex gap-3 justify-content-start"
+                        *ngFor="let img of imagesProductSelected; let i = index">
+                        <img class="thumblainImage2" [src]="img.img_url || 'assets/images/12.jpg'" alt="">
+                        <div class="form-group flex-grow-1">
+                            <label class="" for="title">Image {{i+1}}: </label>
+                            <input class="form-control" id="title" type="text"
+                                [(ngModel)]="imagesProductSelected[i].img_url" (blur)="updateImageText($event, i)">
+                            <div class="py-1 d-flex gap-2 justify-content-end">
+                                <span *ngIf="imagesProductSelected.length > 1"
+                                    class="ps-2 cursor-pointer border-start text-muted"
+                                    (click)="deleteImage(imagesProductSelected[i].id)">Delete</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
-            <div class="imagesProducts p-3 d-flex gap-4 justify-content-start">
-                <img class="thumblainImage" *ngFor="let img of imagesProductSelected" [src]="img || 'assets/images/12.jpg'"
-                    alt="">
             </div>
         </div>
         <div class="modal-footer">
@@ -288,17 +211,22 @@
         </div>
         <div class="modal-body">
             <div class="imagesProducts p-3 d-flex flex-column gap-3">
-                <div class="d-flex gap-3 justify-content-start"  *ngFor="let img of imagesProductUrl; let i = index">
-                    <img class="thumblainImage2"  [src]="img || 'assets/images/12.jpg'"  alt="">
+                <div class="d-flex gap-3 justify-content-start" *ngFor="let img of imagesProductUrl; let i = index">
+                    <img class="thumblainImage2" [src]="img || 'assets/images/12.jpg'" alt="">
                     <div class="form-group flex-grow-1">
                         <label class="" for="title">Image {{i+1}}: </label>
-                        <input class="form-control" id="title" type="text" [(ngModel)]="imagesProductUrl[i]" (blur)="updateImageText($event, i)">
+                        <input class="form-control" id="title" type="text" [(ngModel)]="imagesProductUrl[i]"
+                            (blur)="updateImageText($event, i)">
+                        <div class="py-1 d-flex gap-2 justify-content-end">
+                            <span class="text-muted">Change URL</span>
+                            <span class="ps-2 border-start text-muted">Upload file</span>
+                        </div>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="saveImages()">Save</button>
+            <button type="button" class="btn btn-primary">Save</button>
             <button class="btn btn-secondary" type="button" data-dismiss="modal"
                 (click)="modal.dismiss('Cross click')">Close</button>
         </div>
