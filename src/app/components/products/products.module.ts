@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProductsRoutingModule } from './products-routing.module';
-import { DigitalCollectionComponent } from './digital/digital-collection/digital-collection.component';
 import { DigitalListComponent } from './digital/digital-list/digital-list.component';
 import { DigitalAddComponent } from './digital/digital-add/digital-add.component';
 import { GalleryModule } from '@ks89/angular-modal-gallery';
@@ -21,12 +20,15 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { FileUploadModule } from 'primeng/fileupload';
+import { TooltipModule } from 'primeng/tooltip';
 // search module
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DigitalImportListingComponent } from './digital/digital-import-listing/digital-import-listing.component';
 
 
 @NgModule({
-  declarations: [DigitalCollectionComponent, DigitalListComponent, DigitalAddComponent ],
+  declarations: [DigitalListComponent, DigitalAddComponent, DigitalImportListingComponent ],
   imports: [
     HttpClientModule,
     CommonModule,
@@ -44,6 +46,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ButtonModule,
     InputSwitchModule,
     DividerModule,
+    FileUploadModule,
+    TooltipModule,
     TableModule
   ],
   exports: [],

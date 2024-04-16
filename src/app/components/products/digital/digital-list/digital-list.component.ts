@@ -1,13 +1,17 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
 import { SortEvent } from 'src/app/shared/directives/shorting.directive';
 import { NgbdSortableHeader } from "src/app/shared/directives/NgbdSortableHeader";
 import { TableService } from 'src/app/shared/service/table.service';
 import { ApiService } from 'src/app/shared/service/api.service';
 import { MessageService } from 'primeng/api';
+import * as FileSaver from 'file-saver';
 
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-digital-list',
@@ -34,6 +38,7 @@ export class DigitalListComponent implements OnInit {
   first = 0;
   rows = 10;
 
+  selectedFile: boolean = false;
   variantSelected: number;
   productSelected: number;
   imagesProductSelected: any[];
@@ -67,8 +72,6 @@ export class DigitalListComponent implements OnInit {
   async loadProducts() {
     const products = await this.apiService.getAllFullProduct();
     this.products = products.data;
-    console.log(this.products);
-    
   }
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
@@ -175,11 +178,8 @@ export class DigitalListComponent implements OnInit {
       this.productData.sku = result.data[0].sku;
       this.productData.updated_date = this.getFormattedCurrentDate();
 
-      console.log(result.data[0]);
-      
-
       result.data[0].sale === 1 ? this.checked = true : this.checked = false;
-      this.tags = this.productData.tags.split(',');      
+      this.tags = this.productData.tags.split(',');
 
       this.onSale = result.data[0].sale == 1 ? "true" : "false";
 
@@ -198,17 +198,17 @@ export class DigitalListComponent implements OnInit {
     });
   }
 
-  updateSKU(field: string){
-    if(field === 'type'){
+  updateSKU(field: string) {
+    if (field === 'type') {
       const replaceChars = this.types.filter(type => {
-        if(type.name === this.productData.type){
+        if (type.name === this.productData.type) {
           return type.code;
         }
       });
       this.productData.sku = this.productData.sku.slice(0, -4) + replaceChars[0].code + this.productData.sku.slice(-2);
-    }else{
+    } else {
       const replaceChars = this.categories.filter(category => {
-        if(category.name === this.productData.category){
+        if (category.name === this.productData.category) {
           return category.code;
         }
       });
@@ -223,7 +223,7 @@ export class DigitalListComponent implements OnInit {
       if (result.data.affectedRows !== 0) {
         this.messageService.add({ severity: 'success', summary: 'Imagen eliminada', detail: `Se elimino la imagen correctamente` });
       }
-      this.imagesProductSelected = this.imagesProductSelected.filter( image => {
+      this.imagesProductSelected = this.imagesProductSelected.filter(image => {
         return image.id !== id;
       })
       this.reload();
@@ -242,32 +242,13 @@ export class DigitalListComponent implements OnInit {
           this.imagesProductSelected = allImages.data
           this.messageService.add({ severity: 'success', summary: 'Imagen insertada', detail: `Se inserto la imagen correctamente` });
         }
-        this.reload();        
+        this.reload();
       }
 
     } catch (error) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
     }
   }
-
-  // async openModelImage(changeImage, productId) {
-  //   this.productSelected = productId
-  //   this.getImagesFromSelected();
-  //   this.imagesProductUrl = [...this.imagesProductSelected];
-  //   console.log(this.imagesProductUrl);
-
-
-  //   this.modalService.open(changeImage, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-
-  //   }, (reason) => {
-  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //     this.resetValues();
-
-  //     if (this.itemSaved)
-  //       this.reload();
-  //   });
-  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -313,29 +294,21 @@ export class DigitalListComponent implements OnInit {
 
   }
 
-  // async saveImages() {
-  //   try {
-  //     // const images = await this.apiService.getImagesByVariantId(this.variantSelected);
+  async onFileSelected(event: UploadEvent) {
+    try {
+      this.selectedFile = true
+      const file = event.files[0];
 
-  //     // for (let index = 0; index < images.data.length; index++) {
-  //     //   const img = images.data[index].images_id;
-  //     //   const result = await this.apiService.updateImage(img, {img_url: this.imagesProductUrl[index]});        
-  //     // }
-
-  //     // this.messageService.add({ severity: 'success', summary: 'Imagenes editadas', detail: `Se actualizaron las imagenes correctamente`});
-  //     // this.itemSaved = true;
-
-  //   } catch (error) {
-  //     this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
-  //   }
-
-  // }
+    } catch (error) {
+      this.messageService.add({ key: 'tc', severity: 'error', summary: 'Error', detail: error.message });
+    }
+  }
 
   async saveData() {
     this.productData.sale = this.checked ? 1 : 0;
     this.productData.tags = this.tags.join(',');
-    
-    const requiredProperties = ['title', 'description','price','tags'];
+
+    const requiredProperties = ['title', 'description', 'price', 'tags'];
     const missingProperties = requiredProperties.filter(prop => !this.productData[prop] || this.productData[prop] === '' || this.productData[prop].length === 0);
 
     if (missingProperties.length > 0) {
@@ -343,8 +316,6 @@ export class DigitalListComponent implements OnInit {
       return;
     }
 
-    console.log(this.productData);
-    
     try {
       const result = await this.apiService.updateProduct(this.productSelected, this.productData);
       if (result.data.affectedRows !== 0) {
@@ -356,6 +327,45 @@ export class DigitalListComponent implements OnInit {
     } catch (error) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
     }
+  }
+
+  exportExcel() {
+    const data = this.products.map(prod => {
+      let newData = {
+        title: prod.title,
+        description: prod.description,
+        type: prod.type,
+        category: prod.category,
+        stock: prod.stock,
+        price: prod.price,
+        status: prod.sale ? 1 : 0,
+        sku: prod.sku,
+        tags: prod.tags.join(),
+        created_date: prod.created_date,
+        updated_date: prod.updated_date
+      };
+      prod.images.forEach((image, index) => {
+        newData[`image${index + 1}`] = image.img_url;
+      });
+
+      return newData;
+    })
+
+    import('xlsx').then((xlsx) => {
+      const worksheet = xlsx.utils.json_to_sheet(data);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, 'products');
+    });
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
 
   resetValues() {

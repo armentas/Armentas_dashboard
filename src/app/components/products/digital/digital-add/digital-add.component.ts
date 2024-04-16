@@ -36,8 +36,8 @@ export class DigitalAddComponent implements OnInit {
 
   productData: any = {};
   selectedProductType: string = '';
-  selectedProductCollection: number = 0;
-  selectedProductDiscount: number = 1;
+  // selectedProductCollection: number = 0;
+  // selectedProductDiscount: number = 1;
   selectedProductCategory: string = '';
   onSale: string = 'true';
 
@@ -130,8 +130,21 @@ export class DigitalAddComponent implements OnInit {
     this.selectedImages.splice(position, 1);
   }
 
+
   uniqueString(): string {
-    return new Date().getTime().toString()
+    // Get current date
+    const currentDate = new Date();
+  
+    // Get minutes and milliseconds
+    const minutes = currentDate.getMinutes();
+    const milliseconds = currentDate.getMilliseconds();
+  
+    // Format minutes and milliseconds as two-digit strings
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes.toString();
+    const formattedMilliseconds = milliseconds < 10 ? '00' + milliseconds : (milliseconds < 100 ? '0' + milliseconds : milliseconds.toString());
+  
+    // Concatenate current date with formatted minutes and milliseconds
+    return `${currentDate.getFullYear()}${currentDate.getMonth() + 1}${currentDate.getDate()}${currentDate.getHours()}${formattedMinutes}${formattedMilliseconds}`;
   }
 
   skuGenerator(): string {
@@ -203,7 +216,7 @@ export class DigitalAddComponent implements OnInit {
 
   showConfirm() {
     if (!this.visible) {
-      this.messageService.add({ key: 'confirm', sticky: true, severity: 'custom', summary: 'Creating variations.' });
+      this.messageService.add({ key: 'confirm', sticky: true, severity: 'custom', summary: 'Creating product' });
       this.visible = true;
       this.progress = 0;
 

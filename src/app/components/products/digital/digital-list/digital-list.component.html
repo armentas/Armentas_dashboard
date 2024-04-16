@@ -16,16 +16,20 @@
                                 [globalFilterFields]="['title', 'sku', 'category', 'type']">
                                 <ng-template pTemplate="caption">
                                     <div class="table-header d-flex justify-content-between">
-                                        <span class="p-input-icon-left">
-                                            <i class="pi pi-search"></i>
-                                            <input pInputText type="text"
-                                                (input)="dt.filterGlobal($event.target.value, 'contains')"
-                                                placeholder="Global Search" />
-                                        </span>
-
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-original-title="test" data-target="#exampleModal"
-                                            routerLink="/products/digital/digital-add-product">Add Product</button>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="showConfirmAllDelete(selectedProducts)" pTooltip="Delete selection" tooltipPosition="top" [disabled]="selectedProducts.length == 0"></button>
+                                            <button type="button" pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2" (click)="exportExcel()" pTooltip="Export XLS" tooltipPosition="top"></button>
+                                            <span class="p-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <input pInputText type="text"
+                                                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                                    placeholder="Global Search" />
+                                            </span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <i class="pi pi-list" style="font-size: 1.5rem"></i>
+                                            <i class="pi pi-th-large" style="font-size: 1.5rem"></i>
+                                        </div>
                                     </div>
                                 </ng-template>
                                 <ng-template pTemplate="header">
@@ -62,10 +66,12 @@
                                         <td>{{product.title}}</td>
                                         <td>{{product.description}}</td>
                                         <td>{{product.type}}</td>
-                                        <td><div
-                                            [ngClass]="{'instock': product.stock >= 70 , 'lowstock': product.stock > 0 && product.stock < 70, 'outstock': product.stock == 0}">
-                                            {{ product.stock }}
-                                        </div></td>
+                                        <td>
+                                            <div
+                                                [ngClass]="{'instock': product.stock >= 70 , 'lowstock': product.stock > 0 && product.stock < 70, 'outstock': product.stock == 0}">
+                                                {{ product.stock }}
+                                            </div>
+                                        </td>
                                         <td>
                                             <div
                                                 [ngClass]="{'onsaleProd': product.sale === true, 'disabledProd': product.sale === false}">
@@ -120,8 +126,8 @@
                         <div class="row">
                             <div class="col-6 pt-0 form-group mb-2">
                                 <label class="" for="type"> Type:</label>
-                                <select class="custom-select form-select" id="type" (change)="updateSKU('type')" required=""
-                                    [(ngModel)]="productData.type" [ngModelOptions]="{standalone: true}">
+                                <select class="custom-select form-select" id="type" (change)="updateSKU('type')"
+                                    required="" [(ngModel)]="productData.type" [ngModelOptions]="{standalone: true}">
                                     <option value="" disabled>--Select--</option>
                                     <ng-container *ngFor="let type of types">
                                         <option [value]="type.name" [disabled]="!type.active">{{ type.name }}
@@ -131,8 +137,9 @@
                             </div>
                             <div class="col-6 pt-0 form-group mb-2">
                                 <label class="" for="category"> Category:</label>
-                                <select class="custom-select form-select" id="category" (change)="updateSKU('category')" required=""
-                                    [(ngModel)]="productData.category" [ngModelOptions]="{standalone: true}">
+                                <select class="custom-select form-select" id="category" (change)="updateSKU('category')"
+                                    required="" [(ngModel)]="productData.category"
+                                    [ngModelOptions]="{standalone: true}">
                                     <option value="" disabled>--Select--</option>
                                     <ng-container *ngFor="let category of categories">
                                         <option [value]="category.name" [disabled]="!category.active">{{ category.name
@@ -153,28 +160,31 @@
                             </div>
                             <div class="col-6 form-group mb-2">
                                 <label for="price" class="">SKU:</label>
-                                <input class="form-control" id="price" type="text" disabled="true" readonly [(ngModel)]="productData.sku"
-                                    [ngModelOptions]="{standalone: true}">
+                                <input class="form-control" id="price" type="text" disabled="true" readonly
+                                    [(ngModel)]="productData.sku" [ngModelOptions]="{standalone: true}">
                             </div>
                             <div class="col-6 form-group mb-2">
                                 <label class="mb-2">On Sale:</label>
-                                <p-inputSwitch [(ngModel)]="checked" [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                                <p-inputSwitch [(ngModel)]="checked"
+                                    [ngModelOptions]="{standalone: true}"></p-inputSwitch>
                             </div>
                         </div>
                     </div>
                     <div class="px-4 pt-0 form-group p-fluid mb-2">
                         <label class="mb-2">Tags:</label>
-                        <p-chips [(ngModel)]="tags" [ngModelOptions]="{standalone: true}" placeholder="Add tags..."></p-chips>
+                        <p-chips [(ngModel)]="tags" [ngModelOptions]="{standalone: true}"
+                            placeholder="Add tags..."></p-chips>
                     </div>
                 </div>
             </form>
             <p-divider align="left" type="solid">
                 <b>Images</b>
-                </p-divider>
+            </p-divider>
             <div class="px-4 mb-3 d-flex gap-2 align-items-center">
                 <div class="d-flex gap-2 align-items-center">
-                    <input type="file" class="form-control" id="inputAddImage" #fileInput>
-                    <button class="btn btn-primary" (click)="addImage(productSelected, fileInput)"><i class="pi pi-upload"></i></button>
+                    <input type="file" accept="image/*" class="form-control" id="inputAddImage" #fileInput>
+                    <button class="btn btn-primary" (click)="addImage(productSelected, fileInput)"><i
+                            class="pi pi-upload"></i></button>
                 </div>
             </div>
             <div class="px-4">
