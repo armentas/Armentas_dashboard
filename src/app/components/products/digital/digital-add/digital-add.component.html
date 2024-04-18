@@ -89,7 +89,9 @@
                             <label for="validationCustomtitle" class="col-form-label pt-0"><span>*</span> Tags</label>
                             <div class="card p-fluid">
                                 <p-chips [(ngModel)]="tags" placeholder="Add tags..."></p-chips>
-                                <span class="text-muted mt-2 ms-2"><p>Use tags to generate search elements</p></span>
+                                <span class="text-muted mt-2 ms-2">
+                                    <p>Use tags to generate search elements</p>
+                                </span>
                             </div>
                         </div>
 
@@ -139,17 +141,36 @@
                                                         <input type="text" class="form-control" id="inputText0{{item}}"
                                                             [(ngModel)]="urlImage">
                                                     </div>
-                                                    <button class="btn btn-primary" (click)="previewImage()"><i class="pi pi-cloud-upload"></i></button>
+                                                    <button class="btn btn-primary" (click)="previewImage()"><i
+                                                            class="pi pi-cloud-upload"></i></button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div>
-                                            <p>Thumbnails</p>
-                                            <div class="d-flex gap-2 align-items-center justify-content-start">
-                                                <div class="thumbnails" *ngFor="let images of previewImages; let i = index">
-                                                    <span class="thumbnails-trash" (click)="deleteThumbnails(i)"><i class="fa fa-trash-o"></i></span>
-                                                    <img [src]="images?.img_url" width="100%"
-                                                        alt="Preview">
+                                            <label class="col-form-label mb-2">Thumbnails</label>
+                                            <div
+                                                class="thumbnails-section d-flex gap-2 align-items-center justify-content-start">
+                                                <div class="thumbnails"
+                                                    *ngFor="let images of previewImages; let i = index">
+                                                    <span class="thumbnails-trash" (click)="deleteThumbnails(i)"><i
+                                                            class="fa fa-trash-o"></i></span>
+                                                    <img [src]="images?.img_url" width="100%" alt="Preview">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="colorsSelector">
+                                            <label class="col-form-label mb-2">Colors</label>
+                                            <div class="card d-flex justify-content-center">
+                                                <div class="checkbox-container d-flex flex-wrap gap-2">
+                                                    <div *ngFor="let color of colors" class="checkbox-label">
+                                                        <input type="checkbox" [id]="color.name" [value]="color.name"
+                                                            pTooltip="{{color.name}}" tooltipPosition="top"
+                                                            [checked]="isSelected(color)"
+                                                            (change)="toggleSelection($event.target.value)"
+                                                            [ngClass]="{ 'custom-checkbox': true, 'custom-checkbox-bk': color.name === 'Black' }"
+                                                            [style.background-color]="color.hexCode">
+                                                        <label [for]="color.name"></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,7 +184,8 @@
             <div class="form-group mb-4">
                 <div class="product-buttons text-end mt-3">
                     <button type="button" class="btn btn-primary" (click)="onSubmit2()">Add</button>
-                    <button type="button" class="btn btn-light">Discard</button>
+                    <button type="button" class="btn btn-light"
+                        routerLink="/products/digital/digital-product-list">Discard</button>
                 </div>
             </div>
         </div>

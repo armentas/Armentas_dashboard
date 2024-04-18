@@ -87,11 +87,7 @@
                                         </td>
                                     </tr>
                                 </ng-template>
-                                <ng-template pTemplate="paginatorright">
-                                    <p-button type="button" styleClass="p-button-secondary rounded"
-                                        [disabled]="selectedProducts.length == 0"
-                                        (click)="showConfirmAllDelete(selectedProducts)">Delete all selected</p-button>
-                                </ng-template>
+                                <ng-template pTemplate="paginatorright"> </ng-template>
                             </p-table>
                         </div>
                     </div>
@@ -111,10 +107,20 @@
                 <div class="form">
                     <div class="d-flex flex-column gap-2 px-4">
                         <div class="row">
-                            <div class="form-group mb-3">
+                            <div class="col-6 form-group mb-3">
                                 <label class="" for="title">Title:</label>
                                 <input class="form-control" id="title" type="text" [(ngModel)]="productData.title"
                                     [ngModelOptions]="{standalone: true}">
+                            </div>
+                            <div class="col-5 form-group mb-2">
+                                <label for="price" class="">SKU:</label>
+                                <input class="form-control" id="price" type="text" disabled="true" readonly
+                                    [(ngModel)]="productData.sku" [ngModelOptions]="{standalone: true}">
+                            </div>
+                            <div class="col-1 form-group mb-2">
+                                <label class="mb-2">On Sale:</label>
+                                <p-inputSwitch [(ngModel)]="checked"
+                                    [ngModelOptions]="{standalone: true}"></p-inputSwitch>
                             </div>
                             <div class="form-group mb-2">
                                 <label class="mb-1" for="description">Description:</label>
@@ -158,15 +164,22 @@
                                 <input class="form-control" id="stock" type="number" [(ngModel)]="productData.stock"
                                     [ngModelOptions]="{standalone: true}">
                             </div>
-                            <div class="col-6 form-group mb-2">
-                                <label for="price" class="">SKU:</label>
-                                <input class="form-control" id="price" type="text" disabled="true" readonly
-                                    [(ngModel)]="productData.sku" [ngModelOptions]="{standalone: true}">
-                            </div>
-                            <div class="col-6 form-group mb-2">
-                                <label class="mb-2">On Sale:</label>
-                                <p-inputSwitch [(ngModel)]="checked"
-                                    [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                            <div class="form-group mb-2">
+                                <label class="mb-2">Colors:</label>
+                                <p-multiSelect [options]="colors" [(ngModel)]="selectedColors" [ngModelOptions]="{standalone: true}" placeholder="Select the colors" optionLabel="name">
+                                    <ng-template let-value pTemplate="selectedItems">
+                                        <div class="inline-flex align-items-center gap-2 px-1" *ngFor="let option of value">
+                                            <div class="circle" [style.background-color]="option.hexCode"></div>
+                                        </div>
+                                        <div *ngIf="!value || value.length === 0">Select color</div>
+                                    </ng-template>
+                                    <ng-template let-color pTemplate="item">
+                                        <div class="flex align-items-center gap-2">
+                                            <div class="circle" [style.background-color]="color.hexCode"></div>
+                                            <div>{{ color.name }}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
                             </div>
                         </div>
                     </div>

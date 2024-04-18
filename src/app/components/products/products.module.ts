@@ -22,6 +22,8 @@ import { DividerModule } from 'primeng/divider';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TooltipModule } from 'primeng/tooltip';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MultiSelectModule } from 'primeng/multiselect';
 // search module
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DigitalImportListingComponent } from './digital/digital-import-listing/digital-import-listing.component';
@@ -48,7 +50,9 @@ import { DigitalImportListingComponent } from './digital/digital-import-listing/
     DividerModule,
     FileUploadModule,
     TooltipModule,
-    TableModule
+    CheckboxModule,
+    TableModule,
+    MultiSelectModule
   ],
   exports: [],
   bootstrap: [],

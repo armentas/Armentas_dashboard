@@ -1,0 +1,23 @@
+@import '../../../../../assets/scss/theme/variables';
+
+.thumbnails-section {
+    border-radius: 5px;
+    padding: 10px 70px;
+}
+
+.custom-checkbox, .custom-checkbox-bk {
+    appearance: none;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 1px solid rgb(230, 228, 228);
+}
+
+.custom-checkbox:checked {
+    background: linear-gradient(135deg, transparent 45%, black 45%, black 55%, transparent 55% );
+}
+
+.custom-checkbox-bk:checked{
+    background: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55% );
+
+}

@@ -33,12 +33,12 @@ export class DigitalAddComponent implements OnInit {
 
   types: any[] = [];
   categories: any[] = [];
+  colors: any[] = [];
 
   productData: any = {};
   selectedProductType: string = '';
-  // selectedProductCollection: number = 0;
-  // selectedProductDiscount: number = 1;
   selectedProductCategory: string = '';
+  selectedColors: any[] = [];
   onSale: string = 'true';
 
   tags: string[] | undefined;
@@ -55,6 +55,8 @@ export class DigitalAddComponent implements OnInit {
   progress: number = 0;
   interval = null;
 
+  
+
 
   constructor(private messageService: MessageService, private apiService: ApiService, private cdr: ChangeDetectorRef) { }
 
@@ -70,6 +72,64 @@ export class DigitalAddComponent implements OnInit {
       { name: 'Adults', code: 'AD', active: true },
       { name: 'Unisex', code: 'UN', active: true }
     ];
+
+    this.colors = [
+      { name: 'Red', key: 'RD', hexCode: '#FF0000' },
+      { name: 'Green', key: 'GR', hexCode: '#06a93f' },
+      { name: 'Blue', key: 'BL', hexCode: '#0000FF' },
+      { name: 'Yellow', key: 'YL', hexCode: '#FFFF00' },
+      { name: 'Orange', key: 'OR', hexCode: '#FFA500' },
+      { name: 'Purple', key: 'PR', hexCode: '#800080' },
+      { name: 'Pink', key: 'PK', hexCode: '#FFC0CB' },
+      { name: 'Cyan', key: 'CY', hexCode: '#00FFFF' },
+      { name: 'Magenta', key: 'MG', hexCode: '#FF00FF' },
+      { name: 'Brown', key: 'BR', hexCode: '#A52A2A' },
+      { name: 'Black', key: 'BK', hexCode: '#000000' },
+      { name: 'White', key: 'WH', hexCode: '#FFFFFF' },
+      { name: 'Gray', key: 'GY', hexCode: '#808080' },
+      { name: 'Lime', key: 'LM', hexCode: '#00FF00' },
+      { name: 'Teal', key: 'TL', hexCode: '#008080' },
+      { name: 'Maroon', key: 'MR', hexCode: '#800000' },
+      { name: 'Navy', key: 'NV', hexCode: '#000080' },
+      { name: 'Silver', key: 'SV', hexCode: '#C0C0C0' },
+      { name: 'Gold', key: 'GD', hexCode: '#FFD700' },
+      { name: 'Turquoise', key: 'TQ', hexCode: '#40E0D0' },
+      { name: 'Violet', key: 'VT', hexCode: '#8A2BE2' },
+      { name: 'Indigo', key: 'IG', hexCode: '#4B0082' },
+      { name: 'Aquamarine', key: 'AQ', hexCode: '#7FFFD4' },
+      { name: 'Coral', key: 'CR', hexCode: '#FF7F50' },
+      { name: 'Crimson', key: 'CM', hexCode: '#DC143C' },
+      { name: 'Salmon', key: 'SM', hexCode: '#FA8072' },
+      { name: 'Olive', key: 'OV', hexCode: '#808000' },
+      { name: 'Sky Blue', key: 'SB', hexCode: '#87CEEB' },
+      { name: 'Slate Gray', key: 'SL', hexCode: '#708090' },
+      { name: 'Peru', key: 'PE', hexCode: '#CD853F' },
+      { name: 'Orchid', key: 'OC', hexCode: '#DA70D6' },
+      { name: 'Chartreuse', key: 'CH', hexCode: '#7FFF00' },
+      { name: 'Sienna', key: 'SI', hexCode: '#A0522D' },
+      { name: 'Deep Pink', key: 'DP', hexCode: '#FF1493' },
+      { name: 'Midnight Blue', key: 'MN', hexCode: '#191970' },
+      { name: 'Dark Olive Green', key: 'DO', hexCode: '#556B2F' },
+      { name: 'Hot Pink', key: 'HP', hexCode: '#FF69B4' },
+      { name: 'Dark Slate Gray', key: 'DG', hexCode: '#2F4F4F' },
+      { name: 'Pale Violet Red', key: 'PV', hexCode: '#DB7093' },
+      { name: 'Deep Sky Blue', key: 'DS', hexCode: '#00BFFF' }
+    ];
+
+  }
+
+  isSelected(color: any): boolean {
+    return this.selectedColors.includes(color);
+  }
+
+  toggleSelection(value: any): void {
+    const index = this.selectedColors.indexOf(value);
+    if (index === -1) {
+      this.selectedColors.push(value);
+    } else {
+      this.selectedColors.splice(index, 1);
+    }
+    console.log(this.selectedColors);
 
   }
 
@@ -134,15 +194,15 @@ export class DigitalAddComponent implements OnInit {
   uniqueString(): string {
     // Get current date
     const currentDate = new Date();
-  
+
     // Get minutes and milliseconds
     const minutes = currentDate.getMinutes();
     const milliseconds = currentDate.getMilliseconds();
-  
+
     // Format minutes and milliseconds as two-digit strings
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes.toString();
     const formattedMilliseconds = milliseconds < 10 ? '00' + milliseconds : (milliseconds < 100 ? '0' + milliseconds : milliseconds.toString());
-  
+
     // Concatenate current date with formatted minutes and milliseconds
     return `${currentDate.getFullYear()}${currentDate.getMonth() + 1}${currentDate.getDate()}${currentDate.getHours()}${formattedMinutes}${formattedMilliseconds}`;
   }
@@ -152,9 +212,9 @@ export class DigitalAddComponent implements OnInit {
     return `AR${stringId}${this.selectedProductType}${this.selectedProductCategory}`;
   }
 
-  getNameFromCode(object: any, code: string): string {    
-      const foundName = object.find(type => type.code === code);
-      return foundName?.name;
+  getNameFromCode(object: any, code: string): string {
+    const foundName = object.find(type => type.code === code);
+    return foundName?.name;
   }
 
   async onSubmit2() {
@@ -163,10 +223,12 @@ export class DigitalAddComponent implements OnInit {
     this.productData.sku = this.skuGenerator();
     this.productData.onSale = this.onSale;
     this.productData.images = this.selectedImages;
+    this.productData.colors = this.selectedColors;
     this.productData.tags = new Set([
       this.tags,
       this.getNameFromCode(this.types, this.productData.type),
-      this.getNameFromCode(this.categories, this.productData.category)
+      this.getNameFromCode(this.categories, this.productData.category),
+      this.productData.colors
     ]);
 
     const requiredProperties = ['title', 'description', 'type', 'category', 'price', 'stock', 'tags', 'images'];
@@ -185,11 +247,15 @@ export class DigitalAddComponent implements OnInit {
         description: this.productData.description ?? '',
         sku: this.productData.sku,
         category: this.getNameFromCode(this.categories, this.productData.category),
+        colors: this.productData.colors.join(','),
         price: this.productData.price,
         stock: this.productData.stock,
         sale: (this.productData.onSale === "true") ? 1 : 0,
         tags: Array.from(this.productData.tags).join(','),
       }
+
+      console.log(generalData);
+      
 
       // Insert product
       const productResult = await this.apiService.addProduct(generalData);
@@ -197,11 +263,11 @@ export class DigitalAddComponent implements OnInit {
 
       // Insert image
       if (this.productData.images.length > 0) {
-        for (const image of this.productData.images) {          
+        for (const image of this.productData.images) {
           if (image instanceof File) {
             const imageResult = await this.apiService.addImageFile(id_product, image);
-          }else{
-            const imageResult = await this.apiService.addImageUrl(id_product, {img_url: image});
+          } else {
+            const imageResult = await this.apiService.addImageUrl(id_product, { img_url: image });
           }
         }
       }

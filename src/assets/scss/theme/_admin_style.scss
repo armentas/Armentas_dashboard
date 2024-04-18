@@ -227,6 +227,23 @@ a {
 
 }
 
+.colorsSelector{
+  .p-checkbox-box{
+    border: 2px solid #ced4da;
+    background: #ffffff;
+    width: 22px;
+    height: 22px;
+    color: #495057;
+    border-radius: 100%;
+  }
+
+  .p-checkbox-box.p-highlight {
+    border-color: #3B82F6;
+    background: #3B82F6;
+  }
+}
+
+
 .p-fluid {
   p-chips {
     ul {
@@ -238,6 +255,13 @@ a {
       
     }
   }
+}
+
+.form-group{
+  .p-multiselect {
+    min-width: 350px;
+  }
+
 }
 
 .thumbnails {

@@ -24,13 +24,18 @@ export class DigitalListComponent implements OnInit {
   public closeResult: string;
   visible: boolean = false;
   public productList: any[] = [];
+
   types: any[] = [];
   categories: any[] = [];
+  colors: any[] = [];
+
   productData: any = {};
   tags: string[] | undefined;
 
   products!: any[];
   selectedProducts: any[] = [];
+  selectedColors: any[] = [];
+
   itemSaved: boolean = false;
   onSale: string = "true";
   checked: boolean = false;
@@ -65,6 +70,49 @@ export class DigitalListComponent implements OnInit {
       { name: 'Boys', code: 'BO', active: true },
       { name: 'Adults', code: 'AD', active: true },
       { name: 'Unisex', code: 'UN', active: true }
+    ];
+
+    this.colors = [
+      { name: 'Red', key: 'RD', hexCode: '#FF0000' },
+      { name: 'Green', key: 'GR', hexCode: '#06a93f' },
+      { name: 'Blue', key: 'BL', hexCode: '#0000FF' },
+      { name: 'Yellow', key: 'YL', hexCode: '#FFFF00' },
+      { name: 'Orange', key: 'OR', hexCode: '#FFA500' },
+      { name: 'Purple', key: 'PR', hexCode: '#800080' },
+      { name: 'Pink', key: 'PK', hexCode: '#FFC0CB' },
+      { name: 'Cyan', key: 'CY', hexCode: '#00FFFF' },
+      { name: 'Magenta', key: 'MG', hexCode: '#FF00FF' },
+      { name: 'Brown', key: 'BR', hexCode: '#A52A2A' },
+      { name: 'Black', key: 'BK', hexCode: '#000000' },
+      { name: 'White', key: 'WH', hexCode: '#FFFFFF' },
+      { name: 'Gray', key: 'GY', hexCode: '#808080' },
+      { name: 'Lime', key: 'LM', hexCode: '#00FF00' },
+      { name: 'Teal', key: 'TL', hexCode: '#008080' },
+      { name: 'Maroon', key: 'MR', hexCode: '#800000' },
+      { name: 'Navy', key: 'NV', hexCode: '#000080' },
+      { name: 'Silver', key: 'SV', hexCode: '#C0C0C0' },
+      { name: 'Gold', key: 'GD', hexCode: '#FFD700' },
+      { name: 'Turquoise', key: 'TQ', hexCode: '#40E0D0' },
+      { name: 'Violet', key: 'VT', hexCode: '#8A2BE2' },
+      { name: 'Indigo', key: 'IG', hexCode: '#4B0082' },
+      { name: 'Aquamarine', key: 'AQ', hexCode: '#7FFFD4' },
+      { name: 'Coral', key: 'CR', hexCode: '#FF7F50' },
+      { name: 'Crimson', key: 'CM', hexCode: '#DC143C' },
+      { name: 'Salmon', key: 'SM', hexCode: '#FA8072' },
+      { name: 'Olive', key: 'OV', hexCode: '#808000' },
+      { name: 'Sky Blue', key: 'SB', hexCode: '#87CEEB' },
+      { name: 'Slate Gray', key: 'SL', hexCode: '#708090' },
+      { name: 'Peru', key: 'PE', hexCode: '#CD853F' },
+      { name: 'Orchid', key: 'OC', hexCode: '#DA70D6' },
+      { name: 'Chartreuse', key: 'CH', hexCode: '#7FFF00' },
+      { name: 'Sienna', key: 'SI', hexCode: '#A0522D' },
+      { name: 'Deep Pink', key: 'DP', hexCode: '#FF1493' },
+      { name: 'Midnight Blue', key: 'MN', hexCode: '#191970' },
+      { name: 'Dark Olive Green', key: 'DO', hexCode: '#556B2F' },
+      { name: 'Hot Pink', key: 'HP', hexCode: '#FF69B4' },
+      { name: 'Dark Slate Gray', key: 'DG', hexCode: '#2F4F4F' },
+      { name: 'Pale Violet Red', key: 'PV', hexCode: '#DB7093' },
+      { name: 'Deep Sky Blue', key: 'DS', hexCode: '#00BFFF' }
     ];
 
   }
@@ -172,6 +220,7 @@ export class DigitalListComponent implements OnInit {
       this.productData.description = result.data[0].description;
       this.productData.price = result.data[0].price;
       this.productData.category = result.data[0].category;
+      this.productData.colors = result.data[0].colors;
       this.productData.type = result.data[0].type;
       this.productData.stock = result.data[0].stock;
       this.productData.tags = result.data[0].tags;
@@ -183,11 +232,13 @@ export class DigitalListComponent implements OnInit {
 
       this.onSale = result.data[0].sale == 1 ? "true" : "false";
 
+      this.getColorsFromSelected(this.productData.colors);      
+
     } catch (error) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
     }
 
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'xl' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -288,6 +339,15 @@ export class DigitalListComponent implements OnInit {
     });
   }
 
+  getColorsFromSelected(value: string) {
+    if(value && value !== ''){
+      const prodColots = value.split(',');
+      this.selectedColors = prodColots.map( color => {
+        return this.colors.find( item => item.name == color)
+      });
+    }
+  }
+
   updateImageText(event, index: number) {
     const img_url: string = event.target.value;
     this.imagesProductUrl[index] = img_url.replace(/dl=0/g, 'dl=1');
@@ -306,7 +366,8 @@ export class DigitalListComponent implements OnInit {
 
   async saveData() {
     this.productData.sale = this.checked ? 1 : 0;
-    this.productData.tags = this.tags.join(',');
+    this.productData.colors = this.selectedColors.map( color => color.name ).join(',');
+    this.productData.tags = [...this.tags, ...this.selectedColors.map( color => color.name )].join(',');
 
     const requiredProperties = ['title', 'description', 'price', 'tags'];
     const missingProperties = requiredProperties.filter(prop => !this.productData[prop] || this.productData[prop] === '' || this.productData[prop].length === 0);
@@ -315,7 +376,8 @@ export class DigitalListComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Por favor, complete los siguientes campos obligatorios: ${missingProperties.join(', ')}` });
       return;
     }
-
+    console.log(this.productData);
+    
     try {
       const result = await this.apiService.updateProduct(this.productSelected, this.productData);
       if (result.data.affectedRows !== 0) {
@@ -371,6 +433,7 @@ export class DigitalListComponent implements OnInit {
   resetValues() {
     this.productSelected = 0;
     this.productData = {};
+    this.selectedColors = [];
   }
 
 
