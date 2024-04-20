@@ -227,8 +227,7 @@ export class DigitalAddComponent implements OnInit {
     this.productData.tags = new Set([
       this.tags,
       this.getNameFromCode(this.types, this.productData.type),
-      this.getNameFromCode(this.categories, this.productData.category),
-      this.productData.colors
+      this.getNameFromCode(this.categories, this.productData.category)
     ]);
 
     const requiredProperties = ['title', 'description', 'type', 'category', 'price', 'stock', 'tags', 'images'];

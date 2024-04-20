@@ -367,7 +367,7 @@ export class DigitalListComponent implements OnInit {
   async saveData() {
     this.productData.sale = this.checked ? 1 : 0;
     this.productData.colors = this.selectedColors.map( color => color.name ).join(',');
-    this.productData.tags = [...this.tags, ...this.selectedColors.map( color => color.name )].join(',');
+    this.productData.tags = [...this.tags].join(',');
 
     const requiredProperties = ['title', 'description', 'price', 'tags'];
     const missingProperties = requiredProperties.filter(prop => !this.productData[prop] || this.productData[prop] === '' || this.productData[prop].length === 0);
