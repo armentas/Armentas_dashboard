@@ -1,137 +1,7 @@
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="row">
-        <!-- <div class="col-xl-3 col-md-6 xl-50">
-            <div class="card o-hidden widget-cards">
-                <div class="bg-warning card-body">
-                    <div class="media static-top-widget row">
-                        <div class="icons-widgets col-4">
-                            <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'navigation'" class="font-warning"></app-feather-icons>
-                            </div>
-                        </div>
-                        <div class="media-body col-8"><span class="m-0">Earnings</span>
-                            <h3 class="mb-0">$ <span class="counter">6659</span><small> This Month</small></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6 xl-50">
-            <div class="card o-hidden  widget-cards">
-                <div class="bg-secondary card-body">
-                    <div class="media static-top-widget row">
-                        <div class="icons-widgets col-4">
-                            <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'box'" class="font-secondary"></app-feather-icons>
-                            </div>
-                        </div>
-                        <div class="media-body col-8"><span class="m-0">Products</span>
-                            <h3 class="mb-0">$ <span class="counter">9856</span><small> This Month</small></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6 xl-50">
-            <div class="card o-hidden widget-cards">
-                <div class="bg-primary card-body">
-                    <div class="media static-top-widget row">
-                        <div class="icons-widgets col-4">
-                            <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'message-square'" class="font-primary"></app-feather-icons>
-                            </div>
-                        </div>
-                        <div class="media-body col-8"><span class="m-0">Messages</span>
-                            <h3 class="mb-0">$ <span class="counter">893</span><small> This Month</small></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6 xl-50">
-            <div class="card o-hidden widget-cards">
-                <div class="bg-danger card-body">
-                    <div class="media static-top-widget row">
-                        <div class="icons-widgets col-4">
-                            <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'users'" class="font-danger"></app-feather-icons>
-                            </div>
-                        </div>
-                        <div class="media-body col-8"><span class="m-0">New Vendors</span>
-                            <h3 class="mb-0">$ <span class="counter">45631</span><small> This Month</small></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <div class="col-xl-6 xl-100">
-            <div class="card height-equal">
-                <div class="card-header">
-                    <h5>Market Value</h5>
-                </div>
-                <div class="card-body">
-                    <div class="market-chart">
-                        <x-chartist class="board-chart ct-golden-section" [configuration]="chart3">
-                        </x-chartist>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 xl-100">
-            <div class="card height-equal">
-                <div class="card-header">
-                    <h5>Latest Orders</h5>
-                </div>
-                <div class="card-body">
-                    <div class="user-status table-responsive latest-order-table">
-                        <table class="table table-bordernone">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Order ID</th>
-                                    <th scope="col">Order Total</th>
-                                    <th scope="col">Payment Method</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td class="digits">$120.00</td>
-                                    <td class="font-danger">Bank Transfers</td>
-                                    <td class="digits">On Way</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td class="digits">$90.00</td>
-                                    <td class="font-secondary">Ewallets</td>
-                                    <td class="digits">Delivered</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td class="digits">$240.00</td>
-                                    <td class="font-warning">Cash</td>
-                                    <td class="digits">Delivered</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td class="digits">$120.00</td>
-                                    <td class="font-primary">Direct Deposit</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td class="digits">$50.00</td>
-                                    <td class="font-primary">Bank Transfers</td>
-                                    <td class="digits">Delivered</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button routerLink="javascript:void(0)" class="btn btn-primary">View All Orders</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- -------------------------------------  Start Cards Section  ----------------------------------------------- -->
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
                 <div class="card-header">
@@ -154,17 +24,15 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex align-items-start">
+                    <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
                             <span>Sales Last Month</span>
-                            <h2 class="mb-0">9054</h2>
+                            <h2 class="mb-0">$ {{ totalSales }}</h2>
                             <p>0.25% <span><i class="fa fa-angle-up"></i></span></p>
-                            <h5 class="f-w-600">Gross sales of August</h5>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
                         </div>
                         <div class="bg-primary b-r-8">
                             <div class="small-box">
-                                <i data-feather="briefcase"></i>
+                                <i data-feather="credit-card"></i>
                             </div>
                         </div>
                     </div>
@@ -174,7 +42,7 @@
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
                 <div class="card-header">
-                    <h6>Total purchase</h6>
+                    <h6>Total Orders</h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="small-chartjs">
@@ -194,17 +62,15 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex align-items-start">
+                    <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
-                            <span>Monthly purchase</span>
-                            <h2 class="mb-0">2154</h2>
+                            <span>Orders Last Month</span>
+                            <h2 class="mb-0">{{ totalOrders }}</h2>
                             <p>0.13% <span><i class="fa fa-angle-up"></i></span></p>
-                            <h5 class="f-w-600">Avg Gross purchase</h5>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
                         </div>
                         <div class="bg-secondary b-r-8">
                             <div class="small-box">
-                                <i data-feather="credit-card"></i>
+                                <i data-feather="shopping-cart"></i>
                             </div>
                         </div>
                     </div>
@@ -214,7 +80,7 @@
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
                 <div class="card-header">
-                    <h6>Total cash transaction</h6>
+                    <h6>Sold Products</h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="small-chartjs">
@@ -233,17 +99,15 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex align-items-start">
+                    <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
-                            <span>Cash on hand</span>
-                            <h2 class="mb-0">4672</h2>
+                            <span>Products Last Months</span>
+                            <h2 class="mb-0">{{ soldProducts }}</h2>
                             <p>0.8% <span><i class="fa fa-angle-up"></i></span></p>
-                            <h5 class="f-w-600">Details about cash</h5>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
                         </div>
                         <div class="bg-warning b-r-8">
                             <div class="small-box">
-                                <i data-feather="shopping-cart"></i>
+                                <i data-feather="box"></i>
                             </div>
                         </div>
                     </div>
@@ -253,7 +117,7 @@
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
                 <div class="card-header">
-                    <h6>Daily Deposits</h6>
+                    <h6>Cancellations</h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="small-chartjs">
@@ -272,24 +136,96 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex align-items-start">
+                    <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
-                            <span>Security Deposits</span>
-                            <h2 class="mb-0">0782</h2>
+                            <span>Cancelled Orders</span>
+                            <h2 class="mb-0">{{ cancellations }}</h2>
                             <p>0.25% <span><i class="fa fa-angle-up"></i></span></p>
-                            <h5 class="f-w-600">Gross sales of June</h5>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
                         </div>
                         <div class="bg-danger b-r-8">
                             <div class="small-box">
-                                <i data-feather="calendar"></i>
+                                <i data-feather="rotate-ccw"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
+        <!-- -------------------------------------  End Cards Section  ----------------------------------------------- -->
+        <!-- -------------------------------------  Start Graph Section  ----------------------------------------------- -->
+        <div class="col-xl-6 xl-100">
+            <div class="card height-equal">
+                <div class="card-header">
+                    <h5>Month Sales</h5>
+                </div>
+                <div class="card-body">
+                    <div class="market-chart">
+                        <div class="ct-4 flot-chart-container">
+                            <x-chartist [configuration]="chart5">
+                            </x-chartist>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 xl-100">
+            <div class="card height-equal">
+                <div class="card-header">
+                    <h5>Latest Orders</h5>
+                </div>
+                <div class="card-body">
+                    <div class="user-status table-responsive latest-order-table">
+                        <table class="table table-bordernone">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Order Total</th>
+                                    <th scope="col">Payment Method</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of ordersTable; let i = index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{ order.site_order_id }}</td>
+                                    <td class="digits">${{order.order_total}}</td>
+                                    <td class="font-danger">{{order.payment_type}}</td>
+                                    <td class="digits">{{order.shipping_status}}</td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>2</td>
+                                    <td class="digits">$90.00</td>
+                                    <td class="font-secondary">Ewallets</td>
+                                    <td class="digits">Delivered</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td class="digits">$240.00</td>
+                                    <td class="font-warning">Cash</td>
+                                    <td class="digits">Delivered</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td class="digits">$120.00</td>
+                                    <td class="font-primary">Direct Deposit</td>
+                                    <td class="digits">$6523</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td class="digits">$50.00</td>
+                                    <td class="font-primary">Bank Transfers</td>
+                                    <td class="digits">Delivered</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                        <button routerLink="javascript:void(0)" class="btn btn-primary">View All Orders</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- -------------------------------------  End Graph Section  ----------------------------------------------- -->
+        <!-- <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h5>Buy / Sell</h5>
@@ -505,7 +441,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <!-- -------------------------------------  Start Location Section  ----------------------------------------------- -->
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
@@ -518,41 +455,18 @@
                                 <h6>Orders By Location</h6>
                                 <div class="chart-block chart-vertical-center">
                                     <ngx-charts-pie-chart class="pie-colours-1" [view]="view"
-                                        [scheme]="doughnutChartColorScheme" [results]="pieData" [explodeSlices]="false"
-                                        [labels]="doughnutChartShowLabels" [arcWidth]=0.50 [doughnut]="true"
+                                        [scheme]="doughnutChartColorScheme" [results]="doughnutData" [explodeSlices]="false"
+                                        [labels]="doughnutChartShowLabels" [arcWidth]=0.50 [doughnut]="true" 
+                                        [legend]="doughnutChartShowLegend" [legendPosition]="doughnutChartLegendPosition"
                                         [animations]="false" [tooltipDisabled]="doughnutChartTooltip"
                                         [gradient]="doughnutChartGradient">
                                     </ngx-charts-pie-chart>
                                 </div>
                                 <div class="order-graph-bottom">
-                                    <div class="media">
-                                        <div class="order-color-primary"></div>
+                                    <div class="media" *ngFor="let item of doughnutChartData">
+                                        <div class="p-1" [style.background-color]="item.color"></div>
                                         <div class="media-body">
-                                            <h6 class="mb-0">Saint Lucia <span class="pull-right">$157</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-color-secondary"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0">Kenya <span class="pull-right">$347</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-color-danger"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0">Liberia<span class="pull-right">$468</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-color-warning"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0">Christmas Island<span class="pull-right">$742</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-color-success"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0">Saint Helena <span class="pull-right">$647</span></h6>
+                                            <h6 class="mb-0">{{ item.name }} <span class="pull-right">{{item.value}}</span></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -560,44 +474,20 @@
                         </div>
                         <div class="col-xl-3 col-sm-6 xl-50">
                             <div class="order-graph sm-order-space overflow-hidden">
-                                <h6>Sales By Location</h6>
+                                <h6>Best selling products</h6>
                                 <div class="peity-chart-dashboard text-center chart-vertical-center">
                                     <ngx-charts-pie-chart class="pie-colours-1" [view]="view"
-                                        [scheme]="doughnutChartColorScheme" [results]="doughnutData"
+                                        [scheme]="pieChartColorScheme" [results]="pieData"
                                         [explodeSlices]="false" [labels]="doughnutChartShowLabels" [arcWidth]=0.99
-                                        [doughnut]="true" [animations]="false" [tooltipDisabled]="doughnutChartTooltip"
+                                        [doughnut]="true" [animations]="true" [tooltipDisabled]="doughnutChartTooltip"
                                         [gradient]="doughnutChartGradient">
                                     </ngx-charts-pie-chart>
                                 </div>
                                 <div class="order-graph-bottom sales-location">
-                                    <div class="media">
-                                        <div class="order-shape-primary"></div>
+                                    <div class="media" *ngFor="let item of pieChartData">
+                                        <div class="p-1" [style.background-color]="item.color"></div>
                                         <div class="media-body">
-                                            <h6 class="mb-0 me-0">Germany <span class="pull-right">25%</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-shape-secondary"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0 me-0">Brasil <span class="pull-right">10%</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-shape-danger"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0 me-0">United Kingdom<span class="pull-right">34%</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-shape-warning"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0 me-0">Australia<span class="pull-right">5%</span></h6>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="order-shape-success"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0 me-0">Canada <span class="pull-right">25%</span></h6>
+                                            <h6 class="mb-0">{{ item.name }} <span class="pull-right">{{item.value}}</span></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -605,9 +495,9 @@
                         </div>
                         <div class="col-xl-6 xl-100">
                             <div class="order-graph xl-space">
-                                <h6>Revenue for last month</h6>
+                                <h6>Annual Order Quantity</h6>
                                 <div class="ct-4 flot-chart-container">
-                                    <x-chartist [configuration]="chart5">
+                                    <x-chartist class="board-chart ct-golden-section" [configuration]="chart3">
                                     </x-chartist>
                                 </div>
                             </div>
@@ -616,7 +506,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- -------------------------------------  End Location Section  ----------------------------------------------- -->
     </div>
 </div>
 <!-- Container-fluid Ends-->

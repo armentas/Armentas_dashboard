@@ -13,10 +13,6 @@ export const content: Routes = [
     }
   },
   {
-    path: 'gallery',
-    loadChildren: () => import('../../components/gallery/gallery.module').then(m => m.GalleryModule),
-  },
-  {
     path: 'sales',
     loadChildren: () => import('../../components/sales/sales.module').then(m => m.SalesModule),
     data: {

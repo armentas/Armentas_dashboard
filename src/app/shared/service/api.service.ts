@@ -11,13 +11,35 @@ export class ApiService {
   baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
+  //------------------------- Dashboard Section ----------------------------------
+
+  getAllOrders(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/getAllOrders`));
+  }
+
+  getAllOrdersYear(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/getAllOrdersYear`));
+  }
+
+  getAllOrdersMonth(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/getAllOrdersMonth`));
+  }
+
+  getAllOrdersByDate(start_date: string, end_date: string): Promise<any> {
+    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/dash/getAllOrdersByDate`, { start_date, end_date }));
+  }
+
+  latestProductsAdded(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/latestProductsAdded`));
+  }
+
 
   //-------------------- Product section -----------------------------------------
 
   addProduct(data: any): Promise<any> {
     return lastValueFrom(this.http.post<any>(`${this.baseUrl}/products/addProduct`, data));
   }
-  
+
   getProduct(id: number): Promise<any> {
     return lastValueFrom(this.http.get<any>(`${this.baseUrl}/products/getProduct/${id}`));
   }
@@ -67,29 +89,7 @@ export class ApiService {
     return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/images/deleteImage/${id}`));
   }
 
-   //-------------------- Relationship Variant-Image section -----------------------------------------
 
-  addRelationshipVariantImage(data: any): Promise<any> {
-    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/images/addLinkImage`, data));
-  }
-
-  //---------------------- Gallery section -------------------------------------------------------------
-
-  addImageGallery(data: any): Promise<any> {
-    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/gallery/addImage`, data));
-  }
-
-  deleteImageGallery(id: number): Promise<any> {
-    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/gallery/deleteImage/${id}`));
-  }
-
-  getImageGallery(id: number): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/gallery/getImage/${id}`));
-  }
-
-  getAllImagesGallery(): Promise<any> {
-    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/gallery/getAllImages`));
-  }
 
 
 

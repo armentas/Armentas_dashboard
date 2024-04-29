@@ -35,7 +35,6 @@ export var pieData = [
   {
     value: 300,
     name: "Frontend"
-
   },
   {
     value: 50,
@@ -59,24 +58,19 @@ export var doughnutChartcolorScheme = {
 export var chart5: any= {
   type: 'Line',
   data: {
-    labels: [1, 2, 3, 4, 5, 6, 7, 8],
+    labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
     series: [
-      [5, 9, 7, 8, 5, 3, 5, 4]
+      [5, 9, 7, 8, 0, 0, 5, 4]
     ]
   },
-  // options: {
-  //   showArea: true,
-  //   height: '450',
-  //   low: 0,
-  // }
   options: {
-    height: 450,
+    height: 400,
     showArea: true,
     seriesBarDistance: 12,
     axisX: {
       showGrid: false,
       labelInterpolationFnc: function (value) {
-        return value[0];
+        return value;
       }
     }
   },
@@ -145,14 +139,14 @@ export var lineChartType = 'line';
 export var smallLineChartData: Array<any> = [
   { data: [20, 5, 120, 10, 140, 15] },
 ];
-export var smallLineChartLabels: Array<any> = ["", "", "", "", "", ""];
+export var smallLineChartLabels: Array<any> = ["t", "a", "s", "q", "d", "f"];
 export var smallLineChartOptions: any = {
   scaleShowHorizontalLines: false,
   pointDotStrokeWidth: 0,
   scaleShowVerticalLines: false,
   responsive: true,
   backgroundColor: "transparent",
-  borderColor: "#ff8084",
+  borderColor: "#ff8000",
   pointColor: "#ff8084",
   elements: {
     point: {
@@ -335,14 +329,14 @@ export var smallLine4ChartType = 'line';
 export var chart3: any = {
   type: 'Bar',
   data: {
-    labels: ['100', '200', '300', '400', '500', '600', '700', '800'],
+    labels: ['Jan', 'Feb ', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep','Oct','Nov','Dic'],
     series: [
       [2.5, 3, 3, 0.9, 1.3, 1.8, 3.8, 1.5],
       [3.8, 1.8, 4.3, 2.3, 3.6, 2.8, 2.8, 2.8]
     ]
   },
   options: {
-    height: 303,
+    height: 450,
     seriesBarDistance: 12,
     axisX: {
       showGrid: false,
