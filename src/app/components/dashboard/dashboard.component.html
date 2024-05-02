@@ -4,8 +4,8 @@
         <!-- -------------------------------------  Start Cards Section  ----------------------------------------------- -->
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
-                <div class="card-header">
-                    <h6>Total Sales</h6>
+                <div class="card-header bg-sales">
+                    <h6 class="text-light">Total Sales</h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="small-chartjs">
@@ -18,13 +18,13 @@
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3
+                                <span class="d-flex gap-2 align-items-center"
                                     [ngClass]="{'text-success': differences.salesDiff > 0, 'text-danger': differences.salesDiff < 0}">
-                                    $ {{differences.salesDiff}}
+                                    <h3 class="text-light">$ {{differences.salesDiff}}</h3>
                                     <span><i class="pi"
                                             [ngClass]="{'pi-angle-up': differences.salesDiff > 0, 'pi-angle-down': differences.salesDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
-                                </h3>
+                                    </span>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
-                            <span>Sales Last Month</span>
+                            <span>Sales This Month</span>
                             <h2 class="mb-0">$ {{ totalSales }}</h2>
                             <!-- <p>0.25% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>
@@ -48,7 +48,7 @@
         </div>
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
-                <div class="card-header">
+                <div class="card-header bg-orders">
                     <h6>Total Orders</h6>
                     <div class="row">
                         <div class="col-6">
@@ -63,13 +63,13 @@
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3
+                                <span class="d-flex gap-2 align-items-center"
                                     [ngClass]="{'text-success': differences.ordersDiff > 0, 'text-danger': differences.ordersDiff < 0}">
-                                    {{differences.ordersDiff}}u.
+                                    <h3 >{{differences.ordersDiff}}u.</h3>
                                     <span><i class="pi"
                                             [ngClass]="{'pi-angle-up': differences.ordersDiff > 0, 'pi-angle-down': differences.ordersDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
-                                </h3>
+                                    </span>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
-                            <span>Orders Last Month</span>
+                            <span>Orders This Month</span>
                             <h2 class="mb-0">{{ totalOrders }}</h2>
                             <!-- <p>0.13% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>
@@ -93,8 +93,8 @@
         </div>
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
-                <div class="card-header">
-                    <h6>Sold Products</h6>
+                <div class="card-header bg-products">
+                    <h6 class="">Sold Products</h6>
                     <div class="row">
                         <div class="col-6">
                             <div class="small-chartjs">
@@ -107,13 +107,13 @@
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3
+                                <span class="d-flex gap-2 align-items-center"
                                     [ngClass]="{'text-success': differences.productsDiff > 0, 'text-danger': differences.productsDiff < 0}">
-                                    {{differences.productsDiff}}u.
+                                    <h3>{{differences.productsDiff}}u.</h3>
                                     <span><i class="pi"
                                             [ngClass]="{'pi-angle-up': differences.productsDiff > 0, 'pi-angle-down': differences.productsDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
-                                </h3>
+                                    </span>
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
-                            <span>Products Last Months</span>
+                            <span>Products This Months</span>
                             <h2 class="mb-0">{{ soldProducts }}</h2>
                             <!-- <p>0.8% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>
@@ -137,7 +137,7 @@
         </div>
         <div class="col-xl-3 col-md-6 xl-50">
             <div class="card order-graph sales-carousel">
-                <div class="card-header">
+                <div class="card-header bg-cancellations">
                     <h6>Cancellations</h6>
                     <div class="row">
                         <div class="col-6">
@@ -151,13 +151,13 @@
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3
+                                <span class="d-flex gap-2 align-items-center"
                                     [ngClass]="{'text-success': differences.cancellationsDiff <= 0, 'text-danger': differences.cancellationsDiff > 0}">
-                                    {{differences.cancellationsDiff}}u.
+                                    <h3>{{differences.cancellationsDiff}}u.</h3>
                                     <span><i class="pi"
                                             [ngClass]="{'pi-angle-up': differences.cancellationsDiff > 0, 'pi-angle-down': differences.cancellationsDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
-                                </h3>
+                                    </span>
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                         <div class="media-body">
-                            <span>Cancelled Orders</span>
+                            <span>Cancelled This Month</span>
                             <h2 class="mb-0">{{ cancellations }}</h2>
                             <!-- <p>0.25% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>

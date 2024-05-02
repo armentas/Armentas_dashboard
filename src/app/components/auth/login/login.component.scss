@@ -1,0 +1,23 @@
+.bg-header{
+    height: 150px;
+    border-top: 5px;
+    background-image: url('../../../../assets/images/banner-logo1.png');
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.authentication-box{
+    a{
+        color: black !important;
+    }
+
+    li{
+        border-color: black;
+    }
+    
+    .rounded-pill{
+        padding: 10px 40px !important;
+        font-weight: 500;
+    }
+}

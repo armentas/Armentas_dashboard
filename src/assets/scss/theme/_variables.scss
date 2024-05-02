@@ -81,7 +81,8 @@ $white-5:#cfd4da;
 
 
 // Theme colors variables
-$primary-color: #C61504;
+// $primary-color: #C61504;
+$primary-color: #0c3dba;
 //$primary-color: #544efa ;
 $secondary-color: #13c9ca ;
 $success-color: #81ba00  ;
@@ -132,7 +133,7 @@ $theme-body-sub-title-color: #777777;
 $sidebar-width: 255px;
 $sidebar-position: fixed;
 $sidebar-background-color: $white;
-$sidebar-shadow: 3px 5px 11px rgba(249, 127, 127, 0.185);
+$sidebar-shadow: 3px 5px 11px rgba(127, 172, 249, 0.185);
 $sidebar-overflow: auto;
 $sidebar-z-index: 9;
 $sidebar-transition: 0.3s;
@@ -244,7 +245,7 @@ $btn-xs-padding:  0.05rem 0.4rem;
 $light-body-bg-color:#f1f4fb;
 
 //sidebar wrapper logo
-$sidebar-wrapper-logo-shadow: 8px 3px 7px -1px rgba(249, 127, 127, 0.185);
+$sidebar-wrapper-logo-shadow: 8px 3px 7px -1px rgba(127, 172, 249, 0.185);
 
 //sidebar profile settings
 $sidebar-user-section-padding: 25px 10px;

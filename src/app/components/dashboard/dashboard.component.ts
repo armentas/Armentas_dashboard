@@ -248,6 +248,9 @@ export class DashboardComponent implements OnInit {
       }
     });
 
+    console.log(salesData);
+    
+
     this.totalSalesData = salesData;
     this.totalSales = salesData.reduce((total, item) => {
       return total + item;
@@ -396,6 +399,9 @@ export class DashboardComponent implements OnInit {
     const currCancelledOrders = currOrders.reduce((total, item) => {
       return item.shipping_status.toLowerCase() === 'cancelled' ? total + 1 : total;
     }, 0);
+
+    console.log(currOrders.length, prevOrders.length);
+    
 
     return {
       salesDiff: parseFloat((currSales - prevSales).toFixed(2)),

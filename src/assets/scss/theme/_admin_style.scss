@@ -3635,6 +3635,7 @@ ul.notification-dropdown.onhover-show-div {
       height: calc(100vh - #{$header-size});
       overflow: auto;
       box-shadow: $sidebar-shadow;
+      background-color: #000;
     }
 
     .page-sidebar {
@@ -3652,9 +3653,10 @@ ul.notification-dropdown.onhover-show-div {
         height: $header-size;
         padding: $main-header-padding;
         align-items: center;
-        background-color: $main-header-left-bg-color;
+        background-color: #000;
+        // background-color: $main-header-left-bg-color;
         z-index: $main-header-z-index;
-        box-shadow: $sidebar-wrapper-logo-shadow;
+        // box-shadow: $sidebar-wrapper-logo-shadow;
         // box-shadow: -3px 1px 3px 1px rgba(68, 102, 242, 0.1);
 
         .logo-wrapper {
@@ -3702,7 +3704,8 @@ ul.notification-dropdown.onhover-show-div {
           padding-top: $sidebar-padding-top;
           text-transform: $sidebar-txt-transform;
           font-weight: $sidebar-font-weight;
-          color: $sidebar-font-color;
+          // color: $sidebar-font-color;
+          color: $white-5;
 
           svg {
             width: $sidebar-icon-size;
@@ -6313,8 +6316,9 @@ $i: 1;
       .main-header-left {
         .logo-wrapper {
           img {
-            height: 23px;
+            height: 50px;
             margin-top: 0;
+            margin-left: 30px;
             margin-right: 15px;
           }
         }

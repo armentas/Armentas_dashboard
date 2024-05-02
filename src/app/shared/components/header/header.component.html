@@ -2,8 +2,8 @@
     <div class="main-header-right row">
         <div class="main-header-left d-lg-none col">
             <div class="logo-wrapper ">
-                <!-- <a [routerLink]="'/dashboard/default'"><img class="blur-up lazyloaded"
-                        src="assets/images/logo/log2.png" width="100%" alt=""></a> -->
+                <a [routerLink]="'/dashboard/default'"><img class="d-flex justify-content-center"
+                        src="assets/images/Armentas-logo.png"  height="auto" alt=""></a>
             </div>
         </div>
         <div class="mobile-sidebar col">
@@ -19,16 +19,7 @@
         <div class="nav-right col">
             <ul class="nav-menus" [ngClass]="{'open' : openNav}">
                 <li>
-                    <form class="form-inline search-form">
-                        <div class="form-group">
-                            <input class="form-control-plaintext" [class.open]="isOpenMobile" type="search"
-                                placeholder="Search..">
-                            <span class="d-sm-none mobile-search">
-                                <app-feather-icons [icon]="'search'" (click)="isOpenMobile=!isOpenMobile">
-                                </app-feather-icons>
-                            </span>
-                        </div>
-                    </form>
+                    <p class="fs-6 mb-0">Welcome, Armando Guitierrez</p>
                 </li>
                 <li>
                     <a href="javascript:void(0)" class="text-dark" toggleFullscreen>
@@ -51,78 +42,6 @@
                         </svg>
                     </span>
                 </li>
-                <li class="onhover-dropdown">
-                    <span class="badge badge-pill badge-primary pull-right notification-badge">3</span>
-                    <app-feather-icons [icon]="'bell'"></app-feather-icons><span class="dot"></span>
-                    <ul class="notification-dropdown onhover-show-div">
-                        <li>Notification <span class="badge badge-pill badge-primary pull-right">3</span></li>
-                        <li>
-                            <div class="media">
-                                <div class="media-body">
-                                    <h6 class="mt-0"><span>
-                                            <app-feather-icons class="shopping-color" [icon]="'shopping-bag'">
-                                            </app-feather-icons>
-                                        </span>Your order ready for Ship..!
-                                    </h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="media">
-                                <div class="media-body">
-                                    <h6 class="mt-0 txt-success"><span>
-                                            <app-feather-icons class="download-color font-success" [icon]="'download'">
-                                            </app-feather-icons>
-                                        </span>Download Complete</h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="media">
-                                <div class="media-body">
-                                    <h6 class="mt-0 txt-danger"><span>
-                                            <app-feather-icons class="alert-color font-danger" [icon]="'alert-circle'">
-                                            </app-feather-icons>
-                                        </span>250 MB trash files</h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- <li class="txt-dark"><a href="javascript:void(0)">All notification</a> </li> -->
-                    </ul>
-                </li>
-                <!-- <li class="onhover-dropdown">
-                    <div class="media align-items-center"><img
-                            class="align-self-center pull-right img-50 rounded-circle"
-                            src="assets/images/dashboard/man.png" alt="header-user">
-
-                        <div class="dotted-animation"><span class="animate-circle"></span><span
-                                class="main-circle"></span></div>
-                    </div>
-                    <ul class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
-                        <li><a [routerLink]="'/settings/profile'">
-                                <app-feather-icons [icon]="'user'"></app-feather-icons>Edit Profile
-                            </a></li>
-                        <li><a href="javascript:void(0)">
-                                <app-feather-icons [icon]="'mail'"></app-feather-icons>Inbox
-                            </a></li>
-                        <li><a href="javascript:void(0)">
-                                <app-feather-icons [icon]="'lock'"></app-feather-icons>Lock Screen
-                            </a></li>
-                        <li>
-                            <a href="javascript:void(0)">
-                                <app-feather-icons [icon]="'settings'"></app-feather-icons>Settings
-                            </a>
-                        </li>
-                        <li>
-                            <a [routerLink]="'/auth/login'">
-                                <app-feather-icons [icon]="'log-out'"></app-feather-icons>Logout
-                            </a>
-                        </li>
-                    </ul>
-                </li> -->
             </ul>
         </div>
     </div>
