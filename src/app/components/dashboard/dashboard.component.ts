@@ -148,21 +148,14 @@ export class DashboardComponent implements OnInit {
   }
 
   async loadData() {
-    const previousMonthOrders = await this.apiService.getAllOrdersPreviousMonth();
-    // const filteredPreviousOrders = previousMonthOrders.data.filter(elem => {
-    //   return elem.shipping_status.toLowerCase() !== 'Cancelled'
-    // });
+    const previousMonthOrders = await this.apiService.getAllOrdersPreviousMonth();  
     let previousOrders = this.builOrders(previousMonthOrders.data);
 
     const monthOrders = await this.apiService.getAllOrdersMonth();
-    // const filteredOrders = monthOrders.data.filter(elem => {
-    //   return elem.shipping_status.toLowerCase() !== 'cancelled'
-    // });
     let orders = this.builOrders(monthOrders.data);
     this.ordersTable = orders.slice(0, 5);
 
     this.differences = this.calculateDiff(previousOrders, orders);
-    console.log(this.differences);
 
     this.getBestSellingProducts(monthOrders.data);
     this.getTotalSalesDataArray(orders);
@@ -239,17 +232,14 @@ export class DashboardComponent implements OnInit {
     const currentDay = new Date().getDate();
     const salesData = new Array(currentDay).fill(0);
 
-    orders.forEach(order => {
+    orders.forEach(order => {     
       if (order.shipping_status.toLowerCase() !== 'cancelled') {
         const orderDate = new Date(order.order_date);
         const dayOfMonth = orderDate.getDate();
         const index = dayOfMonth - 1; // Índice basado en cero
         salesData[index] += order.order_total;
       }
-    });
-
-    console.log(salesData);
-    
+    });    
 
     this.totalSalesData = salesData;
     this.totalSales = salesData.reduce((total, item) => {
@@ -399,9 +389,6 @@ export class DashboardComponent implements OnInit {
     const currCancelledOrders = currOrders.reduce((total, item) => {
       return item.shipping_status.toLowerCase() === 'cancelled' ? total + 1 : total;
     }, 0);
-
-    console.log(currOrders.length, prevOrders.length);
-    
 
     return {
       salesDiff: parseFloat((currSales - prevSales).toFixed(2)),

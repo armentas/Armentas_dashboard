@@ -57,7 +57,6 @@ export class OrdersComponent implements OnInit {
     }));
 
     this.ordersToShow = this.builOrders(withProductImage);
-    console.log(this.ordersToShow);
   }
 
   async searchByPeriod(){
@@ -73,8 +72,6 @@ export class OrdersComponent implements OnInit {
       }));
 
       this.ordersToShow = this.builOrders(withProductImage);
-      console.log(this.ordersToShow);
-
     }
   }
 
@@ -159,7 +156,7 @@ export class OrdersComponent implements OnInit {
 
       if (this.statusChanged) {
         const result = await this.apiService.updateOrderStatus(this.selectedOrder.site_order_id, this.selectedStatus);
-        console.log(result);
+        
         if (result.data.affectedRows > 0) {
           console.log('Estatus cambiado');
           this.loadData();
@@ -173,7 +170,9 @@ export class OrdersComponent implements OnInit {
   }
 
   sumQuantity(items) {
-    return items.reduce((subtotal, item) => subtotal + item.quantity, 0);
+    if(items)
+      return items.reduce((subtotal, item) => subtotal + item.quantity, 0);
+    return 0;
   }
 
   imgPayment(type: string): string {
