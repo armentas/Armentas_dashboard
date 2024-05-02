@@ -48,6 +48,11 @@ export class NavService {
 			]
 		},
 		{
+			title: 'Sales', icon: 'dollar-sign', type: 'sub', active: false, children: [
+				{ path: '/sales/orders', title: 'Orders', type: 'link' },
+			]
+		},
+		{
 			title: 'Users', icon: 'user-plus', type: 'sub', active: false, children: [
 				{ path: '/users/list-user', title: 'User List', type: 'link' },
 				// { path: '/users/create-user', title: 'Create User', type: 'link' },

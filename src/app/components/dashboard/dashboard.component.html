@@ -11,14 +11,20 @@
                             <div class="small-chartjs">
                                 <canvas baseChart id="small-graph-1" height="600" width="400"
                                     [datasets]="smallLineChartData" [labels]="smallLineChartLabels"
-                                    [options]="smallLineChartOptions" 
-                                    [legend]="smallLineChartLegend" [type]="smallLineChartType"
-                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                                    [options]="smallLineChartOptions" [legend]="smallLineChartLegend"
+                                    [type]="smallLineChartType" (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3>42% <span><i class="fa fa-angle-up font-primary"></i></span></h3>
+                                <h3
+                                    [ngClass]="{'text-success': differences.salesDiff > 0, 'text-danger': differences.salesDiff < 0}">
+                                    $ {{differences.salesDiff}}
+                                    <span><i class="pi"
+                                            [ngClass]="{'pi-angle-up': differences.salesDiff > 0, 'pi-angle-down': differences.salesDiff < 0}"
+                                            style=" font-size: 1.5rem"></i></span>
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -28,11 +34,12 @@
                         <div class="media-body">
                             <span>Sales Last Month</span>
                             <h2 class="mb-0">$ {{ totalSales }}</h2>
-                            <p>0.25% <span><i class="fa fa-angle-up"></i></span></p>
+                            <!-- <p>0.25% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>
                         <div class="bg-primary b-r-8">
                             <div class="small-box">
-                                <i data-feather="credit-card"></i>
+                                <!-- <i data-feather="credit-card"></i> -->
+                                <i class="pi pi-credit-card" style="font-size: 1.5rem"></i>
                             </div>
                         </div>
                     </div>
@@ -49,14 +56,20 @@
 
                                 <canvas baseChart id="small-graph-2" height="60vw" width="140vw"
                                     [datasets]="smallLine2ChartData" [labels]="smallLine2ChartLabels"
-                                    [options]="smallLine2ChartOptions" 
-                                    [legend]="smallLine2ChartLegend" [type]="smallLine2ChartType"
-                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                                    [options]="smallLine2ChartOptions" [legend]="smallLine2ChartLegend"
+                                    [type]="smallLine2ChartType" (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3>20% <span><i class="fa fa-angle-up font-secondary"></i></span></h3>
+                                <h3
+                                    [ngClass]="{'text-success': differences.ordersDiff > 0, 'text-danger': differences.ordersDiff < 0}">
+                                    {{differences.ordersDiff}}u.
+                                    <span><i class="pi"
+                                            [ngClass]="{'pi-angle-up': differences.ordersDiff > 0, 'pi-angle-down': differences.ordersDiff < 0}"
+                                            style=" font-size: 1.5rem"></i></span>
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -66,11 +79,12 @@
                         <div class="media-body">
                             <span>Orders Last Month</span>
                             <h2 class="mb-0">{{ totalOrders }}</h2>
-                            <p>0.13% <span><i class="fa fa-angle-up"></i></span></p>
+                            <!-- <p>0.13% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>
                         <div class="bg-secondary b-r-8">
                             <div class="small-box">
-                                <i data-feather="shopping-cart"></i>
+                                <!-- <i data-feather="shopping-cart"></i> -->
+                                <i class="pi pi-shopping-cart" style="font-size: 1.5rem"></i>
                             </div>
                         </div>
                     </div>
@@ -86,14 +100,20 @@
                             <div class="small-chartjs">
                                 <canvas baseChart id="small-graph-3" height="60vw" width="140vw"
                                     [datasets]="smallLine3ChartData" [labels]="smallLine3ChartLabels"
-                                    [options]="smallLine3ChartOptions" 
-                                    [legend]="smallLine3ChartLegend" [type]="smallLine3ChartType"
-                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                                    [options]="smallLine3ChartOptions" [legend]="smallLine3ChartLegend"
+                                    [type]="smallLine3ChartType" (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3>28% <span><i class="fa fa-angle-up font-warning"></i></span></h3>
+                                <h3
+                                    [ngClass]="{'text-success': differences.productsDiff > 0, 'text-danger': differences.productsDiff < 0}">
+                                    {{differences.productsDiff}}u.
+                                    <span><i class="pi"
+                                            [ngClass]="{'pi-angle-up': differences.productsDiff > 0, 'pi-angle-down': differences.productsDiff < 0}"
+                                            style=" font-size: 1.5rem"></i></span>
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -103,11 +123,12 @@
                         <div class="media-body">
                             <span>Products Last Months</span>
                             <h2 class="mb-0">{{ soldProducts }}</h2>
-                            <p>0.8% <span><i class="fa fa-angle-up"></i></span></p>
+                            <!-- <p>0.8% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>
                         <div class="bg-warning b-r-8">
                             <div class="small-box">
-                                <i data-feather="box"></i>
+                                <!-- <i data-feather="box"></i> -->
+                                <i class="pi pi-box" style="font-size: 1.5rem"></i>
                             </div>
                         </div>
                     </div>
@@ -123,14 +144,20 @@
                             <div class="small-chartjs">
                                 <canvas baseChart id="small-graph-4" height="60vw" width="140vw"
                                     [datasets]="smallLine4ChartData" [labels]="smallLine4ChartLabels"
-                                    [options]="smallLine4ChartOptions"
-                                    [legend]="smallLine4ChartLegend" [type]="smallLine4ChartType"
-                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                                    [options]="smallLine4ChartOptions" [legend]="smallLine4ChartLegend"
+                                    [type]="smallLine4ChartType" (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="value-graph">
-                                <h3>75% <span><i class="fa fa-angle-up font-danger"></i></span></h3>
+                                <h3
+                                    [ngClass]="{'text-success': differences.cancellationsDiff <= 0, 'text-danger': differences.cancellationsDiff > 0}">
+                                    {{differences.cancellationsDiff}}u.
+                                    <span><i class="pi"
+                                            [ngClass]="{'pi-angle-up': differences.cancellationsDiff > 0, 'pi-angle-down': differences.cancellationsDiff < 0}"
+                                            style=" font-size: 1.5rem"></i></span>
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -140,11 +167,12 @@
                         <div class="media-body">
                             <span>Cancelled Orders</span>
                             <h2 class="mb-0">{{ cancellations }}</h2>
-                            <p>0.25% <span><i class="fa fa-angle-up"></i></span></p>
+                            <!-- <p>0.25% <span><i class="fa fa-angle-up"></i></span></p> -->
                         </div>
                         <div class="bg-danger b-r-8">
                             <div class="small-box">
-                                <i data-feather="rotate-ccw"></i>
+                                <!-- <i data-feather="rotate-ccw"></i> -->
+                                <i class="pi pi-sync" style="font-size: 1.5rem"></i>
                             </div>
                         </div>
                     </div>
@@ -174,274 +202,50 @@
                     <h5>Latest Orders</h5>
                 </div>
                 <div class="card-body">
-                    <div class="user-status table-responsive latest-order-table">
-                        <table class="table table-bordernone">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Order ID</th>
-                                    <th scope="col">Order Total</th>
-                                    <th scope="col">Payment Method</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let order of ordersTable; let i = index">
-                                    <td>{{i+1}}</td>
-                                    <td>{{ order.site_order_id }}</td>
-                                    <td class="digits">${{order.order_total}}</td>
-                                    <td class="font-danger">{{order.payment_type}}</td>
-                                    <td class="digits">{{order.shipping_status}}</td>
-                                </tr>
-                                <!-- <tr>
-                                    <td>2</td>
-                                    <td class="digits">$90.00</td>
-                                    <td class="font-secondary">Ewallets</td>
-                                    <td class="digits">Delivered</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td class="digits">$240.00</td>
-                                    <td class="font-warning">Cash</td>
-                                    <td class="digits">Delivered</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td class="digits">$120.00</td>
-                                    <td class="font-primary">Direct Deposit</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td class="digits">$50.00</td>
-                                    <td class="font-primary">Bank Transfers</td>
-                                    <td class="digits">Delivered</td>
-                                </tr> -->
-                            </tbody>
-                        </table>
-                        <button routerLink="javascript:void(0)" class="btn btn-primary">View All Orders</button>
+                    <div class="user-status table-responsive latest-order-table" style="height: 100%;">
+                        <div class="d-flex flex-column justify-content-between" style="height: 100%;">
+                            <div *ngIf="ordersTable.length > 0">
+                                <table class="table table-bordernone">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">Order ID</th>
+                                            <th scope="col">Order Total</th>
+                                            <th scope="col">Payment Method</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let order of ordersTable; let i = index">
+                                            <td>{{i+1}}</td>
+                                            <td>{{ order.site_order_id }}</td>
+                                            <td class="">${{order.order_total}}</td>
+                                            <td class="">{{order.payment_type}}</td>
+                                            <td
+                                                [ngClass]="{'text-danger': order.shipping_status.toLowerCase() == 'cancelled', 'text-success': order.shipping_status.toLowerCase() == 'delivered', 'text-warning': order.shipping_status.toLowerCase() == 'in process', 'text-primary': order.shipping_status.toLowerCase() == 'awaiting shipment'}">
+                                                {{order.shipping_status}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div *ngIf="ordersTable.length == 0">
+                                <div class="mt-5 d-flex flex-column gap-2 align-items-center justify-content-center">
+                                    <img src="assets/images/empty.png" width="50px" alt="">
+                                    <span class="text-muted">Empty data</span>
+                                    <p class="text-muted text-center">No data available for plotting on current
+                                        orders</p>
+                                </div>
+                            </div>
+                            <div>
+                                <button routerLink="javascript:void(0)" [routerLink]="['/sales/orders']"
+                                    class="btn btn-primary d-inline">View All Orders</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- -------------------------------------  End Graph Section  ----------------------------------------------- -->
-        <!-- <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Buy / Sell</h5>
-                </div>
-                <div class="card-body sell-graph">
-                    <canvas baseChart id="myGraph" [datasets]="lineChartData" [labels]="lineChartLabels"
-                        [options]="lineChartOptions" [legend]="lineChartLegend"
-                        [type]="lineChartType" (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 xl-100">
-            <div class="card height-equal">
-                <div class="card-header">
-                    <h5>Products Cart</h5>
-                </div>
-                <div class="card-body">
-                    <div class="user-status table-responsive products-table">
-                        <table class="table table-bordernone mb-0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Details</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Simply dummy text of the printing</td>
-                                    <td class="digits">1</td>
-                                    <td class="font-primary">Pending</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>Long established</td>
-                                    <td class="digits">5</td>
-                                    <td class="font-secondary">Cancle</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>sometimes by accident</td>
-                                    <td class="digits">10</td>
-                                    <td class="font-secondary">Cancle</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>Classical Latin literature</td>
-                                    <td class="digits">9</td>
-                                    <td class="font-primary">Return</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>keep the site on the Internet</td>
-                                    <td class="digits">8</td>
-                                    <td class="font-primary">Pending</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>Molestiae consequatur</td>
-                                    <td class="digits">3</td>
-                                    <td class="font-secondary">Cancle</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                                <tr>
-                                    <td>Pain can procure</td>
-                                    <td class="digits">8</td>
-                                    <td class="font-primary">Return</td>
-                                    <td class="digits">$6523</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6 xl-100">
-            <div class="card height-equal">
-                <div class="card-header">
-                    <h5>Empolyee Status</h5>
-                </div>
-                <div class="card-body">
-                    <div class="user-status table-responsive products-table">
-                        <table class="table table-bordernone mb-0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Designation</th>
-                                    <th scope="col">Skill Level</th>
-                                    <th scope="col">Experience</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="bd-t-none u-s-tb">
-                                        <div class="align-middle image-sm-size"><img
-                                                class="img-radius align-top m-r-15 rounded-circle"
-                                                src="assets/images/dashboard/user2.jpg" alt="" data-original-title=""
-                                                title="">
-                                            <div class="d-inline-block">
-                                                <h6>John Deo <span class="text-muted digits">(14+ Online)</span></h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Designer</td>
-                                    <td>
-                                        <div class="progress-showcase">
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                    style="width: 30%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="digits">2 Year</td>
-                                </tr>
-                                <tr>
-                                    <td class="bd-t-none u-s-tb">
-                                        <div class="align-middle image-sm-size"><img
-                                                class="img-radius align-top m-r-15 rounded-circle"
-                                                src="assets/images/dashboard/user1.jpg" alt="" data-original-title=""
-                                                title="">
-                                            <div class="d-inline-block">
-                                                <h6>Holio Mako <span class="text-muted digits">(250+ Online)</span></h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Developer</td>
-                                    <td>
-                                        <div class="progress-showcase">
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-secondary" role="progressbar"
-                                                    style="width: 70%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="digits">3 Year</td>
-                                </tr>
-                                <tr>
-                                    <td class="bd-t-none u-s-tb">
-                                        <div class="align-middle image-sm-size"><img
-                                                class="img-radius align-top m-r-15 rounded-circle"
-                                                src="assets/images/dashboard/man.png" alt="" data-original-title=""
-                                                title="">
-                                            <div class="d-inline-block">
-                                                <h6>Mohsib lara<span class="text-muted digits">(99+ Online)</span></h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Tester</td>
-                                    <td>
-                                        <div class="progress-showcase">
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                    style="width: 60%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="digits">5 Month</td>
-                                </tr>
-                                <tr>
-                                    <td class="bd-t-none u-s-tb">
-                                        <div class="align-middle image-sm-size"><img
-                                                class="img-radius align-top m-r-15 rounded-circle"
-                                                src="assets/images/dashboard/user.png" alt="" data-original-title=""
-                                                title="">
-                                            <div class="d-inline-block">
-                                                <h6>Hileri Soli <span class="text-muted digits">(150+ Online)</span>
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Designer</td>
-                                    <td>
-                                        <div class="progress-showcase">
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-secondary" role="progressbar"
-                                                    style="width: 30%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="digits">3 Month</td>
-                                </tr>
-                                <tr>
-                                    <td class="bd-t-none u-s-tb">
-                                        <div class="align-middle image-sm-size"><img
-                                                class="img-radius align-top m-r-15 rounded-circle"
-                                                src="assets/images/dashboard/designer.jpg" alt=""
-                                                data-original-title="" title="">
-                                            <div class="d-inline-block">
-                                                <h6>Pusiz bia <span class="text-muted digits">(14+ Online)</span></h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Designer</td>
-                                    <td>
-                                        <div class="progress-showcase">
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                    style="width: 90%" aria-valuenow="50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="digits">5 Year</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <!-- -------------------------------------  Start Location Section  ----------------------------------------------- -->
         <div class="col-sm-12">
             <div class="card">
@@ -451,43 +255,71 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-xl-3 col-sm-6 xl-50">
-                            <div class="order-graph overflow-hidden">
+                            <div class="order-graph overflow-hidden" style="height: 100%;">
                                 <h6>Orders By Location</h6>
-                                <div class="chart-block chart-vertical-center">
-                                    <ngx-charts-pie-chart class="pie-colours-1" [view]="view"
-                                        [scheme]="doughnutChartColorScheme" [results]="doughnutData" [explodeSlices]="false"
-                                        [labels]="doughnutChartShowLabels" [arcWidth]=0.50 [doughnut]="true" 
-                                        [legend]="doughnutChartShowLegend" [legendPosition]="doughnutChartLegendPosition"
-                                        [animations]="false" [tooltipDisabled]="doughnutChartTooltip"
-                                        [gradient]="doughnutChartGradient">
-                                    </ngx-charts-pie-chart>
-                                </div>
-                                <div class="order-graph-bottom">
-                                    <div class="media" *ngFor="let item of doughnutChartData">
-                                        <div class="p-1" [style.background-color]="item.color"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0">{{ item.name }} <span class="pull-right">{{item.value}}</span></h6>
+                                <div class="d-flex flex-column" [ngClass]="{'justify-content-center':isZerosList(doughnutData), 'justify-content-start': !isZerosList(doughnutData)}" style="height: 100%;">
+                                    <div *ngIf="!isZerosList(doughnutData)">
+                                        <div class="chart-block chart-vertical-center">
+                                            <ngx-charts-pie-chart class="pie-colours-1" [view]="view"
+                                                [scheme]="doughnutChartColorScheme" [results]="doughnutData"
+                                                [explodeSlices]="false" [labels]="doughnutChartShowLabels"
+                                                [arcWidth]=0.50 [doughnut]="true" [legend]="doughnutChartShowLegend"
+                                                [legendPosition]="doughnutChartLegendPosition" [animations]="false"
+                                                [tooltipDisabled]="doughnutChartTooltip"
+                                                [gradient]="doughnutChartGradient">
+                                            </ngx-charts-pie-chart>
+                                        </div>
+                                        <div class="order-graph-bottom">
+                                            <div class="media" *ngFor="let item of doughnutChartData">
+                                                <div class="p-1" [style.background-color]="item.color"></div>
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">{{ item.name }} <span
+                                                            class="pull-right">{{item.value}}</span></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isZerosList(doughnutData)">
+                                        <div class="d-flex flex-column gap-2 align-items-center justify-content-center">
+                                            <img src="assets/images/empty.png" width="50px" alt="">
+                                            <span class="text-muted">Empty data</span>
+                                            <p class="text-muted text-center">No data available for plotting on current
+                                                orders</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-sm-6 xl-50">
-                            <div class="order-graph sm-order-space overflow-hidden">
+                            <div class="order-graph sm-order-space overflow-hidden" style="height: 100%;">
                                 <h6>Best selling products</h6>
-                                <div class="peity-chart-dashboard text-center chart-vertical-center">
-                                    <ngx-charts-pie-chart class="pie-colours-1" [view]="view"
-                                        [scheme]="pieChartColorScheme" [results]="pieData"
-                                        [explodeSlices]="false" [labels]="doughnutChartShowLabels" [arcWidth]=0.99
-                                        [doughnut]="true" [animations]="true" [tooltipDisabled]="doughnutChartTooltip"
-                                        [gradient]="doughnutChartGradient">
-                                    </ngx-charts-pie-chart>
-                                </div>
-                                <div class="order-graph-bottom sales-location">
-                                    <div class="media" *ngFor="let item of pieChartData">
-                                        <div class="p-1" [style.background-color]="item.color"></div>
-                                        <div class="media-body">
-                                            <h6 class="mb-0">{{ item.name }} <span class="pull-right">{{item.value}}</span></h6>
+                                <div class="d-flex flex-column" [ngClass]="{'justify-content-center': isZerosList(pieData), 'justify-content-start': !isZerosList(pieData)}" style="height: 100%;">
+                                    <div *ngIf="!isZerosList(pieData)">
+                                        <div class="peity-chart-dashboard text-center chart-vertical-center">
+                                            <ngx-charts-pie-chart class="pie-colours-1" [view]="view"
+                                                [scheme]="pieChartColorScheme" [results]="pieData"
+                                                [explodeSlices]="false" [labels]="doughnutChartShowLabels"
+                                                [arcWidth]=0.99 [doughnut]="true" [animations]="true"
+                                                [tooltipDisabled]="doughnutChartTooltip"
+                                                [gradient]="doughnutChartGradient">
+                                            </ngx-charts-pie-chart>
+                                        </div>
+                                        <div class="order-graph-bottom sales-location">
+                                            <div class="media" *ngFor="let item of pieChartData">
+                                                <div class="p-1" [style.background-color]="item.color"></div>
+                                                <div class="media-body">
+                                                    <h6 class="mb-0">{{ item.name }} <span
+                                                            class="pull-right">{{item.value}}</span></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isZerosList(pieData)">
+                                        <div class="d-flex flex-column gap-2 align-items-center justify-content-center">
+                                            <img src="assets/images/empty.png" width="50px" alt="">
+                                            <span class="text-muted">Empty data</span>
+                                            <p class="text-muted text-center">No data available for plotting on current
+                                                orders</p>
                                         </div>
                                     </div>
                                 </div>

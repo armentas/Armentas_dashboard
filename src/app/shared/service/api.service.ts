@@ -25,12 +25,26 @@ export class ApiService {
     return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/getAllOrdersMonth`));
   }
 
+  getAllOrdersPreviousMonth(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/getAllOrdersPreviousMonth`));
+  }
+
   getAllOrdersByDate(start_date: string, end_date: string): Promise<any> {
     return lastValueFrom(this.http.post<any>(`${this.baseUrl}/dash/getAllOrdersByDate`, { start_date, end_date }));
   }
 
   latestProductsAdded(): Promise<any> {
     return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/latestProductsAdded`));
+  }
+
+  //-------------------- Orders section -----------------------------------------
+
+  updateOrderStatus(site_order_id: string, data: any): Promise<any> {
+    return lastValueFrom(this.http.put<any>(`${this.baseUrl}/dash/updateStatus/${site_order_id}`, { shipping_status: data }));
+  }
+
+  getImageUrlFromSku(sku: string): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/dash/getImageUrlFromSku/${sku}`));
   }
 
 

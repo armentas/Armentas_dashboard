@@ -18,12 +18,13 @@ export class DashboardComponent implements OnInit {
   soldProducts: number;
   cancellationsData: number[] = [];
   cancellations: number;
+  differences: any;
 
   monthSales: number[] = [];
   annualSales: number[] = [];
 
-  doughnutChartData: {name: string, value: number, color:string}[] = [];
-  pieChartData: {name: string, value: number, color:string}[] = [];
+  doughnutChartData: { name: string, value: number, color: string }[] = [];
+  pieChartData: { name: string, value: number, color: string }[] = [];
 
   constructor(private apiService: ApiService) { }
 
@@ -103,7 +104,7 @@ export class DashboardComponent implements OnInit {
         labels: this.monthDays
       },
       options: {
-        height: 400,
+        height: 335,
         showArea: true,
         seriesBarDistance: 12,
         axisX: {
@@ -122,7 +123,7 @@ export class DashboardComponent implements OnInit {
         labels: ['Jan', 'Feb ', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dic'],
       },
       options: {
-        height: 450,
+        // height: 400,
         seriesBarDistance: 12,
         axisX: {
           showGrid: false,
@@ -135,30 +136,35 @@ export class DashboardComponent implements OnInit {
 
     this.doughnutData = this.doughnutChartData;
     this.doughnutChartColorScheme = {
-      domain: this.doughnutChartData.map( elem => elem.color),
+      domain: this.doughnutChartData.map(elem => elem.color),
     }
 
     this.pieData = this.pieChartData;
     this.pieChartColorScheme = {
-      domain: this.pieChartData.map( elem => elem.color),
+      domain: this.pieChartData.map(elem => elem.color),
     }
-    
+
 
   }
 
   async loadData() {
+    const previousMonthOrders = await this.apiService.getAllOrdersPreviousMonth();
+    // const filteredPreviousOrders = previousMonthOrders.data.filter(elem => {
+    //   return elem.shipping_status.toLowerCase() !== 'Cancelled'
+    // });
+    let previousOrders = this.builOrders(previousMonthOrders.data);
+
     const monthOrders = await this.apiService.getAllOrdersMonth();
-    const filteredOrders = monthOrders.data.filter(elem => {
-      return elem.shipping_status.toLowerCase() !== 'cancelled'
-    });
-
-    this.getTopSellingProducts(filteredOrders);
-
-    let orders = this.builOrders(filteredOrders);
+    // const filteredOrders = monthOrders.data.filter(elem => {
+    //   return elem.shipping_status.toLowerCase() !== 'cancelled'
+    // });
+    let orders = this.builOrders(monthOrders.data);
     this.ordersTable = orders.slice(0, 5);
-    console.log(this.ordersTable);
-    
 
+    this.differences = this.calculateDiff(previousOrders, orders);
+    console.log(this.differences);
+
+    this.getBestSellingProducts(monthOrders.data);
     this.getTotalSalesDataArray(orders);
     this.getTotalOrdersDataArray(orders);
     this.getSoldProductsDataArray(orders);
@@ -166,11 +172,11 @@ export class DashboardComponent implements OnInit {
     this.getShippingStatesCount(orders);
 
     const yearOrders = await this.apiService.getAllOrdersYear();
-    const filteredYearOrders = yearOrders.data.filter(elem => {
-      return elem.shipping_status.toLowerCase() !== 'cancelled'
-    });
+    // const filteredYearOrders = yearOrders.data.filter(elem => {
+    //   return elem.shipping_status.toLowerCase() !== 'cancelled'
+    // });
 
-    let allOrders = this.builOrders(filteredYearOrders);
+    let allOrders = this.builOrders(yearOrders.data);
     this.getTotalOrdersYearDataArray(allOrders);
 
   }
@@ -199,7 +205,7 @@ export class DashboardComponent implements OnInit {
 
             shipping_target_name: item.shipping_target_name,
             shipping_target_phone: item.shipping_target_phone,
-            street_1: item.address_1,
+            street_1: item.street_1,
             shipping_city: item.shipping_city,
             shipping_postal_code: item.shipping_postal_code,
             shipping_state_province: item.shipping_state_province,
@@ -234,10 +240,12 @@ export class DashboardComponent implements OnInit {
     const salesData = new Array(currentDay).fill(0);
 
     orders.forEach(order => {
-      const orderDate = new Date(order.order_date);
-      const dayOfMonth = orderDate.getDate();
-      const index = dayOfMonth - 1; // Índice basado en cero
-      salesData[index] += order.order_total;
+      if (order.shipping_status.toLowerCase() !== 'cancelled') {
+        const orderDate = new Date(order.order_date);
+        const dayOfMonth = orderDate.getDate();
+        const index = dayOfMonth - 1; // Índice basado en cero
+        salesData[index] += order.order_total;
+      }
     });
 
     this.totalSalesData = salesData;
@@ -251,10 +259,12 @@ export class DashboardComponent implements OnInit {
     const ordersData = new Array(currentDay).fill(0);
 
     orders.forEach(order => {
-      const orderDate = new Date(order.order_date);
-      const dayOfMonth = orderDate.getDate();
-      const index = dayOfMonth - 1; // Índice basado en cero
-      ordersData[index]++;
+      if (order.shipping_status.toLowerCase() !== 'cancelled') {
+        const orderDate = new Date(order.order_date);
+        const dayOfMonth = orderDate.getDate();
+        const index = dayOfMonth - 1; // Índice basado en cero
+        ordersData[index]++;
+      }
     });
 
     this.totalOrdersData = ordersData;
@@ -266,10 +276,14 @@ export class DashboardComponent implements OnInit {
     const soldProductsData = new Array(currentDay).fill(0);
 
     orders.forEach(order => {
-      const orderDate = new Date(order.order_date);
-      const dayOfMonth = orderDate.getDate();
-      const index = dayOfMonth - 1; // Índice basado en cero
-      soldProductsData[index] += order.items.length;
+      if (order.shipping_status.toLowerCase() !== 'cancelled') {
+        order.items.forEach(item => {
+          const orderDate = new Date(order.order_date);
+          const dayOfMonth = orderDate.getDate();
+          const index = dayOfMonth - 1;
+          soldProductsData[index] += item.quantity;
+        });
+      }
     });
 
     this.soldProductsData = soldProductsData;
@@ -302,9 +316,11 @@ export class DashboardComponent implements OnInit {
     const ordersData = new Array(currentMonth).fill(0);
 
     orders.forEach(order => {
-      const orderDate = new Date(order.order_date);
-      const monthOfYear = orderDate.getMonth() + 1; // Agregamos 1 para hacerlo base 1
-      ordersData[monthOfYear - 1]++; // Restamos 1 para hacerlo base 0
+      if (order.shipping_status.toLowerCase() !== 'cancelled') {
+        const orderDate = new Date(order.order_date);
+        const monthOfYear = orderDate.getMonth() + 1; // Agregamos 1 para hacerlo base 1
+        ordersData[monthOfYear - 1]++; // Restamos 1 para hacerlo base 0
+      }
     });
 
     this.annualSales = ordersData;
@@ -314,45 +330,90 @@ export class DashboardComponent implements OnInit {
     const statesCount = {};
 
     orders.forEach(order => {
-      const state = order.shipping_state_province;
-      if (statesCount[state]) {
-        statesCount[state]++;
-      } else {
-        statesCount[state] = 1;
+      if (order.shipping_status.toLowerCase() !== 'cancelled') {
+        const state = order.shipping_state_province;
+        if (statesCount[state]) {
+          statesCount[state]++;
+        } else {
+          statesCount[state] = 1;
+        }
       }
     });
 
     const statesList = Object.keys(statesCount).map(state => ({
       name: state,
       value: statesCount[state],
-      color: '#' + Math.floor(Math.random()*16777215).toString(16)
+      color: '#' + ('00000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
     }));
 
     statesList.sort((a, b) => b.value - a.value);
     this.doughnutChartData = statesList.slice(0, 5);
   }
 
-  getTopSellingProducts(orders: any[]) {
+  getBestSellingProducts(orders: any[]) {
     const productsCount = {};
 
     orders.forEach(order => {
+      if (order.shipping_status.toLowerCase() !== 'cancelled') {
         const sku = order.sku;
         if (productsCount[sku]) {
-            productsCount[sku]++;
+          productsCount[sku]++;
         } else {
-            productsCount[sku] = 1;
+          productsCount[sku] = 1;
         }
+      }
     });
 
     const topSellingProducts = Object.keys(productsCount).map(sku => ({
-        name: orders.find(order => order.sku === sku).title,
-        value: productsCount[sku],
-        color: '#' + Math.floor(Math.random()*16777215).toString(16) 
+      name: orders.find(order => order.sku === sku).title,
+      value: productsCount[sku],
+      color: '#' + ('00000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
     }));
 
     // Ordenar la lista por valor descendente (cantidad de ventas)
     topSellingProducts.sort((a, b) => b.value - a.value);
     this.pieChartData = topSellingProducts.slice(0, 5);
-}
+  }
+
+  calculateDiff(prevOrders: any[], currOrders: any[]): any {
+    const prevSales = prevOrders.reduce((total, item) => {
+      return item.shipping_status.toLowerCase() !== 'cancelled' ? total + item.order_total : total;
+    }, 0);
+    const currSales = currOrders.reduce((total, item) => {
+      return item.shipping_status.toLowerCase() !== 'cancelled' ? total + item.order_total : total;
+    }, 0);
+
+    const prevProductsAmount = prevOrders.reduce((total, item) => {
+      return item.shipping_status.toLowerCase() !== 'cancelled' ? total + this.sumQuantity(item.items) : total;
+    }, 0);
+    const currProductsAmount = currOrders.reduce((total, item) => {
+      return item.shipping_status.toLowerCase() !== 'cancelled' ? total + this.sumQuantity(item.items) : total;
+    }, 0);
+
+    const prevCancelledOrder = prevOrders.reduce((total, item) => {
+      return item.shipping_status.toLowerCase() === 'cancelled' ? total + 1 : total;
+    }, 0);
+    const currCancelledOrders = currOrders.reduce((total, item) => {
+      return item.shipping_status.toLowerCase() === 'cancelled' ? total + 1 : total;
+    }, 0);
+
+    return {
+      salesDiff: parseFloat((currSales - prevSales).toFixed(2)),
+      ordersDiff: currOrders.length - prevOrders.length,
+      productsDiff: currProductsAmount - prevProductsAmount,
+      cancellationsDiff: currCancelledOrders - prevCancelledOrder,
+    }
+  }
+
+  sumQuantity(items) {
+    return items.reduce((subtotal, item) => subtotal + item.quantity, 0);
+  }
+
+  isZerosList(list: number[]): boolean{
+    const result = list.reduce((total, valor) => total + valor, 0);
+    if(result === 0)
+      return true;
+    return false;
+  }
 
 }
