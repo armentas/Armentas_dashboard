@@ -12,6 +12,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
 
@@ -28,7 +29,8 @@ import { CalendarModule } from 'primeng/calendar';
     DialogModule,
     DropdownModule,
     InputTextModule,
-    CalendarModule
+    CalendarModule,
+    ToastModule
     
   ]
 })

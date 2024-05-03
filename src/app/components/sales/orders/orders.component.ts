@@ -1,19 +1,15 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { SortEvent } from 'src/app/shared/directives/shorting.directive';
-import { NgbdSortableHeader } from "src/app/shared/directives/NgbdSortableHeader";
+import { Component, OnInit } from '@angular/core';
 import { TableService } from 'src/app/shared/service/table.service';
-import { Observable } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
-import { OrderDB, ORDERDB } from 'src/app/shared/tables/order-list';
 import { ApiService } from 'src/app/shared/service/api.service';
 import { Table } from 'primeng/table';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss'],
-  providers: [TableService, DecimalPipe],
+  providers: [TableService, DecimalPipe, MessageService],
 })
 
 export class OrdersComponent implements OnInit {
@@ -34,7 +30,7 @@ export class OrdersComponent implements OnInit {
 
   rangeDates: Date[] | undefined;
 
-  constructor(public service: TableService, private modalService: NgbModal, private apiService: ApiService) {
+  constructor(public service: TableService, private apiService: ApiService, private messageService: MessageService) {
   }
 
   async ngOnInit() {
@@ -164,7 +160,7 @@ export class OrdersComponent implements OnInit {
       }
 
     } catch (error) {
-      console.log(error);
+      this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: `${error.error.msg}` });
     }
 
   }

@@ -95,4 +95,11 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  logout(title: string){
+    if (title === 'Logout') {
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userToken');
+   }
+  }
+
 }

@@ -25,6 +25,7 @@ export class CreateUserComponent implements OnInit {
       email: [''],
       password: [''],
       confirmPwd: [''],
+      permissionRead: ['allow'],
       permissionAdd: ['deny'],
       permissionUpdate: ['deny'],
       permissionDelete: ['deny'],
@@ -51,6 +52,7 @@ export class CreateUserComponent implements OnInit {
 
     // Elimina los campos de permisos del clon
     delete data.confirmPwd;
+    delete data.permissionRead;
     delete data.permissionAdd;
     delete data.permissionUpdate;
     delete data.permissionDelete;
@@ -58,7 +60,7 @@ export class CreateUserComponent implements OnInit {
     // Crear un nuevo objeto con los datos y el string concatenado de permisos
     const userObject = {
       ...data,
-      permission: this.getPermissionsString(accountForm),
+      permissions: this.getPermissionsString(accountForm),
     };
 
     try {
@@ -74,12 +76,14 @@ export class CreateUserComponent implements OnInit {
   getPermissionsString(accountForm: any): string {
     let permissionList: string[] = [];
 
+    if (accountForm.get('permissionRead').value === 'allow')
+      permissionList.push('Read');
     if (accountForm.get('permissionAdd').value === 'allow')
-      permissionList.push('add');
+      permissionList.push('Create');
     if (accountForm.get('permissionUpdate').value === 'allow')
-      permissionList.push('update');
+      permissionList.push('Update');
     if (accountForm.get('permissionDelete').value === 'allow')
-      permissionList.push('delete');
+      permissionList.push('Delete');
 
     return permissionList.join(',');
   }

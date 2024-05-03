@@ -10,10 +10,11 @@ export class HeaderComponent implements OnInit {
   public right_sidebar: boolean = false;
   public open: boolean = false;
   public openNav: boolean = false;
-  public isOpenMobile : boolean;
+  public isOpenMobile: boolean;
 
   @Output() rightSidebarEvent = new EventEmitter<boolean>();
   isDarkMode = true;
+  userSigned: string;
 
   constructor(public navServices: NavService) { }
 
@@ -35,6 +36,8 @@ export class HeaderComponent implements OnInit {
     document.body.classList.toggle('dark')
   }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    this.userSigned = localStorage.getItem('userName');
+  }
 
 }

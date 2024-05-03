@@ -170,7 +170,11 @@ export class DigitalListComponent implements OnInit {
       this.visible = false;
 
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if (error.error) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      }
     }
   }
 
@@ -190,7 +194,11 @@ export class DigitalListComponent implements OnInit {
       this.visible = false;
 
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if (error.error) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      }
     }
   }
 
@@ -232,7 +240,7 @@ export class DigitalListComponent implements OnInit {
 
       this.onSale = result.data[0].sale == 1 ? "true" : "false";
 
-      this.getColorsFromSelected(this.productData.colors);      
+      this.getColorsFromSelected(this.productData.colors);
 
     } catch (error) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
@@ -279,7 +287,11 @@ export class DigitalListComponent implements OnInit {
       })
       this.reload();
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if (error.error) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      }
     }
   }
 
@@ -297,7 +309,11 @@ export class DigitalListComponent implements OnInit {
       }
 
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if (error.error) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      }
     }
   }
 
@@ -340,10 +356,10 @@ export class DigitalListComponent implements OnInit {
   }
 
   getColorsFromSelected(value: string) {
-    if(value && value !== ''){
+    if (value && value !== '') {
       const prodColots = value.split(',');
-      this.selectedColors = prodColots.map( color => {
-        return this.colors.find( item => item.name == color)
+      this.selectedColors = prodColots.map(color => {
+        return this.colors.find(item => item.name == color)
       });
     }
   }
@@ -366,7 +382,7 @@ export class DigitalListComponent implements OnInit {
 
   async saveData() {
     this.productData.sale = this.checked ? 1 : 0;
-    this.productData.colors = this.selectedColors.map( color => color.name ).join(',');
+    this.productData.colors = this.selectedColors.map(color => color.name).join(',');
     this.productData.tags = [...this.tags].join(',');
 
     const requiredProperties = ['title', 'description', 'price', 'tags'];
@@ -377,7 +393,7 @@ export class DigitalListComponent implements OnInit {
       return;
     }
     console.log(this.productData);
-    
+
     try {
       const result = await this.apiService.updateProduct(this.productSelected, this.productData);
       if (result.data.affectedRows !== 0) {
@@ -387,7 +403,11 @@ export class DigitalListComponent implements OnInit {
       this.modalService.dismissAll();
 
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if (error.error) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      }
     }
   }
 

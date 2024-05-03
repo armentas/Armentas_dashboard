@@ -53,10 +53,30 @@
                                     </div>
                                     <p-divider></p-divider>
                                     <div class="attribute-blocks">
-                                        <h5 class="f-w-600 mb-3">Product & Collection Related permission </h5>
+                                        <h5 class="f-w-600 mb-3">Product & Orders Related permission </h5>
                                         <div class="row mb-3">
                                             <div class="col-xl-3 col-sm-4">
-                                                <label>Add Product or Collection</label>
+                                                <label>Only Read</label>
+                                            </div>
+                                            <div class="col-xl-9 col-sm-8">
+                                                <div
+                                                    class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                    <label class="d-block" for="allowRead">
+                                                        <input class="radio_animated" id="allowRead" type="radio"
+                                                            formControlName="permissionRead" value="allow">
+                                                        Allow
+                                                    </label>
+                                                    <!-- <label class="d-block" for="denyAdd">
+                                                        <input class="radio_animated" id="denyAdd" type="radio"
+                                                            formControlName="permissionRead" value="deny">
+                                                        Deny
+                                                    </label> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-xl-3 col-sm-4">
+                                                <label>Create Product or Insert Images</label>
                                             </div>
                                             <div class="col-xl-9 col-sm-8">
                                                 <div
@@ -76,7 +96,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-xl-3 col-sm-4">
-                                                <label>Update Product or Collection</label>
+                                                <label>Update Product or Orders</label>
                                             </div>
                                             <div class="col-xl-9 col-sm-8">
                                                 <div
@@ -96,7 +116,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-xl-3 col-sm-4">
-                                                <label>Delete Product or Collection</label>
+                                                <label>Delete Product or Images</label>
                                             </div>
                                             <div class="col-xl-9 col-sm-8">
                                                 <div

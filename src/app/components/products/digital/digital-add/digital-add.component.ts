@@ -129,8 +129,6 @@ export class DigitalAddComponent implements OnInit {
     } else {
       this.selectedColors.splice(index, 1);
     }
-    console.log(this.selectedColors);
-
   }
 
   switchTab(tab: string): void {
@@ -251,10 +249,7 @@ export class DigitalAddComponent implements OnInit {
         stock: this.productData.stock,
         sale: (this.productData.onSale === "true") ? 1 : 0,
         tags: Array.from(this.productData.tags).join(','),
-      }
-
-      console.log(generalData);
-      
+      }      
 
       // Insert product
       const productResult = await this.apiService.addProduct(generalData);
@@ -275,7 +270,13 @@ export class DigitalAddComponent implements OnInit {
       this.messageService.add({ severity: 'success', summary: 'Producto registrado', detail: `Se registro el producto ${this.productData.title}` });
     } catch (error) {
       this.onReject();
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error al intentar crear el producto: ${error.message}` });
+      if(error.error){
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `${error.error.msg}` });
+      }else{
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error al intentar crear el producto: ${error.message}` });
+      }
+
+
     }
   }
 

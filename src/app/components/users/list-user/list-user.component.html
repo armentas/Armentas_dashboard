@@ -72,14 +72,14 @@
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-user>
-                            <tr>
+                            <tr *ngIf="user.rol !== 'Dev'">
                                 <td>
                                     <p-tableCheckbox [value]="user"></p-tableCheckbox>
                                 </td>
                                 <td>
-                                    <a href="javascript:void(0)" (click)="open(content, user.id)"><i
+                                    <a href="javascript:void(0)" *ngIf="user.rol !== 'Dev'" (click)="open(content, user.id)"><i
                                             class='fa fa-edit f-12'></i></a>&nbsp;
-                                    <a href="javascript:void(0)" *ngIf="user.rol !== 'super'"
+                                    <a href="javascript:void(0)" *ngIf="user.rol !== 'Dev'"
                                         (click)="showConfirm(user.id)"><i class="fa fa-trash-o"></i></a>
                                 </td>
                                 <td>
@@ -91,7 +91,7 @@
                                 <td>{{user.name}}</td>
                                 <td>{{user.lastname}}</td>
                                 <td>{{user.email}}</td>
-                                <td>{{user.permission}}</td>
+                                <td>{{user.permissions}}</td>
                             </tr>
                         </ng-template>
                     </p-table>

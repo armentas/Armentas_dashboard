@@ -155,7 +155,7 @@
                                     [ngClass]="{'text-success': differences.cancellationsDiff <= 0, 'text-danger': differences.cancellationsDiff > 0}">
                                     <h3>{{differences.cancellationsDiff}}u.</h3>
                                     <span><i class="pi"
-                                            [ngClass]="{'pi-angle-up': differences.cancellationsDiff > 0, 'pi-angle-down': differences.cancellationsDiff < 0}"
+                                            [ngClass]="{'pi-angle-up': differences.cancellationsDiff >= 0, 'pi-angle-down': differences.cancellationsDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
                                     </span>
                             </div>

@@ -18,28 +18,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: UntypedFormBuilder, private authService: AuthService, private messageService: MessageService, private router: Router) {
     this.createLoginForm();
-    // this.createRegisterForm();
   }
-
-  owlcarousel = [
-    {
-      title: "Welcome to Armentas Shop",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
-    },
-    {
-      title: "Welcome to Armentas Shop",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
-    },
-    {
-      title: "Welcome to Armentas Shop",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
-    }
-  ]
-  owlcarouselOptions = {
-    loop: true,
-    items: 1,
-    dots: true
-  };
 
   createLoginForm() {
     this.loginForm = this.formBuilder.group({
@@ -47,20 +26,9 @@ export class LoginComponent implements OnInit {
       password: [''],
     })
   }
-  // createRegisterForm() {
-  //   this.registerForm = this.formBuilder.group({
-  //     userName: [''],
-  //     password: [''],
-  //     confirmPassword: [''],
-  //   })
-  // }
 
 
   ngOnInit() {
-  }
-
-  onSubmit() {
-
   }
 
   async loginProcess(loginForm: any) {
@@ -71,10 +39,9 @@ export class LoginComponent implements OnInit {
         throw new Error('No debe dejar campos vacíos')
 
       let resp = await this.authService.login(data);
-      console.log(resp);
       
       localStorage.setItem('userToken', resp.token);
-      localStorage.setItem('userName', resp.user.name);
+      localStorage.setItem('userName', resp.user.name+' '+resp.user.lastname);
 
       this.router.navigate(['/dashboard/default']);
 
