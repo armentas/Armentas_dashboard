@@ -19,10 +19,10 @@
                         <div class="col-6">
                             <div class="value-graph">
                                 <span class="d-flex gap-2 align-items-center"
-                                    [ngClass]="{'text-success': differences.salesDiff > 0, 'text-danger': differences.salesDiff < 0}">
-                                    <h3 class="text-light">$ {{differences.salesDiff}}</h3>
+                                    [ngClass]="{'text-success': differences?.salesDiff > 0, 'text-danger': differences?.salesDiff < 0}">
+                                    <h3 class="text-light">$ {{differences?.salesDiff}}</h3>
                                     <span><i class="pi"
-                                            [ngClass]="{'pi-angle-up': differences.salesDiff > 0, 'pi-angle-down': differences.salesDiff < 0}"
+                                            [ngClass]="{'pi-angle-up': differences?.salesDiff > 0, 'pi-angle-down': differences?.salesDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
                                     </span>
                             </div>
@@ -64,10 +64,10 @@
                         <div class="col-6">
                             <div class="value-graph">
                                 <span class="d-flex gap-2 align-items-center"
-                                    [ngClass]="{'text-success': differences.ordersDiff > 0, 'text-danger': differences.ordersDiff < 0}">
-                                    <h3 >{{differences.ordersDiff}}u.</h3>
+                                    [ngClass]="{'text-success': differences?.ordersDiff > 0, 'text-danger': differences?.ordersDiff < 0}">
+                                    <h3 >{{differences?.ordersDiff}}u.</h3>
                                     <span><i class="pi"
-                                            [ngClass]="{'pi-angle-up': differences.ordersDiff > 0, 'pi-angle-down': differences.ordersDiff < 0}"
+                                            [ngClass]="{'pi-angle-up': differences?.ordersDiff > 0, 'pi-angle-down': differences?.ordersDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
                                     </span>
                             </div>
@@ -108,10 +108,10 @@
                         <div class="col-6">
                             <div class="value-graph">
                                 <span class="d-flex gap-2 align-items-center"
-                                    [ngClass]="{'text-success': differences.productsDiff > 0, 'text-danger': differences.productsDiff < 0}">
-                                    <h3>{{differences.productsDiff}}u.</h3>
+                                    [ngClass]="{'text-success': differences?.productsDiff > 0, 'text-danger': differences?.productsDiff < 0}">
+                                    <h3>{{differences?.productsDiff}}u.</h3>
                                     <span><i class="pi"
-                                            [ngClass]="{'pi-angle-up': differences.productsDiff > 0, 'pi-angle-down': differences.productsDiff < 0}"
+                                            [ngClass]="{'pi-angle-up': differences?.productsDiff > 0, 'pi-angle-down': differences?.productsDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
                                     </span>
                             </div>
@@ -152,10 +152,10 @@
                         <div class="col-6">
                             <div class="value-graph">
                                 <span class="d-flex gap-2 align-items-center"
-                                    [ngClass]="{'text-success': differences.cancellationsDiff <= 0, 'text-danger': differences.cancellationsDiff > 0}">
-                                    <h3>{{differences.cancellationsDiff}}u.</h3>
+                                    [ngClass]="{'text-success': differences?.cancellationsDiff <= 0, 'text-danger': differences?.cancellationsDiff > 0}">
+                                    <h3>{{differences?.cancellationsDiff}}u.</h3>
                                     <span><i class="pi"
-                                            [ngClass]="{'pi-angle-up': differences.cancellationsDiff >= 0, 'pi-angle-down': differences.cancellationsDiff < 0}"
+                                            [ngClass]="{'pi-angle-up': differences?.cancellationsDiff >= 0, 'pi-angle-down': differences?.cancellationsDiff < 0}"
                                             style=" font-size: 1.5rem"></i></span>
                                     </span>
                             </div>
@@ -204,7 +204,7 @@
                 <div class="card-body">
                     <div class="user-status table-responsive latest-order-table" style="height: 100%;">
                         <div class="d-flex flex-column justify-content-between" style="height: 100%;">
-                            <div *ngIf="ordersTable.length > 0">
+                            <div *ngIf="ordersTable?.length > 0">
                                 <table class="table table-bordernone">
                                     <thead>
                                         <tr>
@@ -228,7 +228,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div *ngIf="ordersTable.length == 0">
+                            <div *ngIf="ordersTable?.length == 0">
                                 <div class="mt-5 d-flex flex-column gap-2 align-items-center justify-content-center">
                                     <img src="assets/images/empty.png" width="50px" alt="">
                                     <span class="text-muted">Empty data</span>

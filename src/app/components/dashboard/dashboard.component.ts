@@ -403,9 +403,11 @@ export class DashboardComponent implements OnInit {
   }
 
   isZerosList(list: number[]): boolean{
-    const result = list.reduce((total, valor) => total + valor, 0);
-    if(result === 0)
-      return true;
+    if(list){
+      const result = list.reduce((total, valor) => total + valor, 0);
+      if(result === 0)
+        return true;
+    }
     return false;
   }
 
