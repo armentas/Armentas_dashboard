@@ -23,30 +23,67 @@
                 </div>
                 <div class="card-body">
                     <div class="digital-add needs-validation">
-                        <div class="form-group">
-                            <label for="productTitle" class="col-form-label pt-0"><span>*</span> Title</label>
-                            <input class="form-control" id="productTitle" type="text" [(ngModel)]="productData.title"
-                                required="">
+                        <div class="row">
+                            <div class="col-9 col-lg-10 form-group">
+                                <label for="productTitle" class="col-form-label pt-0"><span>*</span> Title</label>
+                                <input class="form-control" id="productTitle" type="text"
+                                    [(ngModel)]="productData.title" required="">
+                            </div>
+                            <div class="col-3 col-lg-2 mb-2">
+                                <div class="d-flex flex-column">
+                                    <label for="productOnSale" class="col-form-label pt-0">On Sale</label>
+                                    <p-inputSwitch [(ngModel)]="onSale" style="padding-top: 5px;"
+                                        [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label" for="productDescription">Description</label>
+                            <label class="col-form-label" for="productDescription"><span>*</span> Description</label>
                             <textarea rows="5" cols="12" id="productDescription"
                                 [(ngModel)]="productData.description"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="productType" class="col-form-label pt-0"><span>*</span> Type</label>
-                                <select class="custom-select form-select" id="productType" required=""
-                                    [(ngModel)]="selectedProductType">
+                                <div class="d-flex justify-content-between">
+                                    <label for="productCollection" class="col-form-label pt-0"><span>*</span> Collection</label>
+                                    <span class="d-flex gap-1 align-items-center pr-2 add-new"
+                                        (click)="open(newCollection)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            viewBox="0 0 1024 1024">
+                                            <path fill="#10107c"
+                                                d="M352 480h320a32 32 0 1 1 0 64H352a32 32 0 0 1 0-64" />
+                                            <path fill="#10107c"
+                                                d="M480 672V352a32 32 0 1 1 64 0v320a32 32 0 0 1-64 0" />
+                                            <path fill="#10107c"
+                                                d="M512 896a384 384 0 1 0 0-768a384 384 0 0 0 0 768m0 64a448 448 0 1 1 0-896a448 448 0 0 1 0 896" />
+                                        </svg> New
+                                    </span>
+                                </div>
+                                <select class="custom-select form-select" id="productCollection" required=""
+                                    [(ngModel)]="selectedProductCollection">
                                     <option value="" disabled>--Select--</option>
-                                    <ng-container *ngFor="let type of types">
-                                        <option [value]="type.code" *ngIf="type.active">{{ type.name }}</option>
+                                    <ng-container *ngFor="let collection of collections">
+                                        <option [value]="collection.code" *ngIf="collection.active && collection.code !== 'GG'">{{ collection.name }}</option>
                                     </ng-container>
                                 </select>
                             </div>
                             <div class="col-6 form-group">
-                                <label class="col-form-label pt-0"><span>*</span> Category</label>
-                                <select class="custom-select form-select" required=""
+                                <div class="d-flex justify-content-between">
+                                    <label for="category" class="col-form-label pt-0"><span>*</span> Category</label>
+                                    <span class="d-flex gap-1 align-items-center pr-2 add-new"
+                                        (click)="open(newCategory)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            viewBox="0 0 1024 1024">
+                                            <path fill="#10107c"
+                                                d="M352 480h320a32 32 0 1 1 0 64H352a32 32 0 0 1 0-64" />
+                                            <path fill="#10107c"
+                                                d="M480 672V352a32 32 0 1 1 64 0v320a32 32 0 0 1-64 0" />
+                                            <path fill="#10107c"
+                                                d="M512 896a384 384 0 1 0 0-768a384 384 0 0 0 0 768m0 64a448 448 0 1 1 0-896a448 448 0 0 1 0 896" />
+                                        </svg> New
+                                    </span>
+                                </div>
+                                <select class="custom-select form-select" required="" id="category"
                                     [(ngModel)]="selectedProductCategory">
                                     <option value="" disabled>--Select--</option>
                                     <ng-container *ngFor="let category of categories">
@@ -58,7 +95,7 @@
                         </div>
                         <div class="row">
                             <div class="col-4 col-md-4 form-group">
-                                <label for="productPrice" class="col-form-label"><span>*</span> Product Price</label>
+                                <label for="productPrice" class="col-form-label"><span>*</span> Price</label>
                                 <input class="form-control" placeholder="$ 0.00" id="productPrice"
                                     [(ngModel)]="productData.price" type="number" required="">
                             </div>
@@ -68,25 +105,16 @@
                                     [(ngModel)]="productData.stock" type="number" required="">
                             </div>
                             <div class="col-4 col-md-4 form-group">
-                                <label class="col-form-label">On Sale</label>
-                                <div
-                                    class="m-checkbox-inline mb-0 custom-radio-ml d-flex align-items-center radio-animated">
-                                    <div class="form-group d-flex gap-2 mb-1 mt-2">
-                                        <input class="radio_animated" id="enable" type="radio" name="onSale"
-                                            [(ngModel)]="onSale" value="true">
-                                        <label class="d-block" for="enable">Enable</label>
-                                    </div>
-                                    <div class="form-group d-flex gap-2 mb-1 mt-2">
-                                        <input class="radio_animated" id="disble" type="radio" name="onSale"
-                                            [(ngModel)]="onSale" value="false">
-                                        <label class="d-block" for="disble">Disable</label>
-                                    </div>
+                                <label for="productWeight" class="col-form-label"><span>*</span> Weight</label>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <input class="form-control" placeholder="0,0" step="0.5" id="productWeight"
+                                        [(ngModel)]="productData.weight" type="number" required="">
+                                    <span>Kg</span>
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="validationCustomtitle" class="col-form-label pt-0"><span>*</span> Tags</label>
+                            <label for="validationCustomtitle" class="col-form-label pt-0">Tags</label>
                             <div class="card p-fluid">
                                 <p-chips [(ngModel)]="tags" placeholder="Add tags..."></p-chips>
                                 <span class="text-muted mt-2 ms-2">
@@ -108,7 +136,7 @@
                     <div class="digital-add needs-validation">
                         <div class="row mb-0">
                             <div class="col-12 form-group mb-0">
-                                <label class="col-form-label mb-2">Add Images</label>
+                                <label class="col-form-label mb-2"><span>*</span> Add Images</label>
                                 <div class="">
                                     <div class="digital-add needs-validation">
                                         <ul class="nav nav-tabs">
@@ -125,10 +153,18 @@
                                             <div class="d-flex flex-column flex-fill">
                                                 <div *ngFor="let item of list; let i = index"
                                                     class="d-flex gap-2 align-items-baseline">
-                                                    <div class="input-group mb-3 ">
+                                                    <!-- <div class="input-group mb-3 ">
                                                         <input type="file" accept="image/*" class="form-control"
                                                             id="inputGroupFile0{{item}}"
                                                             (change)="onFileChange($event, item)">
+                                                    </div> -->
+                                                    <div class="custom-file-upload">
+                                                        <label for="inputGroupFile0{{item}}" class="btn btn-primary">
+                                                            <i class="pi pi-upload"></i> Select File
+                                                        </label>
+                                                        <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
+                                                        <input type="file" accept="image/*" class="form-control visually-hidden"
+                                                            id="inputGroupFile0{{item}}" #fileInput (change)="onFileChange($event, item)" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,7 +195,21 @@
                                             </div>
                                         </div>
                                         <div class="colorsSelector">
-                                            <label class="col-form-label mb-2">Colors</label>
+                                            <div class="d-flex justify-content-between">
+                                                <label class="col-form-label mb-2">Colors</label>
+                                                <span class="d-flex gap-1 align-items-center pr-2 add-new"
+                                                    (click)="open(newColor)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                                        viewBox="0 0 1024 1024">
+                                                        <path fill="#10107c"
+                                                            d="M352 480h320a32 32 0 1 1 0 64H352a32 32 0 0 1 0-64" />
+                                                        <path fill="#10107c"
+                                                            d="M480 672V352a32 32 0 1 1 64 0v320a32 32 0 0 1-64 0" />
+                                                        <path fill="#10107c"
+                                                            d="M512 896a384 384 0 1 0 0-768a384 384 0 0 0 0 768m0 64a448 448 0 1 1 0-896a448 448 0 0 1 0 896" />
+                                                    </svg> New
+                                                </span>
+                                            </div>
                                             <div class="card d-flex justify-content-center">
                                                 <div class="checkbox-container d-flex flex-wrap gap-2">
                                                     <div *ngFor="let color of colors" class="checkbox-label">
@@ -190,4 +240,108 @@
             </div>
         </div>
     </div>
+    <ng-template #newCollection let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">Add New Collection</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">X</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group mb-2">
+                <label for="collectionName" class="col-form-label pt-0">Name</label>
+                <input class="form-control" id="collectionName" type="text" [(ngModel)]="newCollectionData.name"
+                    [ngModelOptions]="{standalone: true}" required="" (blur)="validateName(collectionNameList,newCollectionData.name)">
+                <span class="text-danger" *ngIf="errors.name">{{ errors.name }}</span>
+            </div>
+            <div class="form-group">
+                <label for="collectionCode" class="col-form-label pt-0">Code</label>
+                <input class="form-control" maxlength="2" id="collectionCode" type="text"
+                    [(ngModel)]="newCollectionData.code" [ngModelOptions]="{standalone: true}" 
+                    required="" style="text-transform: uppercase;" (keypress)="validateInput($event)"
+                    (blur)="validateCode(collectionCodeList, newCollectionData.code)">
+                <span class="text-danger" *ngIf="errors.code">{{ errors.code }}</span>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" for="productDescription">Description</label>
+                <textarea rows="3" id="productDescription" class="form-control"
+                    [(ngModel)]="newCollectionData.description"></textarea>
+                <span class="text-danger" *ngIf="errors.description">{{ errors.description }}</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="saveCollectionData()">Save</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                (click)="modal.dismiss('Cross click')">Close</button>
+        </div>
+    </ng-template>
+    <ng-template #newCategory let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">Add New Category</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">X</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group mb-2">
+                <label for="categoryName" class="col-form-label pt-0">Name</label>
+                <input class="form-control" id="categoryName" type="text" [(ngModel)]="newCategoryData.name"
+                    [ngModelOptions]="{standalone: true}" required="" (blur)="validateName(categoryNameList, newCategoryData.name)">
+                <span class="text-danger" *ngIf="errors.name">{{ errors.name }}</span>
+            </div>
+            <div class="form-group">
+                <label for="categoryCode" class="col-form-label pt-0">Code</label>
+                <input class="form-control" maxlength="2" id="categoryCode" type="text"
+                    [(ngModel)]="newCategoryData.code" [ngModelOptions]="{standalone: true}" 
+                    required="" style="text-transform: uppercase;" (keypress)="validateInput($event)"
+                    (blur)="validateCode(categoryCodeList, newCategoryData.code)">
+                <span class="text-danger" *ngIf="errors.code">{{ errors.code }}</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="saveCategoryData()">Save</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                (click)="modal.dismiss('Cross click')">Close</button>
+        </div>
+    </ng-template>
+    <ng-template #newColor let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">Add New Color</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">X</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group mb-2">
+                <label for="colorName" class="col-form-label pt-0">Name</label>
+                <input class="form-control" id="colorName" type="text" [(ngModel)]="newColorData.name"
+                    [ngModelOptions]="{standalone: true}" required="" (blur)="validateName(colorNameList, newColorData.name)">
+                <span class="text-danger" *ngIf="errors.name">{{ errors.name }}</span>
+            </div>
+            <div class="form-group mb-2">
+                <label for="categoryCode" class="col-form-label pt-0">Color Key</label>
+                <input class="form-control" maxlength="2" id="categoryCode" type="text"
+                    [(ngModel)]="newColorData.color_key" [ngModelOptions]="{standalone: true}" 
+                    required="" style="text-transform: uppercase;" (keypress)="validateInput($event)" (blur)="validateKey()">
+                <span class="text-danger" *ngIf="errors.color_key">{{ errors.color_key }}</span>
+            </div>
+            <div class="form-group mb-2">
+                <label for="colorPicker" class="col-form-label pt-0">Select Color</label>
+                <div class="d-flex align-items-center">
+                    <!-- Input de tipo color -->
+                    <input class="form-control form-control-color me-2" id="colorPicker" type="color"
+                        [(ngModel)]="newColorData.hexCode" [ngModelOptions]="{standalone: true}" (change)="updateHexCode()">
+                    <!-- Muestra el valor hexadecimal -->
+                    <input class="form-control" id="hexCodeDisplay" type="text" readonly
+                        [(ngModel)]="newColorData.hexCode">
+                    <span class="text-danger" *ngIf="errors.hexCode">{{ errors.hexCode }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="saveColorData()">Save</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                (click)="modal.dismiss('Cross click')">Close</button>
+        </div>
+    </ng-template>
 </div>

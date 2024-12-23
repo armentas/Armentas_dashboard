@@ -21,3 +21,45 @@
     background: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55% );
 
 }
+
+.add-new{
+    font-family: nunito;
+    font-size: 14px;
+    margin-bottom: 5px;
+
+    &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+        color: #10107c;
+    }
+}
+
+/* ---------- Fileupload ------------ */
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .custom-file-upload label {
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .custom-file-upload span {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .visually-hidden {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 1px;
+  }

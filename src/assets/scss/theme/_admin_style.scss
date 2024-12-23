@@ -301,6 +301,13 @@ a {
   object-fit: cover;
 }
 
+.imgTable-collection {
+  width: 100% !important;
+  height: auto;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
 input[type="file"] {
   // height: 45px !important;
 }
@@ -356,6 +363,11 @@ input[type="file"] {
 
 .input-grp-p {
   padding: 0;
+}
+
+.p-tooltip-text {
+    font-size: 10px;
+    text-align: center; /* Centrar el texto */
 }
 
 .order-graph {
@@ -970,6 +982,16 @@ ng2-smart-table {
   border-radius: 5px;
   border: 1px solid rgba($dark-gray, 0.25);
   max-width: 60px;
+}
+
+.frame-rect{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba($dark-gray, 0.25);
+  width: 120px;
+  height: 50px;
 }
 
 .modal-body{

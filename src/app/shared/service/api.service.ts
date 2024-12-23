@@ -77,6 +77,77 @@ export class ApiService {
   getAllFullProduct(): Promise<any> {
     return lastValueFrom(this.http.get<any>(`${this.baseUrl}/products/getAllFullProduct`));
   }
+  //-------------------- Collections section -----------------------------------------
+
+  getAllCollections(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/collections/getAllCollections`));
+  }
+
+  getCollection(id: number): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/collections/getCollection/${id}`));
+  }
+
+  addCollection(data: any): Promise<any> {
+    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/collections/addCollection`, data));
+  }
+
+  updateCollection(id: number, data: any): Promise<any> {
+    return lastValueFrom(this.http.put<any>(`${this.baseUrl}/collections/updateCollection/${id}`, data));
+  }
+
+  deleteCollection(id: number): Promise<any> {
+    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/collections/deleteCollection/${id}`));
+  }
+
+  addImageFileCollection(file: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/collections/addImageFile/`, formData));
+  }
+  //-------------------- Categories section -----------------------------------------
+
+  getAllCategories(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/categories/getAllCategories`));
+  }
+
+  getCategory(id: number): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/categories/getCategory/${id}`));
+  }
+
+  addCategory(data: any): Promise<any> {
+    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/categories/addCategory`, data));
+  }
+
+  updateCategory(id: number, data: any): Promise<any> {
+    return lastValueFrom(this.http.put<any>(`${this.baseUrl}/categories/updateCategory/${id}`, data));
+  }
+
+  deleteCategory(id: number): Promise<any> {
+    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/categories/deleteCategory/${id}`));
+  }
+
+  //-------------------- Colors section -----------------------------------------
+
+  getAllColors(): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/colors/getAllColors`));
+  }
+
+  getColor(id: number): Promise<any> {
+    return lastValueFrom(this.http.get<any>(`${this.baseUrl}/colors/getColor/${id}`));
+  }
+
+  addColor(data: any): Promise<any> {
+    return lastValueFrom(this.http.post<any>(`${this.baseUrl}/colors/addColor`, data));
+  }
+
+  updateColor(id: number, data: any): Promise<any> {
+    return lastValueFrom(this.http.put<any>(`${this.baseUrl}/colors/updateColor/${id}`, data));
+  }
+
+  deleteColor(id: number): Promise<any> {
+    return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/colors/deleteColor/${id}`));
+  }
 
   //-------------------- Image section -----------------------------------------
 

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from 'primeng/api';
 import { ApiService } from 'src/app/shared/service/api.service';
 
@@ -31,15 +32,29 @@ interface Product {
 
 export class DigitalAddComponent implements OnInit {
 
-  types: any[] = [];
+  selectedFileName: string = 'No file selected';
+
+  collections: any[] = [];
   categories: any[] = [];
   colors: any[] = [];
 
+  newColorData: any = {};
+  colorKeyList: string[] = [];
+  colorNameList: string[] = [];
+
+  newCategoryData: any = {};
+  categoryNameList: string[] = [];
+  categoryCodeList: string[] = [];
+
+  newCollectionData: any = {};
+  collectionNameList: string[] = [];
+  collectionCodeList: string[] = [];
+
   productData: any = {};
-  selectedProductType: string = '';
+  selectedProductCollection: string = '';
   selectedProductCategory: string = '';
   selectedColors: any[] = [];
-  onSale: string = 'true';
+  onSale: boolean = true;
 
   tags: string[] | undefined;
   urlImage: string = '';
@@ -55,67 +70,119 @@ export class DigitalAddComponent implements OnInit {
   progress: number = 0;
   interval = null;
 
-  
+  public closeResult: string;
 
+  errors = {
+    name: '',
+    code: '',
+    color_key: '',
+    hexCode: '',
+    description: ''
+  };
 
-  constructor(private messageService: MessageService, private apiService: ApiService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private messageService: MessageService,
+    private apiService: ApiService,
+    private cdr: ChangeDetectorRef,
+    private modalService: NgbModal) { }
 
   async ngOnInit() {
-    this.types = [
-      { name: 'Piñata', code: 'PI', active: true },
-      { name: 'Piggy bank', code: 'PB', active: true }
-    ];
+    await this.loadData();
+  }
 
-    this.categories = [
-      { name: 'Girls', code: 'GR', active: true },
-      { name: 'Boys', code: 'BO', active: true },
-      { name: 'Adults', code: 'AD', active: true },
-      { name: 'Unisex', code: 'UN', active: true }
-    ];
+  async loadData() {
+    try {
+      const collections = await this.apiService.getAllCollections();
+      this.collections = collections.data
 
-    this.colors = [
-      { name: 'Red', key: 'RD', hexCode: '#FF0000' },
-      { name: 'Green', key: 'GR', hexCode: '#06a93f' },
-      { name: 'Blue', key: 'BL', hexCode: '#0000FF' },
-      { name: 'Yellow', key: 'YL', hexCode: '#FFFF00' },
-      { name: 'Orange', key: 'OR', hexCode: '#FFA500' },
-      { name: 'Purple', key: 'PR', hexCode: '#800080' },
-      { name: 'Pink', key: 'PK', hexCode: '#FFC0CB' },
-      { name: 'Cyan', key: 'CY', hexCode: '#00FFFF' },
-      { name: 'Magenta', key: 'MG', hexCode: '#FF00FF' },
-      { name: 'Brown', key: 'BR', hexCode: '#A52A2A' },
-      { name: 'Black', key: 'BK', hexCode: '#000000' },
-      { name: 'White', key: 'WH', hexCode: '#FFFFFF' },
-      { name: 'Gray', key: 'GY', hexCode: '#808080' },
-      { name: 'Lime', key: 'LM', hexCode: '#00FF00' },
-      { name: 'Teal', key: 'TL', hexCode: '#008080' },
-      { name: 'Maroon', key: 'MR', hexCode: '#800000' },
-      { name: 'Navy', key: 'NV', hexCode: '#000080' },
-      { name: 'Silver', key: 'SV', hexCode: '#C0C0C0' },
-      { name: 'Gold', key: 'GD', hexCode: '#FFD700' },
-      { name: 'Turquoise', key: 'TQ', hexCode: '#40E0D0' },
-      { name: 'Violet', key: 'VT', hexCode: '#8A2BE2' },
-      { name: 'Indigo', key: 'IG', hexCode: '#4B0082' },
-      { name: 'Aquamarine', key: 'AQ', hexCode: '#7FFFD4' },
-      { name: 'Coral', key: 'CR', hexCode: '#FF7F50' },
-      { name: 'Crimson', key: 'CM', hexCode: '#DC143C' },
-      { name: 'Salmon', key: 'SM', hexCode: '#FA8072' },
-      { name: 'Olive', key: 'OV', hexCode: '#808000' },
-      { name: 'Sky Blue', key: 'SB', hexCode: '#87CEEB' },
-      { name: 'Slate Gray', key: 'SL', hexCode: '#708090' },
-      { name: 'Peru', key: 'PE', hexCode: '#CD853F' },
-      { name: 'Orchid', key: 'OC', hexCode: '#DA70D6' },
-      { name: 'Chartreuse', key: 'CH', hexCode: '#7FFF00' },
-      { name: 'Sienna', key: 'SI', hexCode: '#A0522D' },
-      { name: 'Deep Pink', key: 'DP', hexCode: '#FF1493' },
-      { name: 'Midnight Blue', key: 'MN', hexCode: '#191970' },
-      { name: 'Dark Olive Green', key: 'DO', hexCode: '#556B2F' },
-      { name: 'Hot Pink', key: 'HP', hexCode: '#FF69B4' },
-      { name: 'Dark Slate Gray', key: 'DG', hexCode: '#2F4F4F' },
-      { name: 'Pale Violet Red', key: 'PV', hexCode: '#DB7093' },
-      { name: 'Deep Sky Blue', key: 'DS', hexCode: '#00BFFF' }
-    ];
+      const categories = await this.apiService.getAllCategories();
+      this.categories = categories.data;
 
+      const colors = await this.apiService.getAllColors();
+      this.colors = colors.data;
+
+
+      this.collectionNameList = this.collections.map(col => col.name.toLowerCase());
+      this.collectionCodeList = this.collections.map(col => col.code.toLowerCase());
+
+      this.categoryNameList = this.categories.map(cat => cat.name.toLowerCase());
+      this.categoryCodeList = this.categories.map(cat => cat.code.toLowerCase());
+
+      this.colorKeyList = this.colors.map(col => col.color_key.toLowerCase());
+      this.colorNameList = this.colors.map(col => col.name.toLowerCase());
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  open(content: any) {
+    Object.keys(this.errors).forEach(key => this.errors[key] = '');
+
+    this.newCategoryData = {
+      name: '',
+      code: ''
+    }
+
+    this.newColorData = {
+      name: '',
+      color_key: '',
+      hexCode: ''
+    }
+
+    this.newCollectionData = {
+      name: '',
+      code: '',
+      description: ''
+    }
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'sm', centered: true }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  validateCode(list: string[], code: string) {
+    if (list.includes(code.toLowerCase())) {
+      this.errors.code = 'This code already exists.';
+    } else {
+      this.errors.code = '';
+    }
+  }
+
+  validateName(list: string[], name: string) {
+    if (list.includes(name.toLowerCase())) {
+      this.errors.name = 'This name already exists.';
+    } else {
+      this.errors.name = '';
+    }
+  }
+
+  validateKey() {
+    if (this.colorKeyList.includes(this.newColorData.color_key.toLowerCase())) {
+      this.errors.color_key = 'This color key already exists.';
+    } else {
+      this.errors.color_key = '';
+    }
+  }
+
+  validateInput(event: KeyboardEvent): void {
+    const charCode = event.key.charCodeAt(0);
+    // Solo permite letras A-Z y a-z
+    if (!/[a-zA-Z]/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
   isSelected(color: any): boolean {
@@ -145,21 +212,22 @@ export class DigitalAddComponent implements OnInit {
     }
   }
 
-
   onFileChange(event: any, item: number): void {
-    if (this.previewImages.length < 4) {
-      const file = event.target.files[0];
+     if (this.previewImages.length < 4) {
+      const input = event.target as HTMLInputElement;
 
-      if (file) {
-        // Agregar en la lista de imagenes
+      if (input?.files?.length) {
+        this.selectedFileName = input.files[0].name;
+        const file = input.files[0];
         this.selectedImages.push(file);
-        // Obtener la URL de la imagen para mostrar la vista previa
+
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          // Agregar el objeto al arreglo de vista previa
           this.previewImages.push({ img_url: e.target.result, type: 'file' });
         };
         reader.readAsDataURL(file);
+      } else {
+        this.selectedFileName = 'No file selected';
       }
     } else {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ha llegado al número máximo de imágenes para un producto' });
@@ -188,7 +256,6 @@ export class DigitalAddComponent implements OnInit {
     this.selectedImages.splice(position, 1);
   }
 
-
   uniqueString(): string {
     // Get current date
     const currentDate = new Date();
@@ -207,16 +274,166 @@ export class DigitalAddComponent implements OnInit {
 
   skuGenerator(): string {
     const stringId = this.uniqueString();
-    return `AR${stringId}${this.selectedProductType}${this.selectedProductCategory}`;
+    return `AR${stringId}${this.selectedProductCollection}${this.selectedProductCategory}`;
   }
 
   getNameFromCode(object: any, code: string): string {
-    const foundName = object.find(type => type.code === code);
+    const foundName = object.find(obj => obj.code === code);
     return foundName?.name;
   }
 
-  async onSubmit2() {
-    this.productData.type = this.selectedProductType;
+  updateHexCode() {
+    this.newColorData.hexCode = this.newColorData.hexCode;
+  }
+
+  async saveCollectionData() {
+    // Limpiar errores previos
+    Object.keys(this.errors).forEach(key => this.errors[key] = '');
+    try {
+      const requiredFields = [
+        { field: 'name', message: 'Field required.' },
+        { field: 'code', message: 'Field required.' },
+        { field: 'description', message: 'Field required.' }
+      ];
+
+      // Verificar si hay campos vacíos y asignar mensajes de error
+      let hasError = false;
+      requiredFields.forEach(({ field, message }) => {
+        if (!this.newCollectionData[field] || this.newCollectionData[field].trim() === '') {
+          this.errors[field] = message;
+          hasError = true;
+        }
+      });
+
+      // Si hay errores, no continuar
+      if (hasError) {
+        console.warn('No se pudo guardar porque hay campos obligatorios vacíos.');
+        return;
+      }
+
+      this.validateName(this.collectionNameList,this.newCollectionData.name);
+      this.validateCode(this.collectionCodeList, this.newCollectionData.code);
+      
+      if (this.errors.name == '' && this.errors.code == '') {
+        console.log('Creando nueva coleccion:', this.newCollectionData);
+        
+        this.newCollectionData.code = this.newCollectionData.code.toUpperCase();
+        this.newCollectionData.title = 'Empty';
+        this.newCollectionData.image = 'https://placehold.co/1370x400/png';
+        this.newCollectionData.active = 1;
+        const resp = await this.apiService.addCollection(this.newCollectionData);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `The collection ${this.newCollectionData.name} has been successfully added` });
+      } else {
+        return;
+      }
+
+      this.loadData();
+      this.selectedProductCollection = this.newCollectionData.code;
+
+      this.modalService.dismissAll();
+    } catch (error) {
+      console.error('Error al guardar los datos:', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+    }
+  }
+
+  async saveCategoryData() {
+    // Limpiar errores previos
+    Object.keys(this.errors).forEach(key => this.errors[key] = '');
+    try {
+      const requiredFields = [
+        { field: 'name', message: 'Field required.' },
+        { field: 'code', message: 'Field required.' }
+      ];
+
+      // Verificar si hay campos vacíos y asignar mensajes de error
+      let hasError = false;
+      requiredFields.forEach(({ field, message }) => {
+        if (!this.newCategoryData[field] || this.newCategoryData[field].trim() === '') {
+          this.errors[field] = message;
+          hasError = true;
+        }
+      });
+
+      // Si hay errores, no continuar
+      if (hasError) {
+        console.warn('No se pudo guardar porque hay campos obligatorios vacíos.');
+        return;
+      }
+
+      this.validateName(this.categoryNameList,this.newCategoryData.name);
+      this.validateCode(this.categoryCodeList,this.newCategoryData.code);
+
+      this.newCategoryData.code = this.newCategoryData.code.toUpperCase();
+
+      if (this.errors.code == '' && this.errors.name == '') {
+        console.log('Creando nueva categoria:', this.newCategoryData);
+        const resp = await this.apiService.addCategory(this.newCategoryData);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `The category ${this.newCategoryData.name} has been successfully added` });
+      } else {
+        return;
+      }
+
+      this.loadData();
+      this.selectedProductCategory = this.newCategoryData.code;
+
+      this.modalService.dismissAll();
+    } catch (error) {
+      console.error('Error al guardar los datos:', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+    }
+  }
+
+  async saveColorData() {
+    // Limpiar errores previos
+    Object.keys(this.errors).forEach(key => this.errors[key] = '');
+    try {
+      const requiredFields = [
+        { field: 'name', message: 'Field required.' },
+        { field: 'color_key', message: 'Field required.' },
+        { field: 'hexCode', message: 'Field required.' }
+      ];
+
+      // Verificar si hay campos vacíos y asignar mensajes de error
+      let hasError = false;
+      requiredFields.forEach(({ field, message }) => {
+        if (!this.newColorData[field] || this.newColorData[field].trim() === '') {
+          this.errors[field] = message;
+          hasError = true;
+        }
+      });
+
+      // Si hay errores, no continuar
+      if (hasError) {
+        console.warn('No se pudo guardar porque hay campos obligatorios vacíos.');
+        return;
+      }
+
+      this.validateName(this.colorNameList, this.newColorData.name)
+      this.validateKey()
+
+      this.newColorData.color_key = this.newColorData.color_key.toUpperCase();
+
+      if (this.errors.color_key == '' && this.errors.name == '') {
+        console.log('Creando nuevo color:', this.newColorData);
+        const resp = await this.apiService.addColor(this.newColorData);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `The color ${this.newColorData.name} has been successfully added` });
+      } else {
+        return;
+      }
+
+      this.loadData();
+
+      this.modalService.dismissAll();
+    } catch (error) {
+      console.error('Error al guardar los datos:', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+    }
+  }
+
+  async onSubmit2() {  
+    const collec = this.collections.filter( col => col.code == this.selectedProductCollection)[0];
+    this.productData.collection = collec?.id ? collec.id : '';
     this.productData.category = this.selectedProductCategory;
     this.productData.sku = this.skuGenerator();
     this.productData.onSale = this.onSale;
@@ -224,11 +441,11 @@ export class DigitalAddComponent implements OnInit {
     this.productData.colors = this.selectedColors;
     this.productData.tags = new Set([
       this.tags,
-      this.getNameFromCode(this.types, this.productData.type),
+      this.getNameFromCode(this.collections, collec?.code),
       this.getNameFromCode(this.categories, this.productData.category)
-    ]);
+    ].filter(Boolean));
 
-    const requiredProperties = ['title', 'description', 'type', 'category', 'price', 'stock', 'tags', 'images'];
+    const requiredProperties = ['title', 'description', 'collection', 'category', 'price', 'stock', 'weight', 'tags', 'images'];
     const missingProperties = requiredProperties.filter(prop => !this.productData[prop] || this.productData[prop] === '' || this.productData[prop].length === 0);
 
     if (missingProperties.length > 0) {
@@ -239,7 +456,7 @@ export class DigitalAddComponent implements OnInit {
     try {
       this.showConfirm()
       let generalData = {
-        type: this.getNameFromCode(this.types, this.productData.type),
+        collection: this.productData.collection,
         title: this.productData.title,
         description: this.productData.description ?? '',
         sku: this.productData.sku,
@@ -247,9 +464,10 @@ export class DigitalAddComponent implements OnInit {
         colors: this.productData.colors.join(','),
         price: this.productData.price,
         stock: this.productData.stock,
-        sale: (this.productData.onSale === "true") ? 1 : 0,
+        weight: this.productData.weight,
+        sale: this.productData.onSale ? 1 : 0,
         tags: Array.from(this.productData.tags).join(','),
-      }      
+      }
 
       // Insert product
       const productResult = await this.apiService.addProduct(generalData);
@@ -268,15 +486,15 @@ export class DigitalAddComponent implements OnInit {
 
       this.onReject();
       this.messageService.add({ severity: 'success', summary: 'Producto registrado', detail: `Se registro el producto ${this.productData.title}` });
+      this.cleanAll();
+
     } catch (error) {
       this.onReject();
-      if(error.error){
+      if (error.error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: `${error.error.msg}` });
-      }else{
+      } else {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error al intentar crear el producto: ${error.message}` });
       }
-
-
     }
   }
 
@@ -312,5 +530,22 @@ export class DigitalAddComponent implements OnInit {
   onReject() {
     this.messageService.clear('confirm');
     this.visible = false;
+  }
+
+  cleanAll(){
+    this.onSale = true;
+    this.productData.title = '';
+    this.productData.description = '';
+    this.selectedProductCollection = '';
+    this.selectedProductCategory = '';
+    this.productData.price = '';
+    this.productData.stock = '';
+    this.productData.weight = '';
+    this.tags = [];
+    this.selectedFileName = 'No file selected';
+    this.selectedImages = [];
+    this.previewImages = [];
+    this.productData.colors = [];
+    this.selectedColors = [];
   }
 }

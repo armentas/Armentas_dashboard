@@ -21,11 +21,18 @@ interface UploadEvent {
 })
 export class DigitalListComponent implements OnInit {
 
+  selectedFileName: string = 'No file selected';
+  previewImages: any[] = [];
+  newImages: File[] = [];
+  idImagesToDelete: number[] = [];
+
+  loading: boolean = false;
+
   public closeResult: string;
   visible: boolean = false;
   public productList: any[] = [];
 
-  types: any[] = [];
+  collections: any[] = [];
   categories: any[] = [];
   colors: any[] = [];
 
@@ -59,67 +66,20 @@ export class DigitalListComponent implements OnInit {
 
   async ngOnInit() {
     await this.loadProducts();
-
-    this.types = [
-      { name: 'Piñata', code: 'PI', active: true },
-      { name: 'Piggy bank', code: 'PB', active: true }
-    ];
-
-    this.categories = [
-      { name: 'Girls', code: 'GR', active: true },
-      { name: 'Boys', code: 'BO', active: true },
-      { name: 'Adults', code: 'AD', active: true },
-      { name: 'Unisex', code: 'UN', active: true }
-    ];
-
-    this.colors = [
-      { name: 'Red', key: 'RD', hexCode: '#FF0000' },
-      { name: 'Green', key: 'GR', hexCode: '#06a93f' },
-      { name: 'Blue', key: 'BL', hexCode: '#0000FF' },
-      { name: 'Yellow', key: 'YL', hexCode: '#FFFF00' },
-      { name: 'Orange', key: 'OR', hexCode: '#FFA500' },
-      { name: 'Purple', key: 'PR', hexCode: '#800080' },
-      { name: 'Pink', key: 'PK', hexCode: '#FFC0CB' },
-      { name: 'Cyan', key: 'CY', hexCode: '#00FFFF' },
-      { name: 'Magenta', key: 'MG', hexCode: '#FF00FF' },
-      { name: 'Brown', key: 'BR', hexCode: '#A52A2A' },
-      { name: 'Black', key: 'BK', hexCode: '#000000' },
-      { name: 'White', key: 'WH', hexCode: '#FFFFFF' },
-      { name: 'Gray', key: 'GY', hexCode: '#808080' },
-      { name: 'Lime', key: 'LM', hexCode: '#00FF00' },
-      { name: 'Teal', key: 'TL', hexCode: '#008080' },
-      { name: 'Maroon', key: 'MR', hexCode: '#800000' },
-      { name: 'Navy', key: 'NV', hexCode: '#000080' },
-      { name: 'Silver', key: 'SV', hexCode: '#C0C0C0' },
-      { name: 'Gold', key: 'GD', hexCode: '#FFD700' },
-      { name: 'Turquoise', key: 'TQ', hexCode: '#40E0D0' },
-      { name: 'Violet', key: 'VT', hexCode: '#8A2BE2' },
-      { name: 'Indigo', key: 'IG', hexCode: '#4B0082' },
-      { name: 'Aquamarine', key: 'AQ', hexCode: '#7FFFD4' },
-      { name: 'Coral', key: 'CR', hexCode: '#FF7F50' },
-      { name: 'Crimson', key: 'CM', hexCode: '#DC143C' },
-      { name: 'Salmon', key: 'SM', hexCode: '#FA8072' },
-      { name: 'Olive', key: 'OV', hexCode: '#808000' },
-      { name: 'Sky Blue', key: 'SB', hexCode: '#87CEEB' },
-      { name: 'Slate Gray', key: 'SL', hexCode: '#708090' },
-      { name: 'Peru', key: 'PE', hexCode: '#CD853F' },
-      { name: 'Orchid', key: 'OC', hexCode: '#DA70D6' },
-      { name: 'Chartreuse', key: 'CH', hexCode: '#7FFF00' },
-      { name: 'Sienna', key: 'SI', hexCode: '#A0522D' },
-      { name: 'Deep Pink', key: 'DP', hexCode: '#FF1493' },
-      { name: 'Midnight Blue', key: 'MN', hexCode: '#191970' },
-      { name: 'Dark Olive Green', key: 'DO', hexCode: '#556B2F' },
-      { name: 'Hot Pink', key: 'HP', hexCode: '#FF69B4' },
-      { name: 'Dark Slate Gray', key: 'DG', hexCode: '#2F4F4F' },
-      { name: 'Pale Violet Red', key: 'PV', hexCode: '#DB7093' },
-      { name: 'Deep Sky Blue', key: 'DS', hexCode: '#00BFFF' }
-    ];
-
   }
 
   async loadProducts() {
     const products = await this.apiService.getAllFullProduct();
     this.products = products.data;
+
+    const collections = await this.apiService.getAllCollections();
+    this.collections = collections.data;
+
+    const categories = await this.apiService.getAllCategories();
+    this.categories = categories.data;
+
+    const colors = await this.apiService.getAllColors();
+    this.colors = colors.data;
   }
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
@@ -180,6 +140,7 @@ export class DigitalListComponent implements OnInit {
 
   async onConfirmAll() {
     try {
+      this.loading = true;
       for (let index = 0; index < this.selectedProducts.length; index++) {
         const result = await this.apiService.deleteProduct(this.selectedProducts[index].id);
       }
@@ -191,9 +152,11 @@ export class DigitalListComponent implements OnInit {
       setTimeout(() => {
         this.reload();
       }, 1000);
+      this.loading = false;
       this.visible = false;
 
     } catch (error) {
+      this.loading = false;
       if (error.error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
       } else {
@@ -219,6 +182,7 @@ export class DigitalListComponent implements OnInit {
 
   async open(content: any, id: number) {
     this.productSelected = id
+    this.selectedFileName = 'No file selected';
     this.getImagesFromSelected();
 
     try {
@@ -226,11 +190,12 @@ export class DigitalListComponent implements OnInit {
 
       this.productData.title = result.data[0].title;
       this.productData.description = result.data[0].description;
-      this.productData.price = result.data[0].price;
+      this.productData.collection = this.getCollectionFromId(result.data[0].collection);
       this.productData.category = result.data[0].category;
-      this.productData.colors = result.data[0].colors;
-      this.productData.type = result.data[0].type;
+      this.productData.price = Number(result.data[0].price).toFixed(2) ;
+      this.productData.weight = result.data[0].weight;
       this.productData.stock = result.data[0].stock;
+      this.productData.colors = result.data[0].colors;
       this.productData.tags = result.data[0].tags;
       this.productData.sku = result.data[0].sku;
       this.productData.updated_date = this.getFormattedCurrentDate();
@@ -258,10 +223,10 @@ export class DigitalListComponent implements OnInit {
   }
 
   updateSKU(field: string) {
-    if (field === 'type') {
-      const replaceChars = this.types.filter(type => {
-        if (type.name === this.productData.type) {
-          return type.code;
+    if (field === 'collection') {
+      const replaceChars = this.collections.filter(col => {
+        if (col.name === this.productData.collection) {
+          return col.code;
         }
       });
       this.productData.sku = this.productData.sku.slice(0, -4) + replaceChars[0].code + this.productData.sku.slice(-2);
@@ -276,46 +241,75 @@ export class DigitalListComponent implements OnInit {
   }
 
   async deleteImage(id: number) {
-    try {
-      const result = await this.apiService.deleteImage(id);
-
-      if (result.data.affectedRows !== 0) {
-        this.messageService.add({ severity: 'success', summary: 'Imagen eliminada', detail: `Se elimino la imagen correctamente` });
-      }
-      this.imagesProductSelected = this.imagesProductSelected.filter(image => {
-        return image.id !== id;
-      })
-      this.reload();
-    } catch (error) {
-      if (error.error) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
-      } else {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
-      }
-    }
+    this.imagesProductSelected = this.imagesProductSelected.filter(img => img.id !== id);
+    this.idImagesToDelete.push(id);
   }
 
-  async addImage(id_product: number, fileInput: HTMLInputElement) {
-    try {
-      if (this.imagesProductSelected.length < 4) {
-        const file = fileInput.files[0];
-        const imageResult = await this.apiService.addImageFile(id_product, file);
-        if (imageResult.data.affectedRows !== 0) {
-          const allImages = await this.apiService.getAllImageByProductId(id_product);
-          this.imagesProductSelected = allImages.data
-          this.messageService.add({ severity: 'success', summary: 'Imagen insertada', detail: `Se inserto la imagen correctamente` });
-        }
-        this.reload();
-      }
+  // async deleteImage(id: number) {
+  //   try {
+  //     const result = await this.apiService.deleteImage(id);
 
-    } catch (error) {
-      if (error.error) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
-      } else {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
-      }
+  //     if (result.data.affectedRows !== 0) {
+  //       this.messageService.add({ severity: 'success', summary: 'Imagen eliminada', detail: `Se elimino la imagen correctamente` });
+  //     }
+  //     this.imagesProductSelected = this.imagesProductSelected.filter(image => {
+  //       return image.id !== id;
+  //     })
+  //     this.reload();
+  //   } catch (error) {
+  //     if (error.error) {
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
+  //     } else {
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+  //     }
+  //   }
+  // }
+
+  showFileName(fileInput: HTMLInputElement){
+    this.selectedFileName = fileInput.files[0].name;
+
+    if((this.imagesProductSelected.length + this.previewImages.length) < 4){
+      this.newImages.push(fileInput.files[0]);
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewImages.push({ img_url: e.target.result, type: 'file' });
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+      
+    }else{
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ha llegado al número máximo de imágenes para un producto' });
     }
+    
   }
+
+  deletePreviewImage(index: number){
+    this.previewImages.splice(index, 1);
+    this.newImages.splice(index, 1);
+  }
+
+  // async addImage(id_product: number, fileInput: HTMLInputElement) {
+  //   try {
+  //     if (this.imagesProductSelected.length < 4) {
+  //       const file = fileInput.files[0];
+  //       this.selectedFileName = fileInput.files[0].name;
+  //       const imageResult = await this.apiService.addImageFile(id_product, file);
+  //       if (imageResult.data.affectedRows !== 0) {
+  //         const allImages = await this.apiService.getAllImageByProductId(id_product);
+  //         this.imagesProductSelected = allImages.data
+  //         this.messageService.add({ severity: 'success', summary: 'Imagen insertada', detail: `Se inserto la imagen correctamente` });
+  //       }
+  //       this.reload();
+  //     }
+
+  //   } catch (error) {
+  //     if (error.error) {
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
+  //     } else {
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+  //     }
+  //   }
+  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -364,45 +358,60 @@ export class DigitalListComponent implements OnInit {
     }
   }
 
+  getCollectionFromId(id: number){
+    console.log(id);
+    
+    const resp = this.collections.filter(col => col.id === id);
+    return resp[0]?.name;
+  }
+
   updateImageText(event, index: number) {
     const img_url: string = event.target.value;
     this.imagesProductUrl[index] = img_url.replace(/dl=0/g, 'dl=1');
 
   }
 
-  async onFileSelected(event: UploadEvent) {
-    try {
-      this.selectedFile = true
-      const file = event.files[0];
-
-    } catch (error) {
-      this.messageService.add({ key: 'tc', severity: 'error', summary: 'Error', detail: error.message });
-    }
-  }
-
   async saveData() {
+    const collec = this.collections.filter( col => col.name == this.productData.collection)[0];    
+    this.productData.collection = collec?.id ? collec.id : '';
     this.productData.sale = this.checked ? 1 : 0;
     this.productData.colors = this.selectedColors.map(color => color.name).join(',');
     this.productData.tags = [...this.tags].join(',');
 
-    const requiredProperties = ['title', 'description', 'price', 'tags'];
+    const requiredProperties = ['collection', 'title', 'description', 'price', 'tags'];
     const missingProperties = requiredProperties.filter(prop => !this.productData[prop] || this.productData[prop] === '' || this.productData[prop].length === 0);
 
     if (missingProperties.length > 0) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: `Por favor, complete los siguientes campos obligatorios: ${missingProperties.join(', ')}` });
       return;
     }
-    console.log(this.productData);
 
     try {
+      this.loading = true;
+      if(this.newImages.length > 0){
+        await Promise.all(this.newImages.map( async(file) => {
+          await this.apiService.addImageFile(this.productSelected, file);
+        }));
+        this.itemSaved = true;
+      }
+
+      if(this.idImagesToDelete.length > 0){
+        await Promise.all(this.idImagesToDelete.map( async(id) => {
+          await this.apiService.deleteImage(id);
+        }));
+        this.itemSaved = true;
+      }
+
       const result = await this.apiService.updateProduct(this.productSelected, this.productData);
       if (result.data.affectedRows !== 0) {
         this.messageService.add({ severity: 'success', summary: 'Producto editado', detail: `Se actualizo el producto con ID: ${this.productSelected}` });
         this.itemSaved = true;
       }
       this.modalService.dismissAll();
+      this.loading = false;
 
     } catch (error) {
+      this.loading = false;
       if (error.error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
       } else {
@@ -416,10 +425,11 @@ export class DigitalListComponent implements OnInit {
       let newData = {
         title: prod.title,
         description: prod.description,
-        type: prod.type,
+        collection: prod.collection,
         category: prod.category,
         stock: prod.stock,
         price: prod.price,
+        weight: prod.weight,
         status: prod.sale ? 1 : 0,
         sku: prod.sku,
         tags: prod.tags.join(),
@@ -454,6 +464,9 @@ export class DigitalListComponent implements OnInit {
     this.productSelected = 0;
     this.productData = {};
     this.selectedColors = [];
+    this.newImages = [];
+    this.previewImages = [];
+    this.idImagesToDelete = [];
   }
 
 

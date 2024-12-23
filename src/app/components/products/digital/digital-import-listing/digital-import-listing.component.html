@@ -8,13 +8,18 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div *ngIf="productsListing.length == 0">
-                            <p-messages [(value)]="messagesInfo" [showTransitionOptions]="'500ms'" [enableService]="false" [closable]="false"></p-messages>
+                            <p-messages [(value)]="messagesInfo" [showTransitionOptions]="'500ms'"
+                                [enableService]="false" [closable]="false"></p-messages>
                         </div>
-                        <div *ngIf="errorTypeAmount !== 0 || errorCategoryAmount !== 0 || errorStockAmount !== 0 || errorPriceAmount !== 0">
-                            <p-messages [(value)]="messagesErrors" [showTransitionOptions]="'500ms'" [enableService]="false" [closable]="false"></p-messages>
+                        <div
+                            *ngIf="errorTypeAmount !== 0 || errorCategoryAmount !== 0 || errorStockAmount !== 0 || errorPriceAmount !== 0">
+                            <p-messages [(value)]="messagesErrors" [showTransitionOptions]="'500ms'"
+                                [enableService]="false" [closable]="false"></p-messages>
                         </div>
-                        <div *ngIf="productsListing.length !== 0 && (errorTypeAmount == 0 && errorCategoryAmount == 0 && errorStockAmount == 0 && errorPriceAmount == 0)">
-                            <p-messages [(value)]="messagesSuccess" [showTransitionOptions]="'500ms'" [closable]="false" [enableService]="false"></p-messages>
+                        <div
+                            *ngIf="productsListing.length !== 0 && (errorTypeAmount == 0 && errorCategoryAmount == 0 && errorStockAmount == 0 && errorPriceAmount == 0)">
+                            <p-messages [(value)]="messagesSuccess" [showTransitionOptions]="'500ms'" [closable]="false"
+                                [enableService]="false"></p-messages>
                         </div>
                         <p-table #dt [value]="productsListing" dataKey="num" [paginator]="true" [rows]="20"
                             [tableStyle]="{'min-width': '50rem'}" [scrollable]="true" scrollHeight="700px"
@@ -27,8 +32,12 @@
                                         <p-fileUpload #uploader mode="basic" chooseLabel="Import"
                                             class="mr-2 inline-block" (onSelect)="onFileSelected($event)" accept=".csv"
                                             maxFileSize="1000000"></p-fileUpload>
-                                        <i class="pi pi-times" style="color: #3B82F6; font-size: 1.5rem"
+                                        <i class="pi pi-times cursor-pointer" style="color: #3B82F6; font-size: 1.5rem"
                                             *ngIf="selectedFile" (click)="cleanUploader()"></i>
+                                        <div class="btnDownload d-flex gap-2" (click)="downloadCSV()">
+                                            <i class="pi pi-download"></i>
+                                            <span>Template</span>
+                                        </div>
                                     </div>
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="btnAdd btn-primary d-flex gap-2" (click)="saveData()">
@@ -43,11 +52,12 @@
                                     <th>No.</th>
                                     <th style="min-width:150px">Title</th>
                                     <th style="min-width:200px">Description</th>
-                                    <th style="min-width:150px">Type</th>
+                                    <th style="min-width:150px">Collection</th>
                                     <th>Category</th>
                                     <th>Images</th>
                                     <th>Stock</th>
                                     <th>Price</th>
+                                    <th>Weight</th>
                                     <th>Status</th>
                                 </tr>
                             </ng-template>
@@ -58,18 +68,20 @@
                                     </td>
                                     <td>{{ product.title }}</td>
                                     <td>{{ product.description }}</td>
-                                    <td><ng-container *ngIf="validarTypes(product.type); else errorSymbolTyp">
-                                        {{ product.type }}
-                                      </ng-container>
-                                      <ng-template #errorSymbolTyp>
-                                        <span style="color: red;">❌ {{ product.type }}</span>
-                                      </ng-template></td>
-                                      <td><ng-container *ngIf="validarCategories(product.category); else errorSymbolCat">
-                                        {{ product.category }}
-                                      </ng-container>
-                                      <ng-template #errorSymbolCat>
-                                        <span style="color: red;">❌ {{ product.category }}</span>
-                                      </ng-template></td>
+                                    <td><ng-container *ngIf="validarTCollections(product.collection); else errorSymbolTyp">
+                                            {{ product.collection }}
+                                        </ng-container>
+                                        <ng-template #errorSymbolTyp>
+                                            <span style="color: red;">❌ {{ product.collection }}</span>
+                                        </ng-template>
+                                    </td>
+                                    <td><ng-container *ngIf="validarCategories(product.category); else errorSymbolCat">
+                                            {{ product.category }}
+                                        </ng-container>
+                                        <ng-template #errorSymbolCat>
+                                            <span style="color: red;">❌ {{ product.category }}</span>
+                                        </ng-template>
+                                    </td>
                                     <td>
                                         <div class="d-flex gap-1">
                                             <div class="frame" *ngFor="let image of product.images, let i = index">
@@ -79,17 +91,26 @@
                                         </div>
                                     </td>
                                     <td><ng-container *ngIf="validarNumber(product.stock); else errorSymbolStock">
-                                        {{ product.stock }}
-                                      </ng-container>
-                                      <ng-template #errorSymbolStock>
-                                        <span style="color: red;">❌ {{ product.stock }}</span>
-                                      </ng-template></td>
-                                      <td><ng-container *ngIf="validarNumber(product.price); else errorSymbolPrice">
-                                        {{ product.price }}
-                                      </ng-container>
-                                      <ng-template #errorSymbolPrice>
-                                        <span style="color: red;">❌ {{ product.price }}</span>
-                                      </ng-template></td>
+                                            {{ product.stock }}
+                                        </ng-container>
+                                        <ng-template #errorSymbolStock>
+                                            <span style="color: red;">❌ {{ product.stock }}</span>
+                                        </ng-template>
+                                    </td>
+                                    <td><ng-container *ngIf="validarNumber(product.price); else errorSymbolPrice">
+                                            {{ product.price }}
+                                        </ng-container>
+                                        <ng-template #errorSymbolPrice>
+                                            <span style="color: red;">❌ {{ product.price }}</span>
+                                        </ng-template>
+                                    </td>
+                                    <td><ng-container *ngIf="validarNumber(product.weight); else errorSymbolWeight">
+                                        {{ product.weight }}
+                                    </ng-container>
+                                    <ng-template #errorSymbolWeight>
+                                        <span style="color: red;">❌ {{ product.weight }}</span>
+                                    </ng-template>
+                                </td>
                                     <td>{{ product.status === "1" ? 'On Sale' : 'Disabled' }}</td>
                                 </tr>
                             </ng-template>

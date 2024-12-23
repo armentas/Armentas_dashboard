@@ -4,10 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+//Sub components
 import { ProductsRoutingModule } from './products-routing.module';
 import { DigitalListComponent } from './digital/digital-list/digital-list.component';
 import { DigitalAddComponent } from './digital/digital-add/digital-add.component';
+import { CollectionsComponent } from './digital/collections/collections.component';
+
 import { GalleryModule } from '@ks89/angular-modal-gallery';
 import 'hammerjs';
 import 'mousetrap';
@@ -30,7 +32,7 @@ import { DigitalImportListingComponent } from './digital/digital-import-listing/
 
 
 @NgModule({
-  declarations: [DigitalListComponent, DigitalAddComponent, DigitalImportListingComponent ],
+  declarations: [DigitalListComponent, DigitalAddComponent, DigitalImportListingComponent, CollectionsComponent ],
   imports: [
     HttpClientModule,
     CommonModule,

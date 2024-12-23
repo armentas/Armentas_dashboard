@@ -42,9 +42,10 @@ export class NavService {
 		},
 		{
 			title: 'Products', icon: 'box', type: 'sub', active: false, children: [
-				{ path: '/products/digital/digital-product-list', title: 'Product catalog', type: 'link' },
+				{ path: '/products/digital/digital-product-list', title: 'Products list', type: 'link' },
 				{ path: '/products/digital/digital-add-product', title: 'Add product', type: 'link' },
 				{ path: '/products/digital/digital-import-listing', title: 'Import listing', type: 'link' },
+				{ path: '/products/digital/collections', title: 'Settings', type: 'link' },
 			]
 		},
 		{

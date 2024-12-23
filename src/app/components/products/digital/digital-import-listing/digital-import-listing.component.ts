@@ -17,8 +17,9 @@ interface UploadEvent {
 })
 export class DigitalImportListingComponent implements OnInit {
 
-  productsListing!: any[];
+  productsListing: any[] = [];
   selectedFile: boolean = false;
+  lastGeneratedTime: number = 0;
 
   first = 0;
   rows = 20;
@@ -31,15 +32,16 @@ export class DigitalImportListingComponent implements OnInit {
   errorCategoryAmount = 0;
   errorStockAmount = 0;
   errorPriceAmount = 0;
+  errorWeightAmount = 0;
   invalidFile: boolean = false;
 
   messagesErrors: Message[] | undefined;
   messagesInfo: Message[] | undefined;
   messagesSuccess: Message[] | undefined;
 
-  requiredHeaders = ['title', 'description', 'type', 'category', 'image1', 'image2', 'image3', 'image4', 'stock', 'price', 'status'];
+  requiredHeaders = ['title', 'description', 'collection', 'category', 'image1', 'image2', 'image3', 'image4', 'stock', 'price', 'weight', 'status'];
 
-  types: any[];
+  collections: any[];
   categories: any[];
 
 
@@ -47,26 +49,35 @@ export class DigitalImportListingComponent implements OnInit {
 
   constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private apiService: ApiService) { }
 
-  ngOnInit() {
-    this.types = [
-      { name: 'Piñata', code: 'PI', active: true },
-      { name: 'Piggy bank', code: 'PB', active: true }
-    ];
+  async ngOnInit() {
+    await this.loadData();
 
-    this.categories = [
-      { name: 'Girls', code: 'GR', active: true },
-      { name: 'Boys', code: 'BO', active: true },
-      { name: 'Adults', code: 'AD', active: true },
-      { name: 'Unisex', code: 'UN', active: true }
-    ];
+    this.messagesInfo = [{ severity: 'info', summary: 'Info', detail: 'No CSV file containing product listings has been uploaded yet.' }]
+  }
 
-    this.productsListing = [];
-    this.messagesInfo = [{ severity: 'info', summary: 'Info', detail: 'No se ha cargado aun, ningún archivo CSV con los listing de productos ' }]
+  async loadData() {
+    try {
+      const collections = await this.apiService.getAllCollections();
+      this.collections = collections.data
+
+      const categories = await this.apiService.getAllCategories();
+      this.categories = categories.data;
+
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   pageChange(event) {
     this.first = event.first;
     this.rows = event.rows;
+  }
+
+  downloadCSV() {
+    const link = document.createElement('a');
+    link.href = 'assets/template/Armentas Listing Template.xlsx';  // Ruta al archivo CSV en la carpeta assets
+    link.download = 'Armentas_Listing_Template.xlsx';     // Nombre que tendrá el archivo descargado
+    link.click();
   }
 
   onFileSelected(event: UploadEvent) {
@@ -85,20 +96,21 @@ export class DigitalImportListingComponent implements OnInit {
 
   }
 
-  parseCSV(text: string) {
+  parseCSV(text: string) {    
     const lines = text.split('\n').map(line => line.trim());
     const headers = lines[0].split(',');
+    
 
     // Validar si el archivo CSV tiene los encabezados requeridos
     const missingHeaders = this.requiredHeaders.filter(header => !headers.includes(header));
     if (missingHeaders.length > 0) {
       this.invalidFile = true;
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `El archivo CSV no contiene los siguientes encabezados requeridos: ${missingHeaders.join(', ')}` });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `The CSV file does not contain the following required headers: ${missingHeaders.join(', ')}` });
       return;
     }
 
     let rows = lines.slice(1).map(line => line.split(','));
-
+    console.log(rows);
     // Filtrar los elementos vacíos del array de rows
     rows = rows.filter(row => row.length === this.requiredHeaders.length);
 
@@ -107,18 +119,20 @@ export class DigitalImportListingComponent implements OnInit {
         no: index + 1,
         title: arr[0],
         description: arr[1],
-        type: arr[2],
+        collection: arr[2],
         category: arr[3],
         stock: arr[4],
         price: arr[5],
-        status: arr[6],
-        images: [this.previewImage(arr[7]), this.previewImage(arr[8]), this.previewImage(arr[9]), this.previewImage(arr[10])]
+        weight: arr[6],
+        status: arr[7],
+        images: [this.previewImage(arr[8]), this.previewImage(arr[9]), this.previewImage(arr[10]), this.previewImage(arr[11])]
       };
     });
+    
 
     //Validar si hay datos no admisibles
     this.productsListing.forEach(product => {
-      if (!this.validarTypes(product.type)) {
+      if (!this.validarTCollections(product.collection)) {
         this.errorTypeAmount++;
       };
       if (!this.validarCategories(product.category)) {
@@ -130,12 +144,15 @@ export class DigitalImportListingComponent implements OnInit {
       if (!this.validarNumber(product.price)) {
         this.errorPriceAmount++;
       }
+      if (!this.validarNumber(product.weight)) {
+        this.errorWeightAmount++;
+      }
     })
 
-    if (this.errorTypeAmount !== 0 || this.errorCategoryAmount !== 0 || this.errorStockAmount !== 0 || this.errorPriceAmount !== 0) {
-      this.messagesErrors = [{ severity: 'error', summary: 'Error', detail: `Se han detectado ${this.errorTypeAmount} datos errones en TYPE y ${this.errorCategoryAmount} datos erroneos en CATEGORY, ${this.errorStockAmount} datos errones en STOCK y ${this.errorPriceAmount} datos errones en PRICE` }]
+    if (this.errorTypeAmount !== 0 || this.errorCategoryAmount !== 0 || this.errorStockAmount !== 0 || this.errorPriceAmount !== 0 || this.errorWeightAmount !== 0) {
+      this.messagesErrors = [{ severity: 'error', summary: 'Error', detail: `${this.errorTypeAmount} invalid entries have been detected in TYPE, ${this.errorCategoryAmount} invalid entries in CATEGORY, ${this.errorStockAmount} invalid entries in STOCK, ${this.errorPriceAmount} invalid entries in PRICE and ${this.errorWeightAmount} invalid entries in WEIGHT.` }]
     } else {
-      this.messagesSuccess = [{ severity: 'success', summary: 'Success', detail: `Cargada de datos satisfactoria, sin errores detectados` }]
+      this.messagesSuccess = [{ severity: 'success', summary: 'Success', detail: `Data upload successful, no errors detected.` }]
     }
   }
 
@@ -146,8 +163,8 @@ export class DigitalImportListingComponent implements OnInit {
     return "";
   }
 
-  validarTypes(type: string): boolean {
-    return this.types.some(item => item.name === type)
+  validarTCollections(collection: string): boolean {
+    return this.collections.some(item => item.name === collection)
   }
 
   validarCategories(category: string): boolean {
@@ -159,9 +176,21 @@ export class DigitalImportListingComponent implements OnInit {
     return typeof value === 'number' || !isNaN(numero);
   }
 
-  skuGenerator(typeName: string, categoryName: string): string {
+  private async generateSkuWithDelay(collection: string, category: string): Promise<string> {
+    const currentTime = Date.now();
+    const timeDiff = currentTime - this.lastGeneratedTime;
+    
+    if (timeDiff < 1000) {
+      await new Promise(resolve => setTimeout(resolve, 1000 - timeDiff));
+    }
+    
+    this.lastGeneratedTime = Date.now();
+    return this.skuGenerator(collection, category);
+  }
+
+  skuGenerator(collectionName: string, categoryName: string): string {
     const stringId = this.uniqueString();
-    return `AR${stringId}${this.getCodeFromName(this.types, typeName)}${this.getCodeFromName(this.categories, categoryName)}`;
+    return `AR${stringId}${this.getCodeFromName(this.collections, collectionName)}${this.getCodeFromName(this.categories, categoryName)}`;
   }
 
   uniqueString(): string {
@@ -190,21 +219,22 @@ export class DigitalImportListingComponent implements OnInit {
       if (this.selectedFile){
         if (!this.invalidFile) {
           if (this.errorTypeAmount !== 0 || this.errorCategoryAmount !== 0 || this.errorStockAmount !== 0 || this.errorPriceAmount !== 0) {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: `Para proceder, corrija los errores identifcados en el archivo CSV` });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: `To proceed, please correct the errors identified in the CSV file.` });
           } else {
             this.showConfirm()
             const results = await Promise.all(this.productsListing.map(async (product) => {
               let generalData = {
-                type: product.type,
+                collection: this.collections.filter(col => col.name == product.collection)[0].id,
                 title: product.title,
                 description: product.description,
-                sku: this.skuGenerator(product.type, product.category),
+                sku: await this.generateSkuWithDelay(product.collection, product.category),
                 category: product.category,
                 price: parseFloat(product.price),
+                weight: parseFloat(product.weight),
                 stock: parseInt(product.stock),
                 sale: parseInt(product.status),
                 tags: Array.from(new Set([
-                  product.type,
+                  product.collection,
                   product.category
                 ])).join(','),
               }
@@ -223,13 +253,14 @@ export class DigitalImportListingComponent implements OnInit {
               return { productResult, imageResults };
             }));
             this.onReject();
-            this.messageService.add({ severity: 'success', summary: 'Producto registrado', detail: `Se registraron ${results.length} productos satisfactoriamente` });
+            this.messageService.add({ severity: 'success', summary: 'Product registered.', detail: `${results.length} products were successfully registered.` });
+            this.cleanUploader();
           }
         }
       }
     } catch (error) {
       this.onReject();
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred.: ${error.message}` });
     }
   }
 

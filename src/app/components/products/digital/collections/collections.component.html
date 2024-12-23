@@ -1,0 +1,503 @@
+<div class="initLoading" *ngIf="initLoading">
+    <div class="d-flex flex-column gap-3 align-items-center">
+        <span class="svg-spinners-initial"></span>
+        <span>Loading data...</span>
+    </div>
+</div>
+<div class="container-fluid setting" *ngIf="!initLoading">
+    <p-toast position="bottom-right"></p-toast>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Collections List</h5>
+                </div>
+                <div class="card-body">
+                    <div id="batchDelete" class="product-table ">
+                        <div class="table-responsive">
+                            <p-table #dt [value]="collections" [(selection)]="selectedCollections" dataKey="id"
+                                [paginator]="true" [rows]="15" [tableStyle]="{'min-width': '50rem'}" [scrollable]="true"
+                                scrollHeight="700px" (onPage)="pageChange($event)" [rowsPerPageOptions]="[15, 25, 50]"
+                                [globalFilterFields]="['name', 'title', 'description']">
+                                <ng-template pTemplate="caption">
+                                    <div class="table-header d-flex justify-content-between">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger"
+                                                (click)="showConfirmAllDelete(selectedCollections)"
+                                                pTooltip="Remove selection" tooltipPosition="top"
+                                                [disabled]="selectedCollections.length == 0"></button>
+                                            <span class="p-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <input pInputText type="text"
+                                                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                                    placeholder="Global Search" />
+                                            </span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <button pButton pRipple icon="pi pi-plus" label="Add Collection"
+                                                class="p-button-success" (click)="open(content)"></button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 4rem">
+                                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        </th>
+                                        <th>Image</th>
+                                        <th style="min-width:120px" pSortableColumn="name">Name<p-sortIcon
+                                                field="name"></p-sortIcon></th>
+                                        <th style="min-width:100px" pSortableColumn="code">Code<p-sortIcon
+                                                field="code"></p-sortIcon></th>
+                                        <th style="min-width:100px" pSortableColumn="title">Title<p-sortIcon
+                                                field="title"></p-sortIcon></th>
+                                        <th style="min-width:200px">Description</th>
+                                        <th>Products</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-collection>
+                                    <tr>
+                                        <td>
+                                            <p-tableCheckbox *ngIf="collection.code !== 'GG'" [value]="collection"></p-tableCheckbox>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <div class="frame-rect">
+                                                    <img [src]="collection.image" class="imgTable-collection"
+                                                        style="width: 100%"
+                                                        onerror="this.onerror=null; this.src='../assets/images/dashboard/product/1.jpg';">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{collection.name}}</td>
+                                        <td>{{collection.code}}</td>
+                                        <td>{{collection.title}}</td>
+                                        <td>{{collection.description}}</td>
+                                        <td>{{collection.products}}</td>
+                                        <td>
+                                            <div
+                                                [ngClass]="{'activeCollection': collection.active === 1, 'disabledCollection': collection.active === 0}">
+                                                {{ collection.active ? 'Active' : 'Disabled' }}
+                                            </div>
+                                        </td>
+                                        <td><a href="javascript:void(0)" class="action-button"
+                                                (click)="open(content, collection.id)"><i
+                                                    class='fa fa-edit f-12'></i></a>&nbsp;
+                                            <a href="javascript:void(0)" class="action-button" *ngIf="collection.code !== 'GG'"
+                                                (click)="showConfirm(collection)"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="paginatorright"> </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Categories List</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="categoriesList" class="product-table ">
+                            <div class="table-responsive">
+                                <p-table #ct [value]="categories" [paginator]="true" [rows]="10"
+                                    [tableStyle]="{'min-width': '20rem'}" [scrollable]="true" scrollHeight="300px"
+                                    (onPage)="pageChange($event)" [rowsPerPageOptions]="[10, 20, 50]">
+                                    <ng-template pTemplate="caption">
+                                        <div class="table-header d-flex justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <button pButton pRipple icon="pi pi-plus" label="Add Category"
+                                                    class="p-button-success"
+                                                    (click)="openModalCategory(categoryContent)"></button>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Code</th>
+                                            <th>Products related</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-category>
+                                        <tr>
+                                            <td>{{category.name}}</td>
+                                            <td>{{category.code}}</td>
+                                            <td>{{category.products}}</td>
+                                            <td>
+                                                <div
+                                                    [ngClass]="{'activeCollection': category.active === 1, 'disabledCollection': category.active === 0}">
+                                                    {{ category.active ? 'Active' : 'Disabled' }}
+                                                </div>
+                                            </td>
+                                            <td><a href="javascript:void(0)" class="action-button"
+                                                    (click)="openModalCategory(categoryContent, category.id)"><i
+                                                        class='fa fa-edit f-12'></i></a>&nbsp;
+                                                <a href="javascript:void(0)" class="action-button"
+                                                    (click)="showConfirmCategory(category)"><i
+                                                        class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="paginatorright"> </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Colors List</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="colorsList" class="product-table ">
+                            <div class="table-responsive">
+                                <p-table #ct [value]="colors" [paginator]="true" [rows]="30"
+                                    [tableStyle]="{'min-width': '20rem'}" [scrollable]="true" scrollHeight="300px"
+                                    (onPage)="pageChange($event)" [rowsPerPageOptions]="[30, 50, 100]">
+                                    <ng-template pTemplate="caption">
+                                        <div class="table-header d-flex justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <button pButton pRipple icon="pi pi-plus" label="Add Color"
+                                                    class="p-button-success"
+                                                    (click)="openModalColor(colorContent)"></button>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Color Key</th>
+                                            <th>Hex value</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-color>
+                                        <tr>
+                                            <td>{{color.name}}</td>
+                                            <td>{{color.color_key}}</td>
+                                            <td><span [ngStyle]="{'background-color': color.hexCode}"
+                                                    class="color-circle">
+                                                </span> {{color.hexCode}}</td>
+                                            <td><a href="javascript:void(0)" class="action-button"
+                                                    (click)="openModalColor(colorContent, color.id)"><i
+                                                        class='fa fa-edit f-12'></i></a>&nbsp;
+                                                <a href="javascript:void(0)" class="action-button"
+                                                    (click)="showConfirmColor(color)"><i class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="paginatorright"> </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">{{ editModal ? "Edit Collection" : "Add Collection"}}
+            </h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">X</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="needs-validation">
+                <div class="form">
+                    <div class="modal-collection d-flex justify-content-evenly gap-4 px-4">
+                        <div class="row">
+                            <div class="col-9 form-group mb-3">
+                                <div class="flex gap-2 align-items-center">
+                                    <label class="" for="title">Name:</label><span class="quill-info"
+                                        pTooltip="{{tooltipMessage.collectionName}}" tooltipPosition="bottom"></span>
+                                </div>
+                                <input class="form-control" id="title" type="text" [(ngModel)]="collectionData.name"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="text-danger" *ngIf="errors.name">{{ errors.name }}</span>
+                            </div>
+                            <div class="col-3 form-group mb-2">
+                                <label class="mb-2">Active:</label>
+                                <p-inputSwitch [(ngModel)]="collectionData.active" [disabled]="collectionData.code == 'GG' && editModal"
+                                    [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                            </div>
+                            <div class="col-9 form-group mb-2">
+                                <div class="flex gap-2 align-items-center">
+                                    <label for="price" class="">Title:</label><span class="quill-info"
+                                        pTooltip="{{tooltipMessage.collectionTitle}}" tooltipPosition="bottom"></span>
+                                </div>
+                                <input class="form-control" id="price" type="text" [(ngModel)]="collectionData.title"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="text-danger" *ngIf="errors.title">{{ errors.title }}</span>
+                            </div>
+                            <div class="col-3 form-group mb-2">
+                                <div class="flex gap-2 align-items-center">
+                                    <label for="price" class="">Code:</label><span class="quill-info"
+                                        pTooltip="{{tooltipMessage.collectionCode}}" tooltipPosition="bottom"></span>
+                                </div>
+                                <input class="form-control" maxlength="2" id="price" type="text"
+                                    [disabled]="editModal && (collectionData.products > 0)"
+                                    [(ngModel)]="collectionData.code" [ngModelOptions]="{standalone: true}"
+                                    (blur)="validateCode(collectionCodeList, collectionData.code)"
+                                    style="text-transform: uppercase;" (keypress)="validateInput($event)"
+                                    [disabled]="collectionData.code == 'GG' && editModal">
+                                <span class="text-danger" *ngIf="errors.code">{{ errors.code }}</span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <div class="flex gap-2 align-items-center">
+                                    <label class="mb-1" for="description">Description:</label><span class="quill-info"
+                                        pTooltip="{{tooltipMessage.collectionDescription}}"
+                                        tooltipPosition="bottom"></span>
+                                </div>
+                                <textarea rows="6" class="form-control" id="description" type="text"
+                                    [(ngModel)]="collectionData.description"
+                                    [ngModelOptions]="{standalone: true}"></textarea>
+                                <span class="text-danger" *ngIf="errors.description">{{ errors.description }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="flex gap-2 align-items-center">
+                                <span class="">Image:</span><span class="quill-info"
+                                    pTooltip="{{tooltipMessage.collectionImage}}" tooltipPosition="bottom"></span>
+                            </div>
+                            <div class="flex flex-column gap-2 align-items-center">
+                                <div class="imageCollection">
+                                    <img [src]="collectionData.image" [alt]="collectionData.title">
+                                </div>
+                                <span class="text-danger" *ngIf="errors.image">{{ errors.image }}</span>
+                                <div class="custom-file-upload">
+                                    <label for="inputAddImage" class="btn btn-primary">
+                                        <i class="pi pi-upload"></i> Select File
+                                    </label>
+                                    <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
+                                    <input type="file" accept="image/*" class="form-control visually-hidden"
+                                        id="inputAddImage" #fileInput (change)="onFileChange($event)" />
+                                </div>
+                                <span *ngIf="imageError" class="text-danger">{{ imageError }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button *ngIf="!loading" type="button" class="btn btn-primary" (click)="saveData()">Save</button>
+            <span *ngIf="loading" class="svg-spinners pr-6"></span>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                (click)="modal.dismiss('Cross click')">Close</button>
+        </div>
+    </ng-template>
+    <ng-template #categoryContent let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">
+                {{ editModalCategory ? "Edit Category" : "Add Category"}}
+            </h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">X</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="needs-validation">
+                <div class="form">
+                    <div class="modal-collection d-flex justify-content-evenly gap-4 px-4">
+                        <div class="row">
+                            <div class="col-9 form-group mb-3">
+                                <div class="flex gap-2 align-items-center">
+                                    <label class="" for="title">Name:</label><span class="quill-info"
+                                        pTooltip="{{tooltipMessage.categoryName}}" tooltipPosition="bottom"></span>
+                                </div>
+                                <input class="form-control" id="title" type="text" [(ngModel)]="categoryData.name"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (blur)="validateName(categoryNameList,categoryData.name)">
+                                <span class="text-danger" *ngIf="errors.name">{{ errors.name }}</span>
+                            </div>
+                            <div class="col-3 form-group mb-2">
+                                <label class="mb-2">Active:</label>
+                                <p-inputSwitch [(ngModel)]="categoryData.active"
+                                    [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                            </div>
+                            <div class="col-5 form-group mb-2">
+                                <div class="flex gap-2 align-items-center">
+                                    <label for="price" class="">Code:</label><span class="quill-info"
+                                        pTooltip="{{tooltipMessage.categoryCode}}" tooltipPosition="bottom"></span>
+                                </div>
+                                <input class="form-control" maxlength="2" id="price" type="text"
+                                    [disabled]="editModalCategory && (categoryData.products > 0)"
+                                    [(ngModel)]="categoryData.code" [ngModelOptions]="{standalone: true}"
+                                    (blur)="validateCode(categoryCodeList, categoryData.code)"
+                                    style="text-transform: uppercase; width: 50%;" (keypress)="validateInput($event)">
+                                <span class="text-danger" *ngIf="errors.code">{{ errors.code }}</span>
+                            </div>
+                            <div class="col-7 d-flex align-items-center"
+                                *ngIf="editModalCategory && (categoryData.products > 0)">
+                                <span class="text-muted mb-0">
+                                    <p class="mb-0">The value of Code cannot be modified, as there are products related
+                                        to this category.</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button *ngIf="!loading" type="button" class="btn btn-primary" (click)="saveCategoryData()">Save</button>
+            <span *ngIf="loading" class="svg-spinners pr-6"></span>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                (click)="modal.dismiss('Cross click')">Close</button>
+        </div>
+    </ng-template>
+    <ng-template #colorContent let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600" id="exampleModalLabel">{{ editModalColor ? "Edit Color" : "Add Color"}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">X</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-collection d-flex justify-content-evenly gap-4 px-4">
+                <div class="row">
+                    <div class="form-group mb-2">
+                        <div class="flex gap-2 align-items-center">
+                            <label for="colorName" class="">Name: </label><span class="quill-info"
+                                pTooltip="{{tooltipMessage.colorName}}" tooltipPosition="bottom"></span>
+                        </div>
+                        <input class="form-control" id="colorName" type="text" [(ngModel)]="colorData.name"
+                            [ngModelOptions]="{standalone: true}" required=""
+                            (blur)="validateName(colorNameList, colorData.name)">
+                        <span class="text-danger" *ngIf="errors.name">{{ errors.name }}</span>
+                    </div>
+                    <div class="col-4 form-group mb-2">
+                        <div class="flex gap-2 align-items-center">
+                            <label for="categoryCode" class="">Color Key: </label><span
+                                class="quill-info" pTooltip="{{tooltipMessage.colorKey}}"
+                                tooltipPosition="bottom"></span>
+                        </div>
+                        <input class="form-control" maxlength="2" id="categoryCode" type="text"
+                            [(ngModel)]="colorData.color_key" [ngModelOptions]="{standalone: true}" required=""
+                            style="text-transform: uppercase;" (keypress)="validateInput($event)"
+                            (blur)="validateKey()">
+                        <span class="text-danger" *ngIf="errors.color_key">{{ errors.color_key }}</span>
+                    </div>
+                    <div class="col-8 form-group mb-2">
+                        <label for="colorPicker" class="">Select Color: </label>
+                        <div class="d-flex align-items-center">
+                            <!-- Input de tipo color -->
+                            <input class="form-control form-control-color me-2" id="colorPicker" type="color"
+                                [(ngModel)]="colorData.hexCode" [ngModelOptions]="{standalone: true}"
+                                (change)="updateHexCode()">
+                            <!-- Muestra el valor hexadecimal -->
+                            <input class="form-control" style="width: 100%;" id="hexCodeDisplay" type="text" readonly
+                                [(ngModel)]="colorData.hexCode">
+                        </div>
+                        <span class="text-danger ml-6" *ngIf="errors.hexCode">{{ errors.hexCode }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button *ngIf="!loading" type="button" class="btn btn-primary" (click)="saveColorData()">Save</button>
+            <span *ngIf="loading" class="svg-spinners pr-6"></span>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                (click)="modal.dismiss('Cross click')">Close</button>
+        </div>
+    </ng-template>
+    <p-toast position="bottom-center" key="confirm" (onClose)="onReject()" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div class="flex flex-column" style="flex: 1">
+                <div class="text-center">
+                    <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+                    <h4 class="text-dark-emphasis">{{message.summary}}</h4>
+                    <p class="text-light-emphasis">{{message.detail}}</p>
+                </div>
+                <div class="p-fluid d-flex gap-3">
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onConfirm()" label="Yes"
+                            class="p-button-success rounded"></button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onReject()" label="No"
+                            class="p-button-secondary rounded"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+    <p-toast position="bottom-center" key="confirmAllDelete" (onClose)="onReject()" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div class="flex flex-column" style="flex: 1">
+                <div class="text-center">
+                    <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+                    <h4 class="text-dark-emphasis">{{message.summary}}</h4>
+                    <p class="text-light-emphasis">{{message.detail}}</p>
+                </div>
+                <div class="p-fluid d-flex gap-3">
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onConfirmAll()" label="Yes"
+                            class="p-button-success rounded"></button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onReject()" label="No"
+                            class="p-button-secondary rounded"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+    <p-toast position="bottom-center" key="confirmCategory" (onClose)="onReject()" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div class="flex flex-column" style="flex: 1">
+                <div class="text-center">
+                    <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+                    <h4 class="text-dark-emphasis">{{message.summary}}</h4>
+                    <p class="text-light-emphasis">{{message.detail}}</p>
+                </div>
+                <div class="p-fluid d-flex gap-3">
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onConfirmCategory()" label="Yes"
+                            class="p-button-success rounded"></button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onReject()" label="No"
+                            class="p-button-secondary rounded"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+    <p-toast position="bottom-center" key="confirmColor" (onClose)="onReject()" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div class="flex flex-column" style="flex: 1">
+                <div class="text-center">
+                    <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+                    <h4 class="text-dark-emphasis">{{message.summary}}</h4>
+                    <p class="text-light-emphasis">{{message.detail}}</p>
+                </div>
+                <div class="p-fluid d-flex gap-3">
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onConfirmColor()" label="Yes"
+                            class="p-button-success rounded"></button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" pButton (click)="onReject()" label="No"
+                            class="p-button-secondary rounded"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+</div>

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DigitalImportListingComponent } from './digital/digital-import-listing/digital-import-listing.component';
 import { DigitalListComponent } from './digital/digital-list/digital-list.component';
 import { DigitalAddComponent } from './digital/digital-add/digital-add.component';
+import { CollectionsComponent } from './digital/collections/collections.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,14 @@ const routes: Routes = [
         data: {
           title: "Add Products",
           breadcrumb: "Add Product"
+        }
+      },
+      {
+        path: 'digital/collections',
+        component: CollectionsComponent,
+        data: {
+          title: "Settings",
+          breadcrumb: "Settings"
         }
       }
     ]
