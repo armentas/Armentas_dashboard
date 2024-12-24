@@ -1,9 +1,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
+            <!-- Todos los productos -->
             <div class="card">
                 <div class="card-header">
-                    <h5>Product Lists</h5>
+                    <h5>Product List</h5>
                 </div>
                 <div class="card-body">
                     <div id="batchDelete" class="product-table ">
@@ -84,6 +85,96 @@
                                                     (click)="open(content, product.id)"></i></a>&nbsp;
                                             <a href="javascript:void(0)" class="action-button"><i class="fa fa-trash-o"
                                                     (click)="showConfirm(product.id)"></i></a>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="paginatorright"> </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Productos especiales -->
+            <div class="card">
+                <div class="card-header d-flex align-items-center gap-2">
+                    <h5>Special Product List </h5>
+                    <span class="quill-info" pTooltip="{{tooltipMessage.specialList}}" tooltipPosition="bottom"></span>
+                </div>
+                <div class="card-body">
+                    <div id="batchDelete" class="product-table ">
+                        <div class="table-responsive">
+                            <p-table #dt [value]="specialProducts" [(selection)]="selectedProducts" dataKey="sku"
+                                [paginator]="true" [rows]="10" [tableStyle]="{'min-width': '50rem'}" [scrollable]="true"
+                                scrollHeight="700px" [showCurrentPageReport]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                (onPage)="pageChange($event)" [rowsPerPageOptions]="[15, 25, 50]"
+                                [globalFilterFields]="['title', 'sku', 'category', 'type']">
+                                <ng-template pTemplate="caption">
+                                    <div class="table-header d-flex justify-content-between">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="p-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <input pInputText type="text"
+                                                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                                    placeholder="Global Search" />
+                                            </span>
+                                        </div>
+                                        <!-- <div class="d-flex align-items-center gap-3">
+                                            <i class="pi pi-list" style="font-size: 1.5rem"></i>
+                                            <i class="pi pi-th-large" style="font-size: 1.5rem"></i>
+                                        </div> -->
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 4rem">
+                                            No.
+                                        </th>
+                                        <th>Image</th>
+                                        <th pSortableColumn="sku">SKU<p-sortIcon field="sku"></p-sortIcon></th>
+                                        <th pSortableColumn="title">Title<p-sortIcon field="title"></p-sortIcon></th>
+                                        <th pSortableColumn="description" style="min-width:200px">Description<p-sortIcon
+                                                field="description"></p-sortIcon></th>
+                                        <th pSortableColumn="type">Collection<p-sortIcon field="type"></p-sortIcon></th>
+                                        <th pSortableColumn="stock">Stock<p-sortIcon field="stock"></p-sortIcon></th>
+                                        <th pSortableColumn="sale">Status<p-sortIcon field="sku"></p-sortIcon></th>
+                                        <th>Price</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-i="rowIndex">
+                                    <tr>
+                                        <td>
+                                            {{ i + 1 }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <div class="frame" *ngFor="let image of product.images">
+                                                    <img [src]="image.img_url" class="imgTable" style="width: 100%"
+                                                        onerror="this.onerror=null; this.src='../assets/images/dashboard/product/1.jpg';">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{product.sku}}</td>
+                                        <td>{{product.title}}</td>
+                                        <td>{{product.description.substring(0, 200)+'...'}}</td>
+                                        <td>{{product.collection}}</td>
+                                        <td>
+                                            <div
+                                                [ngClass]="{'instock': product.stock >= 70 , 'lowstock': product.stock > 0 && product.stock < 70, 'outstock': product.stock == 0}">
+                                                {{ product.stock }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div
+                                                [ngClass]="{'onsaleProd': product.sale === true, 'disabledProd': product.sale === false}">
+                                                {{ product.sale ? 'On Sale' : 'Disabled' }}
+                                            </div>
+                                        </td>
+                                        <td>$ {{product.price}}</td>
+                                        <td><a href="javascript:void(0)" class="action-button"><i
+                                                    class='fa fa-edit f-12'
+                                                    (click)="open(content, product.id)"></i></a>&nbsp;
                                         </td>
                                     </tr>
                                 </ng-template>

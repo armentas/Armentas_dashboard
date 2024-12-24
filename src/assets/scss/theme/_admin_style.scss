@@ -3657,7 +3657,7 @@ ul.notification-dropdown.onhover-show-div {
       height: calc(100vh - #{$header-size});
       overflow: auto;
       box-shadow: $sidebar-shadow;
-      background-color: #000;
+      background-color: #00004a;
     }
 
     .page-sidebar {
@@ -3675,7 +3675,7 @@ ul.notification-dropdown.onhover-show-div {
         height: $header-size;
         padding: $main-header-padding;
         align-items: center;
-        background-color: #000;
+        background-color: #00004a;
         // background-color: $main-header-left-bg-color;
         z-index: $main-header-z-index;
         // box-shadow: $sidebar-wrapper-logo-shadow;

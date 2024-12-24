@@ -40,6 +40,7 @@ export class DigitalListComponent implements OnInit {
   tags: string[] | undefined;
 
   products!: any[];
+  specialProducts: any[] = [];
   selectedProducts: any[] = [];
   selectedColors: any[] = [];
 
@@ -56,6 +57,9 @@ export class DigitalListComponent implements OnInit {
   imagesProductSelected: any[];
   imagesProductUrl: string[] = [];
 
+  tooltipMessage = {
+    specialList: 'To mark or unmark products as SPECIAL, simply include or remove the “special” tag on the product.',
+  }
 
   constructor(
     public apiService: ApiService,
@@ -71,6 +75,8 @@ export class DigitalListComponent implements OnInit {
   async loadProducts() {
     const products = await this.apiService.getAllFullProduct();
     this.products = products.data;
+
+    this.specialProducts = this.products.filter(pro => pro.tags.includes('special'));
 
     const collections = await this.apiService.getAllCollections();
     this.collections = collections.data;

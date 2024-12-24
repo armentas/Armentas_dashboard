@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     
     try {
       if(data.email === '' || data.password === '')
-        throw new Error('No debe dejar campos vacíos')
+        throw new Error('Do not leave empty fields')
 
       let resp = await this.authService.login(data);
       
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
       (!error.error?.msg) ? message = error.message : message = error.error.msg;
       console.error(error);
       
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error en login: ${message}` });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Login error: ${message}` });
     }
   }
 
