@@ -76,7 +76,9 @@ export class DigitalListComponent implements OnInit {
     const products = await this.apiService.getAllFullProduct();
     this.products = products.data;
 
-    this.specialProducts = this.products.filter(pro => pro.tags.includes('special'));
+    this.specialProducts = this.products.filter(pro =>
+      pro.tags.some(tag => tag.toLowerCase() === 'special'.toLowerCase())
+    );
 
     const collections = await this.apiService.getAllCollections();
     this.collections = collections.data;

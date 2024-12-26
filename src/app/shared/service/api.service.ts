@@ -40,7 +40,7 @@ export class ApiService {
   //-------------------- Orders section -----------------------------------------
 
   updateOrderStatus(site_order_id: string, data: any): Promise<any> {
-    return lastValueFrom(this.http.put<any>(`${this.baseUrl}/dash/updateStatus/${site_order_id}`, { shipping_status: data }));
+    return lastValueFrom(this.http.put<any>(`${this.baseUrl}/dash/updateStatus/${site_order_id}`, data));
   }
 
   getImageUrlFromSku(sku: string): Promise<any> {
@@ -174,8 +174,15 @@ export class ApiService {
     return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/images/deleteImage/${id}`));
   }
 
+   //-------------------- Image section -----------------------------------------
 
+   sendShippingInformaction(data: any): any {
+    return lastValueFrom(this.http.post(`${this.baseUrl}/sendMailer/sendTrackingNumberNotification`, data));
+  }
 
+  sendMailToResetPass(data: any): any {
+    return lastValueFrom(this.http.post(`${this.baseUrl}/sendMailer/sendMailToResetPass`, data));
+  }
 
 
 

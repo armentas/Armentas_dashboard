@@ -1,4 +1,4 @@
-.btnAdd{
+.btnAdd {
     margin: 0;
     display: inline-flex;
     cursor: pointer;
@@ -13,9 +13,9 @@
     font-size: 1rem;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 6px;
-  }
+}
 
-  .status {
+.status {
     display: inline-block;
     padding: 2px 10px;
     text-align: center;
@@ -35,7 +35,7 @@
     color: black;
 }
 
-.delivered {
+.shipped {
     @extend .status; // Extiende el estilo base
     background-color: green;
     color: white;
@@ -45,4 +45,20 @@
     @extend .status; // Extiende el estilo base
     background-color: red;
     color: white;
+}
+
+.initLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: max(calc(100vh - 300px), 300px);
+}
+
+.svg-spinners-initial {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='2.8' height='12' x='1' y='6' fill='%230c3dba'%3E%3Canimate id='svgSpinnersBarsScale0' attributeName='y' begin='0;svgSpinnersBarsScale1.end-0.1s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='6;1;6'/%3E%3Canimate attributeName='height' begin='0;svgSpinnersBarsScale1.end-0.1s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='12;22;12'/%3E%3C/rect%3E%3Crect width='2.8' height='12' x='5.8' y='6' fill='%230c3dba'%3E%3Canimate attributeName='y' begin='svgSpinnersBarsScale0.begin+0.1s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='6;1;6'/%3E%3Canimate attributeName='height' begin='svgSpinnersBarsScale0.begin+0.1s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='12;22;12'/%3E%3C/rect%3E%3Crect width='2.8' height='12' x='10.6' y='6' fill='%230c3dba'%3E%3Canimate attributeName='y' begin='svgSpinnersBarsScale0.begin+0.2s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='6;1;6'/%3E%3Canimate attributeName='height' begin='svgSpinnersBarsScale0.begin+0.2s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='12;22;12'/%3E%3C/rect%3E%3Crect width='2.8' height='12' x='15.4' y='6' fill='%230c3dba'%3E%3Canimate attributeName='y' begin='svgSpinnersBarsScale0.begin+0.3s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='6;1;6'/%3E%3Canimate attributeName='height' begin='svgSpinnersBarsScale0.begin+0.3s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='12;22;12'/%3E%3C/rect%3E%3Crect width='2.8' height='12' x='20.2' y='6' fill='%230c3dba'%3E%3Canimate id='svgSpinnersBarsScale1' attributeName='y' begin='svgSpinnersBarsScale0.begin+0.4s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='6;1;6'/%3E%3Canimate attributeName='height' begin='svgSpinnersBarsScale0.begin+0.4s' calcMode='spline' dur='0.6s' keySplines='.36,.61,.3,.98;.36,.61,.3,.98' values='12;22;12'/%3E%3C/rect%3E%3C/svg%3E");
 }

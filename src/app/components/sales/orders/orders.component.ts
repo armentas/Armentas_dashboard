@@ -18,14 +18,22 @@ export class OrdersComponent implements OnInit {
   // public searchText;
   // total$: Observable<number>;
 
+  initLoading: boolean = false;
   ordersToShow: any;
   visible: boolean = false;
   visibleInfo: boolean = false;
   position: string = 'center';
   selectedOrder: any;
 
+  trackingInfo: any = {
+    trackingNumber: '',
+    carrier: '',
+  }
+
   status: any[] | undefined;
+  carriers: any[] = [];
   selectedStatus: any = { name: 'select' };
+  selectedCarrier: any = {};
   statusChanged: boolean = false;
 
   rangeDates: Date[] | undefined;
@@ -34,14 +42,60 @@ export class OrdersComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.initLoading = true;
     await this.loadData();
+    this.initLoading = false;
 
     this.status = [
       { name: 'Awaiting shipment' },
       { name: 'In process' },
-      { name: 'Delivered' },
+      { name: 'Shipped' },
       { name: 'Cancelled' }
     ];
+
+    this.carriers = [
+      {
+        name: "United States Postal Service",
+        abbreviation: "USPS",
+        trackingUrl: "https://tools.usps.com/go/TrackConfirmAction?tLabels="
+      },
+      {
+        name: "United Parcel Service",
+        abbreviation: "UPS",
+        trackingUrl: "https://www.ups.com/track?loc=en_US&tracknum="
+      },
+      {
+        name: "Federal Express",
+        abbreviation: "FedEx",
+        trackingUrl: "https://www.fedex.com/fedextrack/?trknbr="
+      },
+      {
+        name: "DHL Express",
+        abbreviation: "DHL",
+        trackingUrl: "https://www.dhl.com/en/express/tracking.html?AWB="
+      },
+      {
+        name: "OnTrac",
+        abbreviation: "OnTrac",
+        trackingUrl: "https://www.ontrac.com/tracking.asp?tracking="
+      },
+      {
+        name: "Amazon Logistics",
+        abbreviation: "AMZL",
+        trackingUrl: "https://track.amazon.com/tracking/"
+      },
+      {
+        name: "LaserShip",
+        abbreviation: "LS",
+        trackingUrl: "https://www.lasership.com/track/"
+      },
+      {
+        name: "GLS US",
+        abbreviation: "GLS",
+        trackingUrl: "https://gls-us.com/track?track="
+      }
+    ];
+
   }
 
   async loadData() {
@@ -55,8 +109,8 @@ export class OrdersComponent implements OnInit {
     this.ordersToShow = this.builOrders(withProductImage);
   }
 
-  async searchByPeriod(){
-    if(this.rangeDates && this.rangeDates[1] !== null){
+  async searchByPeriod() {
+    if (this.rangeDates && this.rangeDates[1] !== null) {
       const startDate = this.rangeDates[0].toISOString().split('T')[0];
       const endDate = this.rangeDates[1].toISOString().split('T')[0];
 
@@ -91,7 +145,7 @@ export class OrdersComponent implements OnInit {
             payment_date: item.payment_date,
 
             buyer: item.buyer,
-            phone: item.phone,
+            contact: item.contact,
 
             shipping_target_name: item.shipping_target_name,
             shipping_target_phone: item.shipping_target_phone,
@@ -146,27 +200,103 @@ export class OrdersComponent implements OnInit {
     this.loadData();
   }
 
+  // async saveStatusChange() {
+  //   try {
+  //     this.visible = false;
+  //     let result;
+  //     if (this.statusChanged) {
+  //       if(this.selectedStatus == 'Shipped'){
+
+  //       }else{
+  //         result = await this.apiService.updateOrderStatus(this.selectedOrder.site_order_id, this.selectedStatus);
+  //       }
+
+  //       if (result.data.affectedRows > 0) {
+  //         console.log('Estatus cambiado');
+  //         this.loadData();
+  //       }
+  //     }
+
+  //   } catch (error) {
+  //     this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: `${error.error.msg}` });
+  //   }
+
+  // }
+
   async saveStatusChange() {
     try {
-      this.visible = false;
+      if (!this.statusChanged) {
+        return;
+      }
 
-      if (this.statusChanged) {
-        const result = await this.apiService.updateOrderStatus(this.selectedOrder.site_order_id, this.selectedStatus);
-        
+      if (this.selectedStatus === 'Shipped') {
+        // Validar campos requeridos para envío
+        if (!this.trackingInfo.trackingNumber || !this.selectedCarrier) {
+          this.messageService.add({
+            key: 'bc',
+            severity: 'warn',
+            summary: 'Warning',
+            detail: 'Tracking number and carrier are required for shipped status'
+          });
+          return;
+        }
+
+        // Si los campos están completos, actualizar status y tracking
+        const result = await this.apiService.updateOrderStatus(
+          this.selectedOrder.site_order_id,
+          {
+            shipping_status: this.selectedStatus,
+            tracking_number: this.trackingInfo.trackingNumber,
+            carrier: this.selectedCarrier
+          }
+        );
+
         if (result.data.affectedRows > 0) {
-          console.log('Estatus cambiado');
+          console.log('Status and tracking info updated');
+          this.visible = false;
+          this.loadData();
+
+          const trackingUrl = this.carriers.filter(car => car.abbreviation == this.selectedCarrier)[0].trackingUrl;
+          const email = this.selectedOrder.contact;
+
+          const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+          if (emailRegex.test(email)) {
+            const data = {
+              email,
+              orderId: this.selectedOrder.site_order_id,
+              carrier: this.selectedCarrier,
+              trackingNumber: this.trackingInfo.trackingNumber,
+              url: trackingUrl + this.trackingInfo.trackingNumber
+            };
+            await this.apiService.sendShippingInformaction(data);
+          }
+          
+        }
+      } else {
+        // Para otros estados, solo actualizar el status
+        const result = await this.apiService.updateOrderStatus(
+          this.selectedOrder.site_order_id,
+          { shipping_status: this.selectedStatus }
+        );
+
+        if (result.data.affectedRows > 0) {
+          console.log('Status updated');
+          this.visible = false;
           this.loadData();
         }
       }
-
     } catch (error) {
-      this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: `${error.error.msg}` });
+      this.messageService.add({
+        key: 'bc',
+        severity: 'error',
+        summary: 'Error',
+        detail: `${error.error.msg}`
+      });
     }
-
   }
 
   sumQuantity(items) {
-    if(items)
+    if (items)
       return items.reduce((subtotal, item) => subtotal + item.quantity, 0);
     return 0;
   }

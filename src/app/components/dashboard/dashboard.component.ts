@@ -230,7 +230,7 @@ export class DashboardComponent implements OnInit {
 
   getTotalSalesDataArray(orders: any) {
     const currentDay = new Date().getDate();
-    const salesData = new Array(currentDay).fill(0);
+    const salesData = new Array(currentDay + 1).fill(0);
 
     orders.forEach(order => {     
       if (order.shipping_status.toLowerCase() !== 'cancelled') {
@@ -240,16 +240,16 @@ export class DashboardComponent implements OnInit {
         salesData[index] += order.order_total;
       }
     });    
-
+    
     this.totalSalesData = salesData;
-    this.totalSales = salesData.reduce((total, item) => {
+    this.totalSales = parseFloat(salesData.reduce((total, item) => {
       return total + item;
-    }, 0);
+    }, 0).toFixed(2));
   }
 
   getTotalOrdersDataArray(orders: any) {
     const currentDay = new Date().getDate();
-    const ordersData = new Array(currentDay).fill(0);
+    const ordersData = new Array(currentDay + 1).fill(0);
 
     orders.forEach(order => {
       if (order.shipping_status.toLowerCase() !== 'cancelled') {
@@ -266,7 +266,7 @@ export class DashboardComponent implements OnInit {
 
   getSoldProductsDataArray(orders: any) {
     const currentDay = new Date().getDate();
-    const soldProductsData = new Array(currentDay).fill(0);
+    const soldProductsData = new Array(currentDay + 1).fill(0);
 
     orders.forEach(order => {
       if (order.shipping_status.toLowerCase() !== 'cancelled') {
@@ -287,7 +287,7 @@ export class DashboardComponent implements OnInit {
 
   getCancellationsDataArray(orders: any) {
     const currentDay = new Date().getDate();
-    const cancelledOrdersData = new Array(currentDay).fill(0);
+    const cancelledOrdersData = new Array(currentDay + 1).fill(0);
 
     orders.forEach(order => {
       if (order.shipping_status.toLowerCase() === "cancelled") {
@@ -305,8 +305,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getTotalOrdersYearDataArray(orders: any) {
-    const currentMonth = new Date().getMonth() + 1;
-    const ordersData = new Array(currentMonth).fill(0);
+    const currentMonth = new Date().getMonth();
+    const ordersData = new Array(currentMonth + 1).fill(0);
 
     orders.forEach(order => {
       if (order.shipping_status.toLowerCase() !== 'cancelled') {
