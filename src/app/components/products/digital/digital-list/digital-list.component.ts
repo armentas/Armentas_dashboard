@@ -27,7 +27,8 @@ export class DigitalListComponent implements OnInit {
   idImagesToDelete: number[] = [];
 
   loading: boolean = false;
-
+  initLoading: boolean = false;
+  
   public closeResult: string;
   visible: boolean = false;
   public productList: any[] = [];
@@ -69,7 +70,9 @@ export class DigitalListComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.initLoading = true
     await this.loadProducts();
+    this.initLoading = false
   }
 
   async loadProducts() {

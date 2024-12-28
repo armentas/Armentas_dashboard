@@ -13,12 +13,9 @@ import { MessageService } from 'primeng/api';
 })
 
 export class OrdersComponent implements OnInit {
-  // public closeResult: string;
-  // public tableItem$: Observable<OrderDB[]>;
-  // public searchText;
-  // total$: Observable<number>;
 
   initLoading: boolean = false;
+
   ordersToShow: any;
   visible: boolean = false;
   visibleInfo: boolean = false;

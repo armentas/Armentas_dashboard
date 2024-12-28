@@ -27,8 +27,9 @@
                                             id="customControlAutosizing"> -->
                                         <!-- <label class="custom-control-label" for="customControlAutosizing">Remember
                                             me</label> -->
-                                        <a href="javascript:void(0)" class="btn btn-default forgot-pass ms-auto">Forgot
-                                            password</a>
+                                        <span class="forget-pass ms-auto"
+                                            (click)="open(resetPass)">Forgot
+                                            password</span>
                                     </div>
                                 </div>
                                 <div class="form-button mt-5">
@@ -51,4 +52,26 @@
             </div>
         </div>
     </div>
+    <ng-template #resetPass let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title f-w-600 text-light" id="exampleModalLabel">Reset password</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">X</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <p>To reset your password, enter your registered email, and we'll send you the details.</p>
+            </div>
+            <div class="form-group mb-2">
+                <label for="emailConfirm" class="col-form-label pt-0">Email</label>
+                <input class="form-control" id="emailConfirm" type="email" [(ngModel)]="emailConfirm"
+                    [ngModelOptions]="{standalone: true}" required="" (blur)="validateEmail()">
+                <span class="text-danger" *ngIf="errors.email" >{{ errors.email }}</span>
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-deep-blue rounded-pill" (click)="reset()">Reset</button>
+            </div>
+        </div>
+    </ng-template>
 </div>

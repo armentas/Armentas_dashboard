@@ -1,5 +1,11 @@
 <div class="container-fluid">
-    <div class="row">
+    <div class="initLoading" *ngIf="initLoading">
+        <div class="d-flex flex-column gap-3 align-items-center">
+            <span class="svg-spinners-initial"></span>
+            <span>Loading data...</span>
+        </div>
+    </div>
+    <div class="row" *ngIf="!initLoading">
         <div class="col-sm-12">
             <!-- Todos los productos -->
             <div class="card">
@@ -18,8 +24,13 @@
                                 <ng-template pTemplate="caption">
                                     <div class="table-header d-flex justify-content-between">
                                         <div class="d-flex align-items-center gap-2">
-                                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="showConfirmAllDelete(selectedProducts)" pTooltip="Delete selection" tooltipPosition="top" [disabled]="selectedProducts.length == 0"></button>
-                                            <button type="button" pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2" (click)="exportExcel()" pTooltip="Export XLS" tooltipPosition="top"></button>
+                                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger"
+                                                (click)="showConfirmAllDelete(selectedProducts)"
+                                                pTooltip="Delete selection" tooltipPosition="top"
+                                                [disabled]="selectedProducts.length == 0"></button>
+                                            <button type="button" pButton pRipple icon="pi pi-file-excel"
+                                                class="p-button-success mr-2" (click)="exportExcel()"
+                                                pTooltip="Export XLS" tooltipPosition="top"></button>
                                             <span class="p-input-icon-left">
                                                 <i class="pi pi-search"></i>
                                                 <input pInputText type="text"
@@ -223,11 +234,13 @@
                         <div class="row">
                             <div class="col-6 pt-0 form-group mb-2">
                                 <label class="" for="collection"> Collection:</label>
-                                <select class="custom-select form-select" id="collection" (change)="updateSKU('collection')"
-                                    required="" [(ngModel)]="productData.collection" [ngModelOptions]="{standalone: true}">
+                                <select class="custom-select form-select" id="collection"
+                                    (change)="updateSKU('collection')" required="" [(ngModel)]="productData.collection"
+                                    [ngModelOptions]="{standalone: true}">
                                     <option value="" disabled>--Select--</option>
                                     <ng-container *ngFor="let collection of collections">
-                                        <option [value]="collection.name" [disabled]="!collection.active" *ngIf="collection.active && collection.code !== 'GG'">{{ collection.name }}
+                                        <option [value]="collection.name" [disabled]="!collection.active"
+                                            *ngIf="collection.active && collection.code !== 'GG'">{{ collection.name }}
                                         </option>
                                     </ng-container>
                                 </select>
@@ -250,7 +263,8 @@
                                     <label for="price" class="">Price:</label>
                                     <div class="d-flex align-items-center gap-2">
                                         <span>$</span>
-                                        <input class="form-control" style="width: 100%;" id="price" step="0.05" type="number" [(ngModel)]="productData.price"
+                                        <input class="form-control" style="width: 100%;" id="price" step="0.05"
+                                            type="number" [(ngModel)]="productData.price"
                                             [ngModelOptions]="{standalone: true}">
                                     </div>
                                 </div>
@@ -262,17 +276,20 @@
                                 <div class="col-4 mb-2">
                                     <label for="weight" class="">Weight:</label>
                                     <div class="d-flex align-items-center gap-2">
-                                        <input class="form-control" id="weight" type="number" step="0.5" [(ngModel)]="productData.weight"
-                                            [ngModelOptions]="{standalone: true}">
+                                        <input class="form-control" id="weight" type="number" step="0.5"
+                                            [(ngModel)]="productData.weight" [ngModelOptions]="{standalone: true}">
                                         <span>Kg</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group mb-2">
                                 <label class="mb-2">Colors:</label>
-                                <p-multiSelect [options]="colors" [(ngModel)]="selectedColors" [ngModelOptions]="{standalone: true}" placeholder="Select the colors" optionLabel="name">
+                                <p-multiSelect [options]="colors" [(ngModel)]="selectedColors"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Select the colors"
+                                    optionLabel="name">
                                     <ng-template let-value pTemplate="selectedItems">
-                                        <div class="inline-flex align-items-center gap-2 px-1" *ngFor="let option of value">
+                                        <div class="inline-flex align-items-center gap-2 px-1"
+                                            *ngFor="let option of value">
                                             <div class="circle" [style.background-color]="option.hexCode"></div>
                                         </div>
                                         <div *ngIf="!value || value.length === 0">Select color</div>
@@ -301,11 +318,11 @@
                 <div class="d-flex gap-2 align-items-center">
                     <div class="custom-file-upload">
                         <label for="inputAddImage" class="btn btn-primary mr-2">
-                             Select File
+                            Select File
                         </label>
                         <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
-                        <input type="file" accept="image/*" class="form-control visually-hidden"
-                            id="inputAddImage" #fileInput (change)="showFileName(fileInput)" />
+                        <input type="file" accept="image/*" class="form-control visually-hidden" id="inputAddImage"
+                            #fileInput (change)="showFileName(fileInput)" />
                     </div>
                 </div>
             </div>
@@ -325,15 +342,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex gap-3 justify-content-start"
-                        *ngFor="let img of previewImages; let i = index">
+                    <div class="d-flex gap-3 justify-content-start" *ngFor="let img of previewImages; let i = index">
                         <img class="thumblainImage2" [src]="img.img_url || 'assets/images/12.jpg'" alt="">
                         <div class="form-group flex-grow-1">
                             <label class="" for="title">New image {{i+1}}: </label>
                             <input class="form-control" id="title" type="text">
                             <div class="py-1 d-flex gap-2 justify-content-end">
-                                <span
-                                    class="ps-2 cursor-pointer border-start text-muted"
+                                <span class="ps-2 cursor-pointer border-start text-muted"
                                     (click)="deletePreviewImage(i)">Delete</span>
                             </div>
                         </div>
@@ -411,9 +426,9 @@
                     <div class="col-6">
                         <button *ngIf="!loading" type="button" pButton (click)="onConfirmAll()" label="Yes"
                             class="p-button-success rounded"></button>
-                            <div class="d-flex justify-content-center pt-2">
-                                <span *ngIf="loading" class="svg-spinners pr-6"></span>
-                            </div>
+                        <div class="d-flex justify-content-center pt-2">
+                            <span *ngIf="loading" class="svg-spinners pr-6"></span>
+                        </div>
                     </div>
                     <div class="col-6">
                         <button type="button" pButton (click)="onReject()" label="No"

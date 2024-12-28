@@ -174,9 +174,9 @@ export class ApiService {
     return lastValueFrom(this.http.delete<any>(`${this.baseUrl}/images/deleteImage/${id}`));
   }
 
-   //-------------------- Image section -----------------------------------------
+  //-------------------- Image section -----------------------------------------
 
-   sendShippingInformaction(data: any): any {
+  sendShippingInformaction(data: any): any {
     return lastValueFrom(this.http.post(`${this.baseUrl}/sendMailer/sendTrackingNumberNotification`, data));
   }
 

@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     
-    if (req.url.includes('auth/login')) {
+    if (req.url.includes('auth/login') || req.url.includes('auth/getEmail') || req.url.includes('/sendMailer')) {
       return next.handle(req);
     }
     
