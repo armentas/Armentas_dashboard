@@ -333,7 +333,7 @@
                         <img class="thumblainImage2" [src]="img.img_url || 'assets/images/12.jpg'" alt="">
                         <div class="form-group flex-grow-1">
                             <label class="" for="title">Image {{i+1}}: </label>
-                            <input class="form-control" id="title" type="text"
+                            <input class="form-control" id="title" type="text" [readOnly]="true"
                                 [(ngModel)]="imagesProductSelected[i].img_url" (blur)="updateImageText($event, i)">
                             <div class="py-1 d-flex gap-2 justify-content-end">
                                 <span *ngIf="imagesProductSelected.length > 1"
@@ -346,7 +346,7 @@
                         <img class="thumblainImage2" [src]="img.img_url || 'assets/images/12.jpg'" alt="">
                         <div class="form-group flex-grow-1">
                             <label class="" for="title">New image {{i+1}}: </label>
-                            <input class="form-control" id="title" type="text">
+                            <input class="form-control" id="title" type="text" [readOnly]="true">
                             <div class="py-1 d-flex gap-2 justify-content-end">
                                 <span class="ps-2 cursor-pointer border-start text-muted"
                                     (click)="deletePreviewImage(i)">Delete</span>
