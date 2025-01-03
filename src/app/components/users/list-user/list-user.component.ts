@@ -78,7 +78,12 @@ export class ListUserComponent implements OnInit {
       this.userData.newpassword = '';
 
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.log(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
@@ -106,11 +111,16 @@ export class ListUserComponent implements OnInit {
     try {
       const result = await this.authService.updateUser(this.userSelected, this.userData);        
       if (result.data.affectedRows !== 0) {
-        this.messageService.add({ severity: 'success', summary: 'Usuario editado', detail: `Se actualizo el usuario con ID: ${this.userSelected}` });
+        this.messageService.add({ severity: 'success', summary: 'Edited user', detail: `Updated the user with ID: ${this.userSelected}` });
         this.itemSaved = true;
       }
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.log(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }    
   }
 
@@ -137,7 +147,7 @@ export class ListUserComponent implements OnInit {
       console.log(result);
 
       if (result.data.affectedRows !== 0) {
-        this.messageService.add({ severity: 'success', summary: 'Coleccion eliminada', detail: `Se elimino el usuario correctamente` });
+        this.messageService.add({ severity: 'success', summary: 'Collection deleted', detail: `The user was removed correctly` });
         this.messageService.clear('confirm');
         this.visible = false;
 
@@ -146,7 +156,12 @@ export class ListUserComponent implements OnInit {
         }, 1000);
       }
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.log(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 

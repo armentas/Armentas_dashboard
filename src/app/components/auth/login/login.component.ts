@@ -108,7 +108,13 @@ export class LoginComponent implements OnInit {
       }
       
     } catch (error) {
-      console.error("Error validating email:", error);
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error("Error validating email:", error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+      }
+      
     }
   }
 
@@ -124,7 +130,13 @@ export class LoginComponent implements OnInit {
         }
       }
     } catch (error) {
-      console.error("A problem occurred while trying to reset the password, try again later.", error);
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error("A problem occurred while trying to reset the password, try again later.", error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+      }
+      
     }
   }
 }

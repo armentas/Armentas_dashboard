@@ -64,7 +64,12 @@ export class DigitalImportListingComponent implements OnInit {
       this.categories = categories.data;
 
     } catch (error) {
-      console.error(error);
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 
@@ -260,7 +265,12 @@ export class DigitalImportListingComponent implements OnInit {
       }
     } catch (error) {
       this.onReject();
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred.: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 

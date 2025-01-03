@@ -124,7 +124,12 @@ export class CollectionsComponent implements OnInit {
       this.colorNameList = this.colors.map(col => col.name.toLowerCase());
 
     } catch (error) {
-      console.error(error);
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+      }
     }
   }
 
@@ -338,7 +343,12 @@ export class CollectionsComponent implements OnInit {
 
 
       } catch (error) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+        if(error.error)
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+        else{
+          console.error(error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+        }
       }
     } else {
       this.editModal = false;
@@ -384,7 +394,12 @@ export class CollectionsComponent implements OnInit {
         this.currentCategory = { ...this.categoryData };
 
       } catch (error) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+        if(error.error)
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+        else{
+          console.error(error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+        }
       }
     } else {
       this.editModalCategory = false;
@@ -424,7 +439,12 @@ export class CollectionsComponent implements OnInit {
         this.currentColor = { ...this.colorData };
 
       } catch (error) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+        if(error.error)
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+        else{
+          console.error(error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+        }
       }
     } else {
       this.editModalColor = false;
@@ -566,8 +586,12 @@ export class CollectionsComponent implements OnInit {
       this.loading = false;
       this.modalService.dismissAll();
     } catch (error) {
-      console.error('Error al guardar los datos:', error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error('Error al guardar los datos:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
       this.loading = false;
     }
   }
@@ -629,8 +653,12 @@ export class CollectionsComponent implements OnInit {
       this.modalService.dismissAll();
     } catch (error) {
       this.loading = false;
-      console.error('Error al guardar los datos:', error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error('Error al guardar los datos:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 
@@ -692,8 +720,12 @@ export class CollectionsComponent implements OnInit {
       this.modalService.dismissAll();
     } catch (error) {
       this.loading = false;
-      console.error('Error al guardar los datos:', error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error('Error al guardar los datos:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 }

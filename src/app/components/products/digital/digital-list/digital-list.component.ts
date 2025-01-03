@@ -131,7 +131,7 @@ export class DigitalListComponent implements OnInit {
       const result = await this.apiService.deleteProduct(this.productSelected);
 
       if (result.data.affectedRows !== 0) {
-        this.messageService.add({ severity: 'success', summary: 'Producto eliminado', detail: `Se elimino el producto correctamente` });
+        this.messageService.add({ severity: 'success', summary: 'Product removed', detail: `The product was correctly removed` });
         this.messageService.clear('confirm');
 
         setTimeout(() => {
@@ -144,7 +144,7 @@ export class DigitalListComponent implements OnInit {
       if (error.error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
       } else {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
       }
     }
   }
@@ -157,7 +157,7 @@ export class DigitalListComponent implements OnInit {
       }
       this.selectedProducts = [];
 
-      this.messageService.add({ severity: 'success', summary: 'Productos eliminados', detail: `Se eliminaron los productos correctamente` });
+      this.messageService.add({ severity: 'success', summary: 'Products eliminated', detail: `Products were eliminated correctly` });
       this.messageService.clear('confirmAllDelete');
 
       setTimeout(() => {
@@ -171,7 +171,7 @@ export class DigitalListComponent implements OnInit {
       if (error.error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
       } else {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
       }
     }
   }
@@ -219,7 +219,12 @@ export class DigitalListComponent implements OnInit {
       this.getColorsFromSelected(this.productData.colors);
 
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'xl' }).result.then((result) => {
@@ -289,7 +294,7 @@ export class DigitalListComponent implements OnInit {
       reader.readAsDataURL(fileInput.files[0]);
       
     }else{
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ha llegado al número máximo de imágenes para un producto' });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'You have reached the maximum number of images for a product.' });
     }
     
   }
@@ -393,7 +398,7 @@ export class DigitalListComponent implements OnInit {
     const missingProperties = requiredProperties.filter(prop => !this.productData[prop] || this.productData[prop] === '' || this.productData[prop].length === 0);
 
     if (missingProperties.length > 0) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Por favor, complete los siguientes campos obligatorios: ${missingProperties.join(', ')}` });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Please complete the following required fields: ${missingProperties.join(', ')}` });
       return;
     }
 
@@ -415,7 +420,7 @@ export class DigitalListComponent implements OnInit {
 
       const result = await this.apiService.updateProduct(this.productSelected, this.productData);
       if (result.data.affectedRows !== 0) {
-        this.messageService.add({ severity: 'success', summary: 'Producto editado', detail: `Se actualizo el producto con ID: ${this.productSelected}` });
+        this.messageService.add({ severity: 'success', summary: 'Edited product', detail: `The product has been updated with ID: ${this.productSelected}` });
         this.itemSaved = true;
       }
       this.modalService.dismissAll();
@@ -423,10 +428,11 @@ export class DigitalListComponent implements OnInit {
 
     } catch (error) {
       this.loading = false;
-      if (error.error) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: ` ${error.error.msg}` });
-      } else {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Se produjo un error: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
       }
     }
   }

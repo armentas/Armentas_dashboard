@@ -39,12 +39,12 @@ export class CreateUserComponent implements OnInit {
     const isEmptyField = Object.values(accountForm.value).some(value => value === '' || value === null || value === undefined);
 
     if (isEmptyField) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error: Hay campos vacíos en el formulario.` });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error: There are empty fields in the form.` });
       return;
     }
 
     if (accountForm.value.password !== accountForm.value.confirmPwd) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Las contraseñas no coinciden.` });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Passwords do not match.` });
       return;
     }
 
@@ -66,10 +66,18 @@ export class CreateUserComponent implements OnInit {
     try {
       const result = await this.authService.register(userObject);
       
-      this.messageService.add({ severity: 'success', summary: 'Usuario Registrado', detail: `${result.msg}` });
+      this.messageService.add({ severity: 'success', summary: 'Registered User', detail: `${result.msg}` });
+      this.resetForm();
 
     } catch (error) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+      this.resetForm();
+      
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.log(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+      }
     }
   }
 
@@ -87,4 +95,20 @@ export class CreateUserComponent implements OnInit {
 
     return permissionList.join(',');
   }
+
+  resetForm(){
+    this.accountForm.reset({
+      name: '',
+      lastname: '',
+      email: '',
+      password: '',
+      confirmPwd: '',
+      permissionRead: 'allow',
+      permissionAdd: 'deny',
+      permissionUpdate: 'deny',
+      permissionDelete: 'deny',
+    });
+  }
 }
+
+

@@ -283,12 +283,12 @@ export class OrdersComponent implements OnInit {
         }
       }
     } catch (error) {
-      this.messageService.add({
-        key: 'bc',
-        severity: 'error',
-        summary: 'Error',
-        detail: `${error.error.msg}`
-      });
+      if(error.error)
+        this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error(error);
+        this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 

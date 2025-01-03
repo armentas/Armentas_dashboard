@@ -112,7 +112,12 @@ export class DigitalAddComponent implements OnInit {
       this.colorNameList = this.colors.map(col => col.name.toLowerCase());
 
     } catch (error) {
-      console.error(error);
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 
@@ -230,7 +235,7 @@ export class DigitalAddComponent implements OnInit {
         this.selectedFileName = 'No file selected';
       }
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ha llegado al número máximo de imágenes para un producto' });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'You have reached the maximum number of images for a product.' });
     }
   }
 
@@ -247,7 +252,7 @@ export class DigitalAddComponent implements OnInit {
         this.urlImage = "";
       }
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ha llegado al número máximo de imágenes para un producto' });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'You have reached the maximum number of images for a product.' });
     }
   }
 
@@ -332,8 +337,12 @@ export class DigitalAddComponent implements OnInit {
 
       this.modalService.dismissAll();
     } catch (error) {
-      console.error('Error al guardar los datos:', error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error('Error al guardar los datos:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 
@@ -379,8 +388,12 @@ export class DigitalAddComponent implements OnInit {
 
       this.modalService.dismissAll();
     } catch (error) {
-      console.error('Error al guardar los datos:', error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error('Error al guardar los datos:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 
@@ -426,8 +439,12 @@ export class DigitalAddComponent implements OnInit {
 
       this.modalService.dismissAll();
     } catch (error) {
-      console.error('Error al guardar los datos:', error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      if(error.error)
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.msg });
+      else{
+        console.error('Error al guardar los datos:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `An error occurred: ${error.message}` });
+      }
     }
   }
 
@@ -449,7 +466,7 @@ export class DigitalAddComponent implements OnInit {
     const missingProperties = requiredProperties.filter(prop => !this.productData[prop] || this.productData[prop] === '' || this.productData[prop].length === 0);
 
     if (missingProperties.length > 0) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Por favor, complete los siguientes campos obligatorios: ${missingProperties.join(', ')}` });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: `Please complete the following required fields: ${missingProperties.join(', ')}` });
       return;
     }
 
@@ -485,7 +502,7 @@ export class DigitalAddComponent implements OnInit {
       }
 
       this.onReject();
-      this.messageService.add({ severity: 'success', summary: 'Producto registrado', detail: `Se registro el producto ${this.productData.title}` });
+      this.messageService.add({ severity: 'success', summary: 'Registered product', detail: `The product is registered ${this.productData.title}` });
       this.cleanAll();
 
     } catch (error) {
@@ -493,7 +510,7 @@ export class DigitalAddComponent implements OnInit {
       if (error.error) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: `${error.error.msg}` });
       } else {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error al intentar crear el producto: ${error.message}` });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: `Error when trying to create the product: ${error.message}` });
       }
     }
   }
